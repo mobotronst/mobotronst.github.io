@@ -12,7 +12,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Chosen Palette: Earthy Green & Gold -->
     <!-- Application Structure Plan: A dashboard-style SPA. A sticky left-hand navigation menu allows for quick jumps to any topic. The main content area begins with a bar chart visualizing topic frequency for a high-level overview. This is followed by detailed, expandable content cards for each topic. This structure was chosen to allow both a quick, data-driven assessment of priorities and deep, self-paced exploration of content, which is more effective for studying than a simple linear document. -->
     <!-- Visualization & Content Choices: 
         - Report Info: Topic Frequency Ratings (★★★) -> Goal: Compare priorities -> Viz: Chart.js Horizontal Bar Chart -> Interaction: Hover tooltips -> Justification: Provides an immediate, clear visual hierarchy of topic importance.
@@ -24,8 +24,8 @@
     <style>
       body {
         font-family: "Inter", sans-serif;
-        background-color: #f8f7f4;
-        color: #333333;
+        background-color: #111827; /* bg-gray-900 */
+        color: #d1d5db; /* text-gray-300 */
       }
       .chart-container {
         position: relative;
@@ -42,7 +42,7 @@
         }
       }
       .nav-link.active {
-        background-color: #4a90e2;
+        background-color: #16a34a; /* bg-green-600 */
         color: white;
         font-weight: 600;
       }
@@ -51,10 +51,10 @@
   <body class="antialiased">
     <div id="app" class="container mx-auto p-4 md:p-8">
       <header class="text-center mb-12">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-2">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-100 mb-2">
           The Interactive Android Developer Playbook
         </h1>
-        <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+        <p class="text-lg text-gray-400 max-w-3xl mx-auto">
           An interactive guide to mastering the core concepts for your next
           Android interview. Use the chart to gauge topic importance and the
           navigation to dive into detailed explanations.
@@ -66,19 +66,19 @@
           id="navigation-menu"
           class="md:w-1/4 lg:w-1/5 md:sticky top-8 h-full"
         >
-          <h2 class="text-xl font-bold mb-4 text-gray-700">Interview Topics</h2>
+          <h2 class="text-xl font-bold mb-4 text-gray-300">Interview Topics</h2>
           <nav id="nav-links-container" class="flex flex-col space-y-2"></nav>
         </aside>
 
         <main class="md:w-3/4 lg:w-4/5">
           <section
             id="overview"
-            class="bg-white p-6 rounded-2xl shadow-lg mb-12"
+            class="bg-gray-800 border border-gray-700 p-6 rounded-2xl shadow-lg mb-12"
           >
-            <h2 class="text-2xl font-bold text-center mb-4 text-gray-800">
+            <h2 class="text-2xl font-bold text-center mb-4 text-gray-100">
               Topic Interview Frequency
             </h2>
-            <p class="text-center text-gray-600 mb-6">
+            <p class="text-center text-gray-400 mb-6">
               This chart shows the relative frequency of each topic appearing in
               Android developer interviews, based on the provided report. Use
               this to prioritize your study plan. Topics with a higher rating
@@ -102,25 +102,25 @@
           rating: 5,
           priority: "Top priority",
           content: `
-                <p class="mb-4">This is the bedrock of all Android development. Understanding the history, architecture, and core components is non-negotiable.</p>
-                <h4 class="font-semibold text-lg mb-2">What is Android?</h4>
-                <p class="mb-4">Android is a mobile operating system based on a modified version of the Linux kernel and other open-source software, designed primarily for touchscreen mobile devices such as smartphones and tablets.</p>
-                <h4 class="font-semibold text-lg mb-2">Android Architecture Layers: The Multi-Story Building</h4>
-                <div class="mt-4 space-y-2 p-4 bg-gray-50 rounded-lg border">
-                    <div class="p-3 bg-blue-100 rounded-md"><strong>Top Floor: Applications</strong><br>The layer you interact with (e.g., Gmail, Maps). Each app runs in its own secure sandbox.</div>
-                    <div class="p-3 bg-blue-200 rounded-md"><strong>Floor 4: Application Framework</strong><br>Provides high-level services like Activity Manager, Notification Manager. These are the APIs developers use most.</div>
-                    <div class="p-3 bg-blue-300 rounded-md"><strong>Floor 3: Android Runtime (ART) & Native Libraries</strong><br>ART executes app instructions and manages memory. Native libraries provide high-performance C/C++ functionality for tasks like graphics (OpenGL) and databases (SQLite).</div>
-                    <div class="p-3 bg-blue-400 rounded-md"><strong>Floor 2: Hardware Abstraction Layer (HAL)</strong><br>A standard interface that allows the Android framework to communicate with device hardware drivers, regardless of the manufacturer.</div>
-                    <div class="p-3 bg-blue-500 text-white rounded-md"><strong>Foundation: Linux Kernel</strong><br>The core of the OS. Manages processing, memory, device drivers, and security.</div>
-                </div>
-                <h4 class="font-semibold text-lg mt-6 mb-2">Core App Components: The Restaurant Team</h4>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Activity:</strong> The dining room. A single screen the user interacts with.</li>
-                    <li><strong>Service:</strong> The chef in the kitchen. Performs long-running background tasks without a UI (e.g., playing music).</li>
-                    <li><strong>BroadcastReceiver:</strong> The PA system. Listens for and responds to system-wide announcements (e.g., "battery low").</li>
-                    <li><strong>ContentProvider:</strong> The cookbook librarian. Manages and shares app data with other apps in a secure way.</li>
-                </ul>
-            `,
+                  <p class="mb-4">This is the bedrock of all Android development. Understanding the history, architecture, and core components is non-negotiable.</p>
+                  <h4 class="font-semibold text-lg mb-2">What is Android?</h4>
+                  <p class="mb-4">Android is a mobile operating system based on a modified version of the Linux kernel and other open-source software, designed primarily for touchscreen mobile devices such as smartphones and tablets.</p>
+                  <h4 class="font-semibold text-lg mb-2">Android Architecture Layers: The Multi-Story Building</h4>
+                  <div class="mt-4 space-y-2 p-4 bg-gray-900/50 rounded-lg border border-gray-700">
+                      <div class="p-3 bg-green-900/80 rounded-md"><strong>Top Floor: Applications</strong><br>The layer you interact with (e.g., Gmail, Maps). Each app runs in its own secure sandbox.</div>
+                      <div class="p-3 bg-green-800/80 rounded-md"><strong>Floor 4: Application Framework</strong><br>Provides high-level services like Activity Manager, Notification Manager. These are the APIs developers use most.</div>
+                      <div class="p-3 bg-green-700/80 rounded-md"><strong>Floor 3: Android Runtime (ART) & Native Libraries</strong><br>ART executes app instructions and manages memory. Native libraries provide high-performance C/C++ functionality for tasks like graphics (OpenGL) and databases (SQLite).</div>
+                      <div class="p-3 bg-green-600/80 rounded-md"><strong>Floor 2: Hardware Abstraction Layer (HAL)</strong><br>A standard interface that allows the Android framework to communicate with device hardware drivers, regardless of the manufacturer.</div>
+                      <div class="p-3 bg-green-500/80 text-black font-semibold rounded-md"><strong>Foundation: Linux Kernel</strong><br>The core of the OS. Manages processing, memory, device drivers, and security.</div>
+                  </div>
+                  <h4 class="font-semibold text-lg mt-6 mb-2">Core App Components: The Restaurant Team</h4>
+                  <ul class="list-disc list-inside space-y-2">
+                      <li><strong>Activity:</strong> The dining room. A single screen the user interacts with.</li>
+                      <li><strong>Service:</strong> The chef in the kitchen. Performs long-running background tasks without a UI (e.g., playing music).</li>
+                      <li><strong>BroadcastReceiver:</strong> The PA system. Listens for and responds to system-wide announcements (e.g., "battery low").</li>
+                      <li><strong>ContentProvider:</strong> The cookbook librarian. Manages and shares app data with other apps in a secure way.</li>
+                  </ul>
+                `,
         },
         {
           id: "lifecycle",
@@ -128,26 +128,26 @@
           rating: 5,
           priority: "Top priority",
           content: `
-                <p class="mb-4">Understanding how components live and die is crucial for preventing crashes and memory leaks. This is one of the most frequently asked topics.</p>
-                <h4 class="font-semibold text-lg mb-2">Activity Lifecycle: A Performer on a Stage</h4>
-                <p class="mb-4">An Activity transitions through various states. Mastering these callbacks is key to managing resources correctly.</p>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="p-3 bg-green-100 rounded-lg"><strong>onCreate()</strong><br>Performer is born. One-time initializations.</div>
-                    <div class="p-3 bg-green-200 rounded-lg"><strong>onStart()</strong><br>Steps onto stage. UI becomes visible.</div>
-                    <div class="p-3 bg-green-300 rounded-lg"><strong>onResume()</strong><br>Performance begins. User can interact.</div>
-                    <div class="p-3 bg-yellow-200 rounded-lg"><strong>onPause()</strong><br>Performance paused. Losing focus.</div>
-                    <div class="p-3 bg-yellow-300 rounded-lg"><strong>onStop()</strong><br>Leaves the stage. UI no longer visible.</div>
-                    <div class="p-3 bg-red-200 rounded-lg"><strong>onDestroy()</strong><br>Show is over. Final cleanup.</div>
-                </div>
-                <h4 class="font-semibold text-lg mt-6 mb-2">Fragment Lifecycle</h4>
-                <p class="mb-4">A Fragment is an actor within the Activity's play. Its lifecycle is more complex, tied to both its own state and the host Activity. The most critical methods to understand are <strong>onAttach()</strong>, <strong>onCreateView()</strong>, and <strong>onDestroyView()</strong>, as this is where the UI is created and destroyed, a common source of memory leaks if not handled properly.</p>
-                <h4 class="font-semibold text-lg mt-6 mb-2">Intents: Direct Mail vs. Public Announcements</h4>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Explicit Intent:</strong> A letter with a specific address. You know exactly which component to start (e.g., navigating to another Activity within your own app).</li>
-                    <li><strong>Implicit Intent:</strong> A public announcement. You declare an action (e.g., "share this photo"), and the system finds an app that can handle it.</li>
-                    <li><strong>PendingIntent:</strong> A pre-signed check. You give another app (like the Notification Manager) permission to execute your Intent at a later time with your app's permissions.</li>
-                </ul>
-            `,
+                  <p class="mb-4">Understanding how components live and die is crucial for preventing crashes and memory leaks. This is one of the most frequently asked topics.</p>
+                  <h4 class="font-semibold text-lg mb-2">Activity Lifecycle: A Performer on a Stage</h4>
+                  <p class="mb-4">An Activity transitions through various states. Mastering these callbacks is key to managing resources correctly.</p>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                      <div class="p-3 bg-green-900/80 rounded-lg"><strong>onCreate()</strong><br>Performer is born. One-time initializations.</div>
+                      <div class="p-3 bg-green-800/80 rounded-lg"><strong>onStart()</strong><br>Steps onto stage. UI becomes visible.</div>
+                      <div class="p-3 bg-green-700/80 rounded-lg"><strong>onResume()</strong><br>Performance begins. User can interact.</div>
+                      <div class="p-3 bg-yellow-800/80 rounded-lg"><strong>onPause()</strong><br>Performance paused. Losing focus.</div>
+                      <div class="p-3 bg-yellow-700/80 rounded-lg"><strong>onStop()</strong><br>Leaves the stage. UI no longer visible.</div>
+                      <div class="p-3 bg-yellow-900/80 rounded-lg"><strong>onDestroy()</strong><br>Show is over. Final cleanup.</div>
+                  </div>
+                  <h4 class="font-semibold text-lg mt-6 mb-2">Fragment Lifecycle</h4>
+                  <p class="mb-4">A Fragment is an actor within the Activity's play. Its lifecycle is more complex, tied to both its own state and the host Activity. The most critical methods to understand are <strong>onAttach()</strong>, <strong>onCreateView()</strong>, and <strong>onDestroyView()</strong>, as this is where the UI is created and destroyed, a common source of memory leaks if not handled properly.</p>
+                  <h4 class="font-semibold text-lg mt-6 mb-2">Intents: Direct Mail vs. Public Announcements</h4>
+                  <ul class="list-disc list-inside space-y-2">
+                      <li><strong>Explicit Intent:</strong> A letter with a specific address. You know exactly which component to start (e.g., navigating to another Activity within your own app).</li>
+                      <li><strong>Implicit Intent:</strong> A public announcement. You declare an action (e.g., "share this photo"), and the system finds an app that can handle it.</li>
+                      <li><strong>PendingIntent:</strong> A pre-signed check. You give another app (like the Notification Manager) permission to execute your Intent at a later time with your app's permissions.</li>
+                  </ul>
+                `,
         },
         {
           id: "build",
@@ -155,17 +155,17 @@
           rating: 4,
           priority: "High",
           content: `
-                <p class="mb-4">Understanding how your code becomes an app is key for debugging, optimization, and understanding the tools you use every day.</p>
-                <h4 class="font-semibold text-lg mb-2">The Build Process: A Meal Kit Factory</h4>
-                <ol class="list-decimal list-inside space-y-3 p-4 bg-gray-50 rounded-lg border">
-                    <li><strong>AAPT/AAPT2 (Resource Compilation):</strong> Gathers all resources (layouts, strings, images) and generates the R.java file, an inventory list of all resource IDs.</li>
-                    <li><strong>javac/kotlinc (Source Code Compilation):</strong> Compiles your Java/Kotlin code into Java bytecode (.class files).</li>
-                    <li><strong>R8/ProGuard (Optimization):</strong> Shrinks, obfuscates, and optimizes the bytecode. This makes the app smaller and harder to reverse-engineer.</li>
-                    <li><strong>D8/DX (DEXing):</strong> Converts all Java bytecode into Dalvik Executable (.dex) files, the format the Android Runtime (ART) understands.</li>
-                    <li><strong>APK Packager:</strong> Combines compiled resources, .dex files, and other assets into the final APK or AAB file.</li>
-                    <li><strong>Signing:</strong> Applies a digital signature to the package to verify its authenticity and integrity.</li>
-                </ol>
-            `,
+                  <p class="mb-4">Understanding how your code becomes an app is key for debugging, optimization, and understanding the tools you use every day.</p>
+                  <h4 class="font-semibold text-lg mb-2">The Build Process: A Meal Kit Factory</h4>
+                  <ol class="list-decimal list-inside space-y-3 p-4 bg-gray-900/50 rounded-lg border border-gray-700">
+                      <li><strong>AAPT/AAPT2 (Resource Compilation):</strong> Gathers all resources (layouts, strings, images) and generates the R.java file, an inventory list of all resource IDs.</li>
+                      <li><strong>javac/kotlinc (Source Code Compilation):</strong> Compiles your Java/Kotlin code into Java bytecode (.class files).</li>
+                      <li><strong>R8/ProGuard (Optimization):</strong> Shrinks, obfuscates, and optimizes the bytecode. This makes the app smaller and harder to reverse-engineer.</li>
+                      <li><strong>D8/DX (DEXing):</strong> Converts all Java bytecode into Dalvik Executable (.dex) files, the format the Android Runtime (ART) understands.</li>
+                      <li><strong>APK Packager:</strong> Combines compiled resources, .dex files, and other assets into the final APK or AAB file.</li>
+                      <li><strong>Signing:</strong> Applies a digital signature to the package to verify its authenticity and integrity.</li>
+                  </ol>
+                `,
         },
         {
           id: "ui",
@@ -173,23 +173,23 @@
           rating: 4,
           priority: "High",
           content: `
-                <p class="mb-4">This covers how you build what the user sees and interacts with. Efficiency and responsiveness are key themes.</p>
-                <h4 class="font-semibold text-lg mb-2">Layouts: Arranging Furniture</h4>
-                <ul class="list-disc list-inside space-y-2 mb-4">
-                    <li><strong>LinearLayout:</strong> Stacking books on a shelf (vertically or horizontally).</li>
-                    <li><strong>RelativeLayout:</strong> Arranging items based on their relationship to each other ("to the left of", "below").</li>
-                    <li><strong>FrameLayout:</strong> A stack of papers. Each new view is placed on top of the last. Good for overlays.</li>
-                    <li><strong>ConstraintLayout:</strong> The modern standard. Uses flexible "elastic bands" (constraints) to position elements. It's powerful and performant because it allows for flat view hierarchies.</li>
-                </ul>
-                <h4 class="font-semibold text-lg mb-2">RecyclerView: The Efficient Restaurant</h4>
-                <p class="mb-2">The modern way to display long, scrollable lists. Its efficiency comes from recycling views. Instead of creating a new view for every item in the list, it reuses the views that scroll off-screen.</p>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><strong>ViewHolder:</strong> The reusable table setting. Holds the views for a single item. This pattern is enforced in RecyclerView to guarantee performance.</li>
-                    <li><strong>Adapter:</strong> The head waiter. Connects the data to the RecyclerView, creating new ViewHolders as needed and binding data to them as the user scrolls.</li>
-                </ul>
-                <h4 class="font-semibold text-lg mt-4 mb-2">Material Design</h4>
-                <p>Google's design system. Key principles include using "digital paper and ink" to create a sense of depth and hierarchy, using motion to provide meaning, and having a bold, intentional visual style. Modern apps use Material Components and support features like Dark Mode.</p>
-            `,
+                  <p class="mb-4">This covers how you build what the user sees and interacts with. Efficiency and responsiveness are key themes.</p>
+                  <h4 class="font-semibold text-lg mb-2">Layouts: Arranging Furniture</h4>
+                  <ul class="list-disc list-inside space-y-2 mb-4">
+                      <li><strong>LinearLayout:</strong> Stacking books on a shelf (vertically or horizontally).</li>
+                      <li><strong>RelativeLayout:</strong> Arranging items based on their relationship to each other ("to the left of", "below").</li>
+                      <li><strong>FrameLayout:</strong> A stack of papers. Each new view is placed on top of the last. Good for overlays.</li>
+                      <li><strong>ConstraintLayout:</strong> The modern standard. Uses flexible "elastic bands" (constraints) to position elements. It's powerful and performant because it allows for flat view hierarchies.</li>
+                  </ul>
+                  <h4 class="font-semibold text-lg mb-2">RecyclerView: The Efficient Restaurant</h4>
+                  <p class="mb-2">The modern way to display long, scrollable lists. Its efficiency comes from recycling views. Instead of creating a new view for every item in the list, it reuses the views that scroll off-screen.</p>
+                  <ul class="list-disc list-inside space-y-2">
+                      <li><strong>ViewHolder:</strong> The reusable table setting. Holds the views for a single item. This pattern is enforced in RecyclerView to guarantee performance.</li>
+                      <li><strong>Adapter:</strong> The head waiter. Connects the data to the RecyclerView, creating new ViewHolders as needed and binding data to them as the user scrolls.</li>
+                  </ul>
+                  <h4 class="font-semibold text-lg mt-4 mb-2">Material Design</h4>
+                  <p>Google's design system. Key principles include using "digital paper and ink" to create a sense of depth and hierarchy, using motion to provide meaning, and having a bold, intentional visual style. Modern apps use Material Components and support features like Dark Mode.</p>
+                `,
         },
         {
           id: "services",
@@ -197,17 +197,17 @@
           rating: 4,
           priority: "High",
           content: `
-                <p class="mb-4">Performing work when your app isn't in the foreground is complex due to modern Android's focus on battery optimization. You must use the right tool for the job.</p>
-                <h4 class="font-semibold text-lg mb-2">Types of Services</h4>
-                <ul class="list-disc list-inside space-y-2 mb-4">
-                    <li><strong>Foreground Service:</strong> A service the user is actively aware of, indicated by a persistent notification (e.g., a music player or navigation app). These have a higher priority and are less likely to be killed by the system.</li>
-                    <li><strong>Background Service:</strong> A service performing work the user isn't directly aware of. Since Android 8 (Oreo), these are heavily restricted and often cannot run for more than a few minutes.</li>
-                </ul>
-                <h4 class="font-semibold text-lg mb-2">Modern Background Task Scheduling</h4>
-                <p class="mb-2">For most background tasks, especially those that need to run reliably even if the app closes, you should not use a Service directly. The modern, recommended solution is <strong>WorkManager</strong>.</p>
-                <h5 class="font-semibold mt-2">WorkManager: The Smart Chore Manager</h5>
-                <p>WorkManager is the best tool for deferrable, guaranteed background work. You can define work with constraints (e.g., "only run on Wi-Fi," "only run when charging"), and WorkManager will ensure it executes under the right conditions, even if the app is closed or the device restarts. It's battery-efficient and handles OS-level restrictions for you.</p>
-            `,
+                  <p class="mb-4">Performing work when your app isn't in the foreground is complex due to modern Android's focus on battery optimization. You must use the right tool for the job.</p>
+                  <h4 class="font-semibold text-lg mb-2">Types of Services</h4>
+                  <ul class="list-disc list-inside space-y-2 mb-4">
+                      <li><strong>Foreground Service:</strong> A service the user is actively aware of, indicated by a persistent notification (e.g., a music player or navigation app). These have a higher priority and are less likely to be killed by the system.</li>
+                      <li><strong>Background Service:</strong> A service performing work the user isn't directly aware of. Since Android 8 (Oreo), these are heavily restricted and often cannot run for more than a few minutes.</li>
+                  </ul>
+                  <h4 class="font-semibold text-lg mb-2">Modern Background Task Scheduling</h4>
+                  <p class="mb-2">For most background tasks, especially those that need to run reliably even if the app closes, you should not use a Service directly. The modern, recommended solution is <strong>WorkManager</strong>.</p>
+                  <h5 class="font-semibold mt-2">WorkManager: The Smart Chore Manager</h5>
+                  <p>WorkManager is the best tool for deferrable, guaranteed background work. You can define work with constraints (e.g., "only run on Wi-Fi," "only run when charging"), and WorkManager will ensure it executes under the right conditions, even if the app is closed or the device restarts. It's battery-efficient and handles OS-level restrictions for you.</p>
+                `,
         },
         {
           id: "threading",
@@ -215,16 +215,16 @@
           rating: 4,
           priority: "High",
           content: `
-                <p class="mb-4">One of the most important rules in Android: <strong>Don't block the UI thread!</strong> This topic covers how to perform long-running operations like network calls or database access without freezing the app.</p>
-                <h4 class="font-semibold text-lg mb-2">The Main Thread: A Single-Lane Drive-Thru</h4>
-                <p class="mb-4">The main (UI) thread handles all user input and screen drawing. If you perform a long task on it (like a complex order), the entire UI freezes. If it's frozen for too long (~5 seconds), the system shows an "Application Not Responding" (ANR) error. All long tasks must be moved to a background thread.</p>
-                <h4 class="font-semibold text-lg mb-2">Kotlin Coroutines: The Modern Solution</h4>
-                <p class="mb-2">Coroutines are the recommended way to manage background tasks in modern Android development. They are lightweight, efficient, and safer than older solutions like AsyncTask.</p>
-                <h5 class="font-semibold mt-2">Structured Concurrency: A Head Chef and Kitchen Staff</h5>
-                <p class="mb-4">This is the key safety feature of coroutines. Every coroutine runs in a scope (the head chef). If the scope is cancelled (e.g., the user leaves the screen), all the work within it (the cooks) is automatically cancelled too. This prevents memory leaks and wasted resources.</p>
-                <h5 class="font-semibold mt-2">Kotlin Flow: A Factory Conveyor Belt</h5>
-                <p>Flow is a coroutine-based tool for handling streams of asynchronous data. It's like a conveyor belt that produces items (emits data), which can be modified along the way (intermediate operators like 'map' or 'filter') before being collected by a worker at the end (the 'collect' terminal operator).</p>
-            `,
+                  <p class="mb-4">One of the most important rules in Android: <strong>Don't block the UI thread!</strong> This topic covers how to perform long-running operations like network calls or database access without freezing the app.</p>
+                  <h4 class="font-semibold text-lg mb-2">The Main Thread: A Single-Lane Drive-Thru</h4>
+                  <p class="mb-4">The main (UI) thread handles all user input and screen drawing. If you perform a long task on it (like a complex order), the entire UI freezes. If it's frozen for too long (~5 seconds), the system shows an "Application Not Responding" (ANR) error. All long tasks must be moved to a background thread.</p>
+                  <h4 class="font-semibold text-lg mb-2">Kotlin Coroutines: The Modern Solution</h4>
+                  <p class="mb-2">Coroutines are the recommended way to manage background tasks in modern Android development. They are lightweight, efficient, and safer than older solutions like AsyncTask.</p>
+                  <h5 class="font-semibold mt-2">Structured Concurrency: A Head Chef and Kitchen Staff</h5>
+                  <p class="mb-4">This is the key safety feature of coroutines. Every coroutine runs in a scope (the head chef). If the scope is cancelled (e.g., the user leaves the screen), all the work within it (the cooks) is automatically cancelled too. This prevents memory leaks and wasted resources.</p>
+                  <h5 class="font-semibold mt-2">Kotlin Flow: A Factory Conveyor Belt</h5>
+                  <p>Flow is a coroutine-based tool for handling streams of asynchronous data. It's like a conveyor belt that produces items (emits data), which can be modified along the way (intermediate operators like 'map' or 'filter') before being collected by a worker at the end (the 'collect' terminal operator).</p>
+                `,
         },
         {
           id: "persistence",
@@ -232,43 +232,43 @@
           rating: 4,
           priority: "High",
           content: `
-                <p class="mb-4">Storing data locally is a common requirement for offline support, caching, and saving user settings.</p>
-                <h4 class="font-semibold text-lg mb-2">Storage Options: Storing Your Notes</h4>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr>
-                                <th class="border-b-2 p-2">Method</th>
-                                <th class="border-b-2 p-2">Analogy</th>
-                                <th class="border-b-2 p-2">Use Case</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="hover:bg-gray-50">
-                                <td class="border-b p-2 font-semibold">SharedPreferences</td>
-                                <td class="border-b p-2">Sticky Note</td>
-                                <td class="border-b p-2">Simple key-value pairs. User settings, flags, small bits of data.</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="border-b p-2 font-semibold">SQLite</td>
-                                <td class="border-b p-2">Filing Cabinet</td>
-                                <td class="border-b p-2">The underlying relational database. Powerful but requires writing raw SQL and a lot of boilerplate code.</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="border-b p-2 font-semibold">Room</td>
-                                <td class="border-b p-2">Smart Librarian</td>
-                                <td class="border-b p-2">The recommended abstraction over SQLite. It simplifies database access, reduces boilerplate, and provides compile-time checks for your SQL queries.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <h4 class="font-semibold text-lg mt-6 mb-2">Room Components</h4>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Entity:</strong> The book blueprint. A data class that defines a database table.</li>
-                    <li><strong>DAO (Data Access Object):</strong> The service desk. An interface where you define your database operations (insert, query, delete) with simple annotations.</li>
-                    <li><strong>Database:</strong> The library building. The main access point that ties the entities and DAOs together.</li>
-                </ul>
-            `,
+                  <p class="mb-4">Storing data locally is a common requirement for offline support, caching, and saving user settings.</p>
+                  <h4 class="font-semibold text-lg mb-2">Storage Options: Storing Your Notes</h4>
+                  <div class="overflow-x-auto">
+                      <table class="w-full text-left border-collapse">
+                          <thead>
+                              <tr>
+                                  <th class="border-b-2 border-gray-700 p-2">Method</th>
+                                  <th class="border-b-2 border-gray-700 p-2">Analogy</th>
+                                  <th class="border-b-2 border-gray-700 p-2">Use Case</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr class="hover:bg-gray-700/50">
+                                  <td class="border-b border-gray-700 p-2 font-semibold">SharedPreferences</td>
+                                  <td class="border-b border-gray-700 p-2">Sticky Note</td>
+                                  <td class="border-b border-gray-700 p-2">Simple key-value pairs. User settings, flags, small bits of data.</td>
+                              </tr>
+                              <tr class="hover:bg-gray-700/50">
+                                  <td class="border-b border-gray-700 p-2 font-semibold">SQLite</td>
+                                  <td class="border-b border-gray-700 p-2">Filing Cabinet</td>
+                                  <td class="border-b border-gray-700 p-2">The underlying relational database. Powerful but requires writing raw SQL and a lot of boilerplate code.</td>
+                              </tr>
+                              <tr class="hover:bg-gray-700/50">
+                                  <td class="border-b border-gray-700 p-2 font-semibold">Room</td>
+                                  <td class="border-b border-gray-700 p-2">Smart Librarian</td>
+                                  <td class="border-b border-gray-700 p-2">The recommended abstraction over SQLite. It simplifies database access, reduces boilerplate, and provides compile-time checks for your SQL queries.</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+                  <h4 class="font-semibold text-lg mt-6 mb-2">Room Components</h4>
+                  <ul class="list-disc list-inside space-y-2">
+                      <li><strong>Entity:</strong> The book blueprint. A data class that defines a database table.</li>
+                      <li><strong>DAO (Data Access Object):</strong> The service desk. An interface where you define your database operations (insert, query, delete) with simple annotations.</li>
+                      <li><strong>Database:</strong> The library building. The main access point that ties the entities and DAOs together.</li>
+                  </ul>
+                `,
         },
         {
           id: "permissions",
@@ -276,16 +276,16 @@
           rating: 4,
           priority: "High",
           content: `
-                <p class="mb-4">Protecting user privacy and data is a core responsibility. Modern Android has a strict runtime permission model.</p>
-                <h4 class="font-semibold text-lg mb-2">Runtime Permissions (Android 6+)</h4>
-                <p class="mb-4">For dangerous permissions (like Camera, Location, Contacts), you can't just declare them in the Manifest. You must request permission from the user while the app is running. The flow is: check if you have the permission, if not, request it, and then handle the user's response (grant or deny).</p>
-                <h4 class="font-semibold text-lg mb-2">Secure Data Storage: A Safe and Armored Car</h4>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Encryption:</strong> The safe. Never store sensitive data in plain text. Use the Jetpack Security library's <strong>EncryptedSharedPreferences</strong> and <strong>EncryptedFile</strong> to easily encrypt data at rest.</li>
-                    <li><strong>Android Keystore:</strong> The high-tech vault for your safe's key. It stores cryptographic keys in secure hardware, making them extremely difficult to extract.</li>
-                    <li><strong>HTTPS/TLS:</strong> The armored car. Always use HTTPS for network communication to encrypt data in transit and prevent snooping.</li>
-                </ul>
-            `,
+                  <p class="mb-4">Protecting user privacy and data is a core responsibility. Modern Android has a strict runtime permission model.</p>
+                  <h4 class="font-semibold text-lg mb-2">Runtime Permissions (Android 6+)</h4>
+                  <p class="mb-4">For dangerous permissions (like Camera, Location, Contacts), you can't just declare them in the Manifest. You must request permission from the user while the app is running. The flow is: check if you have the permission, if not, request it, and then handle the user's response (grant or deny).</p>
+                  <h4 class="font-semibold text-lg mb-2">Secure Data Storage: A Safe and Armored Car</h4>
+                  <ul class="list-disc list-inside space-y-2">
+                      <li><strong>Encryption:</strong> The safe. Never store sensitive data in plain text. Use the Jetpack Security library's <strong>EncryptedSharedPreferences</strong> and <strong>EncryptedFile</strong> to easily encrypt data at rest.</li>
+                      <li><strong>Android Keystore:</strong> The high-tech vault for your safe's key. It stores cryptographic keys in secure hardware, making them extremely difficult to extract.</li>
+                      <li><strong>HTTPS/TLS:</strong> The armored car. Always use HTTPS for network communication to encrypt data in transit and prevent snooping.</li>
+                  </ul>
+                `,
         },
         {
           id: "networking",
@@ -293,16 +293,16 @@
           rating: 3,
           priority: "Moderate",
           content: `
-                <p class="mb-4">Most apps need to communicate with a server to fetch or send data. This involves making API calls and parsing the response.</p>
-                <h4 class="font-semibold text-lg mb-2">REST APIs with Retrofit</h4>
-                <p class="mb-4"><strong>Retrofit</strong> is the industry-standard library for making type-safe network calls in Android. You define your API endpoints as a Kotlin/Java interface, and Retrofit handles the rest, including converting the JSON response into your data objects (usually with the help of a library like Gson or Moshi).</p>
-                <h4 class="font-semibold text-lg mb-2">Key Considerations</h4>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Threading:</strong> Network calls must always be made on a background thread. Retrofit integrates seamlessly with Kotlin Coroutines to make this easy.</li>
-                    <li><strong>Error Handling:</strong> Network calls can fail. You need robust error handling to manage cases like no internet connection, server errors, or invalid responses.</li>
-                    <li><strong>JSON Parsing:</strong> This is the process of converting the text-based JSON response from the server into usable data objects in your app.</li>
-                </ul>
-            `,
+                  <p class="mb-4">Most apps need to communicate with a server to fetch or send data. This involves making API calls and parsing the response.</p>
+                  <h4 class="font-semibold text-lg mb-2">REST APIs with Retrofit</h4>
+                  <p class="mb-4"><strong>Retrofit</strong> is the industry-standard library for making type-safe network calls in Android. You define your API endpoints as a Kotlin/Java interface, and Retrofit handles the rest, including converting the JSON response into your data objects (usually with the help of a library like Gson or Moshi).</p>
+                  <h4 class="font-semibold text-lg mb-2">Key Considerations</h4>
+                  <ul class="list-disc list-inside space-y-2">
+                      <li><strong>Threading:</strong> Network calls must always be made on a background thread. Retrofit integrates seamlessly with Kotlin Coroutines to make this easy.</li>
+                      <li><strong>Error Handling:</strong> Network calls can fail. You need robust error handling to manage cases like no internet connection, server errors, or invalid responses.</li>
+                      <li><strong>JSON Parsing:</strong> This is the process of converting the text-based JSON response from the server into usable data objects in your app.</li>
+                  </ul>
+                `,
         },
         {
           id: "architecture",
@@ -310,18 +310,18 @@
           rating: 3,
           priority: "Moderate",
           content: `
-                <p class="mb-4">A good architecture makes your app stable, testable, and maintainable. This is crucial for long-term projects and team collaboration.</p>
-                <h4 class="font-semibold text-lg mb-2">MVVM: The Recommended Pattern</h4>
-                <p class="mb-4"><strong>Model-View-ViewModel (MVVM)</strong> is the architecture pattern recommended by Google. It separates the UI (View) from the business logic and data (Model) using a ViewModel.</p>
-                <h5 class="font-semibold mt-2">MVVM: The Automated Ordering System</h5>
-                <p class="mb-4">The View (a tablet) places an order. The ViewModel (the system managing the order queue) updates its state. The View observes the ViewModel and automatically updates itself when the order status changes. The ViewModel doesn't know about the View, making it highly testable and reusable.</p>
-                <h4 class="font-semibold text-lg mb-2">Dependency Injection with Dagger-Hilt</h4>
-                <p class="mb-2">Dependency Injection is a pattern where an object's dependencies (other objects it needs) are provided to it, rather than created by it. This promotes loose coupling and testability.</p>
-                <h5 class="font-semibold mt-2">Hilt: The Automated Car Factory</h5>
-                <p class="mb-4">Hilt is the recommended library for DI in Android. It's like an automated factory. You simply annotate a class with <strong>@AndroidEntryPoint</strong> and request dependencies with <strong>@Inject</strong>, and Hilt automatically builds and provides them for you, handling all the boilerplate.</p>
-                <h4 class="font-semibold text-lg mb-2">Key Jetpack Libraries</h4>
-                <p>Jetpack is a suite of libraries to help developers follow best practices. Key components include ViewModel, LiveData, Room, WorkManager, and the Navigation component.</p>
-            `,
+                  <p class="mb-4">A good architecture makes your app stable, testable, and maintainable. This is crucial for long-term projects and team collaboration.</p>
+                  <h4 class="font-semibold text-lg mb-2">MVVM: The Recommended Pattern</h4>
+                  <p class="mb-4"><strong>Model-View-ViewModel (MVVM)</strong> is the architecture pattern recommended by Google. It separates the UI (View) from the business logic and data (Model) using a ViewModel.</p>
+                  <h5 class="font-semibold mt-2">MVVM: The Automated Ordering System</h5>
+                  <p class="mb-4">The View (a tablet) places an order. The ViewModel (the system managing the order queue) updates its state. The View observes the ViewModel and automatically updates itself when the order status changes. The ViewModel doesn't know about the View, making it highly testable and reusable.</p>
+                  <h4 class="font-semibold text-lg mb-2">Dependency Injection with Dagger-Hilt</h4>
+                  <p class="mb-2">Dependency Injection is a pattern where an object's dependencies (other objects it needs) are provided to it, rather than created by it. This promotes loose coupling and testability.</p>
+                  <h5 class="font-semibold mt-2">Hilt: The Automated Car Factory</h5>
+                  <p class="mb-4">Hilt is the recommended library for DI in Android. It's like an automated factory. You simply annotate a class with <strong>@AndroidEntryPoint</strong> and request dependencies with <strong>@Inject</strong>, and Hilt automatically builds and provides them for you, handling all the boilerplate.</p>
+                  <h4 class="font-semibold text-lg mb-2">Key Jetpack Libraries</h4>
+                  <p>Jetpack is a suite of libraries to help developers follow best practices. Key components include ViewModel, LiveData, Room, WorkManager, and the Navigation component.</p>
+                `,
         },
         {
           id: "performance",
@@ -329,19 +329,19 @@
           rating: 3,
           priority: "Moderate",
           content: `
-                <p class="mb-4">A slow, janky, or battery-draining app will be uninstalled. Performance is a feature.</p>
-                <h4 class="font-semibold text-lg mb-2">Common Performance Issues</h4>
-                <ul class="list-disc list-inside space-y-2 mb-4">
-                    <li><strong>Memory Leaks:</strong> Holding onto objects that are no longer needed, preventing them from being garbage collected. A common cause is a long-lived background task holding a reference to a destroyed Activity.</li>
-                    <li><strong>UI Thread Blocking:</strong> Performing long operations on the main thread, causing stuttering ("jank") or ANRs.</li>
-                    <li><strong>Battery Drain:</strong> Using resources like GPS or the CPU excessively, especially in the background (e.g., with poorly managed background tasks).</li>
-                </ul>
-                <h4 class="font-semibold text-lg mb-2">Tools of the Trade</h4>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Android Studio Profiler:</strong> A suite of tools built into Android Studio to analyze CPU, memory, network, and battery usage in real-time.</li>
-                    <li><strong>LeakCanary:</strong> A popular library that automatically detects and helps diagnose memory leaks in your debug builds.</li>
-                </ul>
-            `,
+                  <p class="mb-4">A slow, janky, or battery-draining app will be uninstalled. Performance is a feature.</p>
+                  <h4 class="font-semibold text-lg mb-2">Common Performance Issues</h4>
+                  <ul class="list-disc list-inside space-y-2 mb-4">
+                      <li><strong>Memory Leaks:</strong> Holding onto objects that are no longer needed, preventing them from being garbage collected. A common cause is a long-lived background task holding a reference to a destroyed Activity.</li>
+                      <li><strong>UI Thread Blocking:</strong> Performing long operations on the main thread, causing stuttering ("jank") or ANRs.</li>
+                      <li><strong>Battery Drain:</strong> Using resources like GPS or the CPU excessively, especially in the background (e.g., with poorly managed background tasks).</li>
+                  </ul>
+                  <h4 class="font-semibold text-lg mb-2">Tools of the Trade</h4>
+                  <ul class="list-disc list-inside space-y-2">
+                      <li><strong>Android Studio Profiler:</strong> A suite of tools built into Android Studio to analyze CPU, memory, network, and battery usage in real-time.</li>
+                      <li><strong>LeakCanary:</strong> A popular library that automatically detects and helps diagnose memory leaks in your debug builds.</li>
+                  </ul>
+                `,
         },
         {
           id: "testing",
@@ -349,37 +349,37 @@
           rating: 3,
           priority: "Moderate",
           content: `
-                <p class="mb-4">Testing is essential for building robust, high-quality apps. It ensures your code works as expected and prevents regressions.</p>
-                <h4 class="font-semibold text-lg mb-2">The Testing Pyramid & Car Analogy</h4>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr>
-                                <th class="border-b-2 p-2">Test Type</th>
-                                <th class="border-b-2 p-2">Analogy</th>
-                                <th class="border-b-2 p-2">Description & Tools</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="hover:bg-gray-50">
-                                <td class="border-b p-2 font-semibold">Unit Tests</td>
-                                <td class="border-b p-2">Engine Test Bench</td>
-                                <td class="border-b p-2">Tests a single, isolated class or function. Fast, runs on the local JVM. Tools: <strong>JUnit</strong>, <strong>Robolectric</strong> (for testing Android framework code on the JVM).</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="border-b p-2 font-semibold">Integration Tests</td>
-                                <td class="border-b p-2">Driving Simulator</td>
-                                <td class="border-b p-2">Tests the interaction between multiple components (e.g., UI -> ViewModel -> Database).</td>
-                            </tr>
-                            <tr class="hover:bg-gray-50">
-                                <td class="border-b p-2 font-semibold">UI / End-to-End Tests</td>
-                                <td class="border-b p-2">Real Test Track</td>
-                                <td class="border-b p-2">Simulates user flows through the entire app. Slow, requires a real device or emulator. Tool: <strong>Espresso</strong>.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            `,
+                  <p class="mb-4">Testing is essential for building robust, high-quality apps. It ensures your code works as expected and prevents regressions.</p>
+                  <h4 class="font-semibold text-lg mb-2">The Testing Pyramid & Car Analogy</h4>
+                  <div class="overflow-x-auto">
+                      <table class="w-full text-left border-collapse">
+                          <thead>
+                              <tr>
+                                  <th class="border-b-2 border-gray-700 p-2">Test Type</th>
+                                  <th class="border-b-2 border-gray-700 p-2">Analogy</th>
+                                  <th class="border-b-2 border-gray-700 p-2">Description & Tools</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr class="hover:bg-gray-700/50">
+                                  <td class="border-b border-gray-700 p-2 font-semibold">Unit Tests</td>
+                                  <td class="border-b border-gray-700 p-2">Engine Test Bench</td>
+                                  <td class="border-b border-gray-700 p-2">Tests a single, isolated class or function. Fast, runs on the local JVM. Tools: <strong>JUnit</strong>, <strong>Robolectric</strong> (for testing Android framework code on the JVM).</td>
+                              </tr>
+                              <tr class="hover:bg-gray-700/50">
+                                  <td class="border-b border-gray-700 p-2 font-semibold">Integration Tests</td>
+                                  <td class="border-b border-gray-700 p-2">Driving Simulator</td>
+                                  <td class="border-b border-gray-700 p-2">Tests the interaction between multiple components (e.g., UI -> ViewModel -> Database).</td>
+                              </tr>
+                              <tr class="hover:bg-gray-700/50">
+                                  <td class="border-b border-gray-700 p-2 font-semibold">UI / End-to-End Tests</td>
+                                  <td class="border-b border-gray-700 p-2">Real Test Track</td>
+                                  <td class="border-b border-gray-700 p-2">Simulates user flows through the entire app. Slow, requires a real device or emulator. Tool: <strong>Espresso</strong>.</td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+                `,
         },
         {
           id: "ndk",
@@ -387,15 +387,15 @@
           rating: 2,
           priority: "Good to know",
           content: `
-                <p class="mb-4">The Native Development Kit (NDK) allows you to implement parts of your app using native-code languages such as C and C++.</p>
-                <h4 class="font-semibold text-lg mb-2">When to Use the NDK</h4>
-                <p class="mb-4">This is an advanced topic, typically not required for general app development. It's used in specific scenarios:</p>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><strong>Performance-Critical Operations:</strong> For computationally intensive tasks like game physics engines, signal processing, or computer vision.</li>
-                    <li><strong>Reusing Existing Libraries:</strong> To use C or C++ libraries that have already been written.</li>
-                </ul>
-                <p class="mt-4">The <strong>Java Native Interface (JNI)</strong> is the bridge that allows your Java/Kotlin code to call, and be called by, native C/C++ functions.</p>
-            `,
+                  <p class="mb-4">The Native Development Kit (NDK) allows you to implement parts of your app using native-code languages such as C and C++.</p>
+                  <h4 class="font-semibold text-lg mb-2">When to Use the NDK</h4>
+                  <p class="mb-4">This is an advanced topic, typically not required for general app development. It's used in specific scenarios:</p>
+                  <ul class="list-disc list-inside space-y-2">
+                      <li><strong>Performance-Critical Operations:</strong> For computationally intensive tasks like game physics engines, signal processing, or computer vision.</li>
+                      <li><strong>Reusing Existing Libraries:</strong> To use C or C++ libraries that have already been written.</li>
+                  </ul>
+                  <p class="mt-4">The <strong>Java Native Interface (JNI)</strong> is the bridge that allows your Java/Kotlin code to call, and be called by, native C/C++ functions.</p>
+                `,
         },
         {
           id: "compatibility",
@@ -403,14 +403,14 @@
           rating: 2,
           priority: "Lower priority",
           content: `
-                <p class="mb-4">The Android ecosystem is fragmented, with users on many different OS versions and device types. Your app needs to handle this gracefully.</p>
-                <h4 class="font-semibold text-lg mb-2">Key Concepts</h4>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><strong>API Level Checks:</strong> Wrapping version-specific code in checks like <code>if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)</code> to ensure you only call APIs that exist on the user's device.</li>
-                    <li><strong>AndroidX Libraries:</strong> Successor to the old Support Libraries. AndroidX provides backward compatibility for newer framework features, allowing you to use them on older Android versions with a consistent API. Migrating to AndroidX is standard practice for all modern apps.</li>
-                    <li><strong>Resource Qualifiers:</strong> Providing alternative resources for different device configurations. For example, you can have different layout files for small screens vs. large tablets (<code>layout-sw600dp</code>) or different string files for different languages (<code>values-es</code>).</li>
-                </ul>
-            `,
+                  <p class="mb-4">The Android ecosystem is fragmented, with users on many different OS versions and device types. Your app needs to handle this gracefully.</p>
+                  <h4 class="font-semibold text-lg mb-2">Key Concepts</h4>
+                  <ul class="list-disc list-inside space-y-2">
+                      <li><strong>API Level Checks:</strong> Wrapping version-specific code in checks like <code>if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)</code> to ensure you only call APIs that exist on the user's device.</li>
+                      <li><strong>AndroidX Libraries:</strong> Successor to the old Support Libraries. AndroidX provides backward compatibility for newer framework features, allowing you to use them on older Android versions with a consistent API. Migrating to AndroidX is standard practice for all modern apps.</li>
+                      <li><strong>Resource Qualifiers:</strong> Providing alternative resources for different device configurations. For example, you can have different layout files for small screens vs. large tablets (<code>layout-sw600dp</code>) or different string files for different languages (<code>values-es</code>).</li>
+                  </ul>
+                `,
         },
         {
           id: "misc",
@@ -418,13 +418,13 @@
           rating: 2,
           priority: "Extra depth",
           content: `
-                <p class="mb-4">These topics demonstrate a broader knowledge of the Android ecosystem and modern development trends.</p>
-                <ul class="list-disc list-inside space-y-3">
-                    <li><strong>Android Debug Bridge (ADB):</strong> A command-line tool for communicating with a device. Used for installing apps, debugging, accessing the device shell, and more.</li>
-                    <li><strong>Dynamic Features / Modular Apps:</strong> Breaking your app into smaller modules that can be downloaded on demand. This reduces the initial install size. For example, a video editing app could have a "special effects" feature module that is only downloaded if the user decides to use it.</li>
-                    <li><strong>On-device ML:</strong> Using machine learning models directly on the device for features like image recognition or text analysis, often via APIs like Google's ML Kit or TensorFlow Lite.</li>
-                </ul>
-            `,
+                  <p class="mb-4">These topics demonstrate a broader knowledge of the Android ecosystem and modern development trends.</p>
+                  <ul class="list-disc list-inside space-y-3">
+                      <li><strong>Android Debug Bridge (ADB):</strong> A command-line tool for communicating with a device. Used for installing apps, debugging, accessing the device shell, and more.</li>
+                      <li><strong>Dynamic Features / Modular Apps:</strong> Breaking your app into smaller modules that can be downloaded on demand. This reduces the initial install size. For example, a video editing app could have a "special effects" feature module that is only downloaded if the user decides to use it.</li>
+                      <li><strong>On-device ML:</strong> Using machine learning models directly on the device for features like image recognition or text analysis, often via APIs like Google's ML Kit or TensorFlow Lite.</li>
+                  </ul>
+                `,
         },
       ];
 
@@ -464,26 +464,26 @@
           const topicCard = document.createElement("section");
           topicCard.id = topic.id;
           topicCard.className =
-            "bg-white p-6 md:p-8 rounded-2xl shadow-lg scroll-mt-24";
+            "bg-gray-800 border border-gray-700 p-6 md:p-8 rounded-2xl shadow-lg scroll-mt-24";
           topicCard.innerHTML = `
-                    <div class="flex items-baseline justify-between flex-wrap">
-                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-2">${topic.title}</h3>
-                        <div class="text-lg font-semibold text-blue-600">${"★".repeat(topic.rating)}${"☆".repeat(5 - topic.rating)}</div>
-                    </div>
-                    <p class="text-sm font-semibold uppercase text-gray-500 mb-6">${topic.priority}</p>
-                    <div class="prose prose-lg max-w-none text-gray-700">${topic.content}</div>
-                `;
+                        <div class="flex items-baseline justify-between flex-wrap gap-x-4">
+                            <h3 class="text-2xl md:text-3xl font-bold text-gray-100 mb-2">${topic.title}</h3>
+                            <div class="text-lg font-semibold text-yellow-400">${"★".repeat(topic.rating)}${"☆".repeat(5 - topic.rating)}</div>
+                        </div>
+                        <p class="text-sm font-semibold uppercase text-gray-500 mb-6">${topic.priority}</p>
+                        <div class="prose prose-lg max-w-none text-gray-300 prose-strong:text-gray-200 prose-h4:text-gray-200 prose-h5:text-gray-200">${topic.content}</div>
+                    `;
           topicsContainer.appendChild(topicCard);
           observer.observe(topicCard);
 
           const navLink = document.createElement("a");
           navLink.href = `#${topic.id}`;
           navLink.className =
-            "nav-link text-gray-600 hover:text-blue-600 hover:bg-gray-100 p-3 rounded-lg transition-colors duration-200";
+            "nav-link text-gray-400 hover:text-green-400 hover:bg-gray-700 p-3 rounded-lg transition-colors duration-200";
           navLink.innerHTML = `
-                    <span class="font-medium">${topic.title}</span>
-                    <span class="text-sm block opacity-75">${"★".repeat(topic.rating)}${"☆".repeat(5 - topic.rating)}</span>
-                `;
+                        <span class="font-medium">${topic.title}</span>
+                        <span class="text-sm block opacity-75 text-yellow-500">${"★".repeat(topic.rating)}${"☆".repeat(5 - topic.rating)}</span>
+                    `;
           navLinksContainer.appendChild(navLink);
         });
 
@@ -497,16 +497,16 @@
                 label: "Interview Frequency Rating (out of 5)",
                 data: interviewTopics.map((t) => t.rating),
                 backgroundColor: interviewTopics.map((t) => {
-                  if (t.rating === 5) return "rgba(74, 144, 226, 0.8)";
-                  if (t.rating === 4) return "rgba(80, 227, 194, 0.8)";
-                  if (t.rating === 3) return "rgba(245, 166, 35, 0.8)";
-                  return "rgba(184, 184, 184, 0.8)";
+                  if (t.rating === 5) return "rgba(74, 222, 128, 0.7)"; // green-400
+                  if (t.rating === 4) return "rgba(163, 230, 53, 0.7)"; // lime-400
+                  if (t.rating === 3) return "rgba(250, 204, 21, 0.7)"; // yellow-400
+                  return "rgba(107, 114, 128, 0.7)"; // gray-500
                 }),
                 borderColor: interviewTopics.map((t) => {
-                  if (t.rating === 5) return "rgba(74, 144, 226, 1)";
-                  if (t.rating === 4) return "rgba(80, 227, 194, 1)";
-                  if (t.rating === 3) return "rgba(245, 166, 35, 1)";
-                  return "rgba(184, 184, 184, 1)";
+                  if (t.rating === 5) return "rgba(74, 222, 128, 1)";
+                  if (t.rating === 4) return "rgba(163, 230, 53, 1)";
+                  if (t.rating === 3) return "rgba(250, 204, 21, 1)";
+                  return "rgba(107, 114, 128, 1)";
                 }),
                 borderWidth: 1,
               },
@@ -521,11 +521,15 @@
                 beginAtZero: true,
                 max: 5,
                 grid: {
-                  color: "rgba(0, 0, 0, 0.05)",
+                  color: "rgba(255, 255, 255, 0.1)",
+                },
+                ticks: {
+                  color: "#9CA3AF", // text-gray-400
                 },
               },
               y: {
                 ticks: {
+                  color: "#D1D5DB", // text-gray-300
                   autoSkip: false,
                   callback: function (value, index, values) {
                     const label = this.getLabelForValue(value);
