@@ -7,14 +7,15 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-    <!-- Chosen Palette: Slate Gray, Sky Blue, and White -->
-    <!-- Application Structure Plan: Retained the effective sidebar/main content layout. Major enhancements include a full visual redesign using a modern card-based UI with SVG icons and hover effects. The core interactive element, the modal, is now powered by C++ solutions and includes Mermaid.js diagrams for visual learning, creating a more comprehensive and engaging educational tool. -->
-    <!-- Visualization & Content Choices: Report Info: DSA Topics. Goal: Educate and provide practice. Viz: Interactive cards with SVG icons. Interaction: Clicking a problem opens a modal. Justification: The card UI is more scannable and modern. Report Info: Complex algorithms (e.g., Tree Traversals). Goal: Visually explain processes. Viz: Mermaid.js diagrams. Interaction: Static diagrams within content sections. Justification: Visual diagrams are superior to text for explaining structural concepts and algorithms, significantly improving comprehension. -->
-    <!-- CONFIRMATION: SVG graphics and Mermaid JS are now used as requested. -->
+    <!-- Chosen Palette: Dark Slate, Amber/Yellow, and Cool Gray -->
+    <!-- Application Structure Plan: Maintained the sidebar/content layout. The entire UI has been transitioned to a dark theme with yellow accents. All components, including charts and diagrams, have been restyled for a cohesive, modern, and readable dark mode experience. -->
+    <!-- Visualization & Content Choices: Visualizations and content structure remain the same, but styling has been updated to match the new dark theme. This ensures that the proven effective layout is enhanced with a new aesthetic without losing functionality. -->
+    <!-- CONFIRMATION: SVG graphics and Mermaid JS are used. -->
     <style>
       body {
         font-family: "Inter", sans-serif;
-        background-color: #f8fafc;
+        background-color: #1e293b;
+        color: #cbd5e1;
       }
       @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
       .content-section {
@@ -35,8 +36,11 @@
         }
       }
       .nav-link.active {
-        background-color: #0284c7;
+        background-color: #d97706;
         color: white;
+      }
+      .nav-link:not(.active):hover {
+        background-color: #334155;
       }
       .chart-container {
         position: relative;
@@ -57,7 +61,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(15, 23, 42, 0.8);
+        background-color: rgba(0, 0, 0, 0.7);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -72,7 +76,9 @@
         visibility: visible;
       }
       .modal-content {
-        background-color: white;
+        background-color: #1e293b;
+        color: #cbd5e1;
+        border: 1px solid #334155;
         padding: 2rem;
         border-radius: 0.75rem;
         width: 90%;
@@ -81,22 +87,24 @@
         overflow-y: auto;
         transform: scale(0.95);
         transition: transform 0.3s ease;
-        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
       }
       .modal-overlay.active .modal-content {
         transform: scale(1);
       }
       .problem-btn {
         transition: all 0.2s ease-in-out;
+        background-color: #334155;
       }
       .problem-btn:hover {
         transform: translateY(-2px);
+        background-color: #475569;
         box-shadow:
           0 4px 6px -1px rgb(0 0 0 / 0.1),
           0 2px 4px -2px rgb(0 0 0 / 0.1);
       }
       pre {
-        background-color: #1e293b;
+        background-color: #0f172a;
         color: #e2e8f0;
         padding: 1rem;
         border-radius: 0.5rem;
@@ -104,17 +112,18 @@
         font-family: "Courier New", Courier, monospace;
         font-size: 0.875rem;
       }
+      .bg-card {
+        background-color: #0f172a;
+      }
     </style>
   </head>
-  <body class="text-slate-800">
+  <body>
     <div id="app-container" class="max-w-screen-2xl mx-auto">
-      <header
-        class="text-center p-6 md:p-10 bg-white border-b border-slate-200"
-      >
-        <h1 class="text-3xl md:text-5xl font-bold text-sky-800 mb-2">
+      <header class="text-center p-6 md:p-10 bg-card border-b border-slate-700">
+        <h1 class="text-3xl md:text-5xl font-bold text-amber-400 mb-2">
           The Definitive DSA Roadmap
         </h1>
-        <p class="text-lg md:text-xl text-slate-600">
+        <p class="text-lg md:text-xl text-slate-400">
           An Interactive Guide for Interview Success
         </p>
       </header>
@@ -124,9 +133,9 @@
           <aside class="w-full xl:w-1/4 mb-8 xl:mb-0">
             <nav
               id="sidebar-nav"
-              class="sticky top-8 bg-white p-4 rounded-lg shadow-sm"
+              class="sticky top-8 bg-card p-4 rounded-lg shadow-lg border border-slate-700"
             >
-              <h3 class="text-lg font-bold text-sky-800 mb-4 px-3">Topics</h3>
+              <h3 class="text-lg font-bold text-amber-400 mb-4 px-3">Topics</h3>
               <ul class="space-y-1"></ul>
             </nav>
           </aside>
@@ -134,9 +143,9 @@
           <div class="w-full xl:w-3/4">
             <section
               id="priority-chart-section"
-              class="mb-8 bg-white p-6 rounded-lg shadow-sm"
+              class="mb-8 bg-card p-6 rounded-lg shadow-lg border border-slate-700"
             >
-              <h2 class="text-2xl font-bold text-sky-800 mb-4 text-center">
+              <h2 class="text-2xl font-bold text-amber-400 mb-4 text-center">
                 Topic Study Priority
               </h2>
               <div class="chart-container">
@@ -152,10 +161,10 @@
     <div id="solution-modal" class="modal-overlay">
       <div class="modal-content">
         <div class="flex justify-between items-center mb-6">
-          <h3 id="modal-title" class="text-2xl font-bold text-sky-800"></h3>
+          <h3 id="modal-title" class="text-2xl font-bold text-amber-400"></h3>
           <button
             id="modal-close-btn"
-            class="text-3xl font-bold text-slate-400 hover:text-slate-800 transition"
+            class="text-3xl font-bold text-slate-400 hover:text-white transition"
           >
             &times;
           </button>
@@ -167,13 +176,15 @@
     <script>
       mermaid.initialize({
         startOnLoad: false,
-        theme: "base",
+        theme: "dark",
         themeVariables: {
-          primaryColor: "#f0f9ff",
-          primaryTextColor: "#0c4a6e",
-          primaryBorderColor: "#bae6fd",
-          lineColor: "#0369a1",
-          textColor: "#334155",
+          background: "#0f172a",
+          primaryColor: "#334155",
+          primaryTextColor: "#f8fafc",
+          primaryBorderColor: "#f59e0b",
+          lineColor: "#f59e0b",
+          textColor: "#cbd5e1",
+          secondaryColor: "#1e293b",
         },
       });
 
@@ -182,17 +193,17 @@
           title: "Two Sum",
           content: `
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Shopping Trip</h4>
-                        <p class="text-slate-600">You have a gift card for a specific amount (the <code class="bg-slate-200 text-sm p-1 rounded">target</code>). You need to buy exactly two items. The smart way is to keep a mental list of items you've already seen. For each new item you pick up, you ask: "Have I already seen the item that would complete my gift card?" A HashMap is this perfect memory.</p>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">The Analogy: The Shopping Trip</h4>
+                        <p class="text-slate-400">You have a gift card for a specific amount (the <code class="bg-slate-700 text-sm p-1 rounded">target</code>). You need to buy exactly two items. The smart way is to keep a mental list of items you've already seen. For each new item you pick up, you ask: "Have I already seen the item that would complete my gift card?" A HashMap is this perfect memory.</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It</h4>
-                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">How to Approach It</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-400">
                             <li><strong>The "Aha!" Moment:</strong> Instead of checking every pair (O(n²)), what if we could check for the needed complement in an instant? A HashMap gives us this O(1) lookup superpower.</li>
                             <li><strong>The Optimal Algorithm:</strong>
                                 <ul class="list-disc list-inside ml-4 mt-1">
-                                    <li>Create an empty HashMap to store <code class="bg-slate-200 text-sm p-1 rounded">{number: index}</code>.</li>
-                                    <li>Loop through the array. For each number, calculate the <code class="bg-slate-200 text-sm p-1 rounded">complement</code> you need (<code class="bg-slate-200 text-sm p-1 rounded">target - current_number</code>).</li>
+                                    <li>Create an empty HashMap to store <code class="bg-slate-700 text-sm p-1 rounded">{number: index}</code>.</li>
+                                    <li>Loop through the array. For each number, calculate the <code class="bg-slate-700 text-sm p-1 rounded">complement</code> you need (<code class="bg-slate-700 text-sm p-1 rounded">target - current_number</code>).</li>
                                     <li>Check the HashMap: Is the complement in our map? If YES, we've found our pair!</li>
                                     <li>If NO, add the current number and its index to the map. This way, a future number can find it.</li>
                                 </ul>
@@ -200,7 +211,7 @@
                         </ol>
                     </div>
                     <div>
-                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+                         <h4 class="font-semibold text-lg text-amber-300 mb-2">The Code (C++)</h4>
 <pre><code class="language-cpp">
 #include &lt;vector&gt;
 #include &lt;unordered_map&gt;
@@ -226,19 +237,19 @@ public:
           title: "Maximum Subarray (Kadane's Algorithm)",
           content: `
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Optimistic Hiker</h4>
-                        <p class="text-slate-600">A hiker walks along a path with varying altitudes (the numbers). They want to find the stretch with the greatest total elevation gain. If their current climb's gain becomes negative, they know this stretch is a lost cause. An optimist would abandon that segment and start a fresh climb from the next point, always remembering the best climb completed so far.</p>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">The Analogy: The Optimistic Hiker</h4>
+                        <p class="text-slate-400">A hiker walks along a path with varying altitudes (the numbers). They want to find the stretch with the greatest total elevation gain. If their current climb's gain becomes negative, they know this stretch is a lost cause. An optimist would abandon that segment and start a fresh climb from the next point, always remembering the best climb completed so far.</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It (Kadane's Algorithm)</h4>
-                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
-                            <li>The maximum subarray ending at position <code class="bg-slate-200 text-sm p-1 rounded">i</code> is either the element at <code class="bg-slate-200 text-sm p-1 rounded">i</code> itself, OR the element <code class="bg-slate-200 text-sm p-1 rounded">i</code> plus the maximum subarray that ended at <code class="bg-slate-200 text-sm p-1 rounded">i-1</code>.</li>
-                            <li>We maintain a <code class="bg-slate-200 text-sm p-1 rounded">current_max</code> (the best climb ending at our current position) and a <code class="bg-slate-200 text-sm p-1 rounded">global_max</code> (the best climb seen anywhere on the trail).</li>
-                            <li>At each step, we decide: do we continue the current climb (<code class="bg-slate-200 text-sm p-1 rounded">current_max + num</code>) or start a new one (<code class="bg-slate-200 text-sm p-1 rounded">num</code>)? We take whichever is better.</li>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">How to Approach It (Kadane's Algorithm)</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-400">
+                            <li>The maximum subarray ending at position <code class="bg-slate-700 text-sm p-1 rounded">i</code> is either the element at <code class="bg-slate-700 text-sm p-1 rounded">i</code> itself, OR the element <code class="bg-slate-700 text-sm p-1 rounded">i</code> plus the maximum subarray that ended at <code class="bg-slate-700 text-sm p-1 rounded">i-1</code>.</li>
+                            <li>We maintain a <code class="bg-slate-700 text-sm p-1 rounded">current_max</code> (the best climb ending at our current position) and a <code class="bg-slate-700 text-sm p-1 rounded">global_max</code> (the best climb seen anywhere on the trail).</li>
+                            <li>At each step, we decide: do we continue the current climb (<code class="bg-slate-700 text-sm p-1 rounded">current_max + num</code>) or start a new one (<code class="bg-slate-700 text-sm p-1 rounded">num</code>)? We take whichever is better.</li>
                         </ol>
                     </div>
                     <div>
-                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+                         <h4 class="font-semibold text-lg text-amber-300 mb-2">The Code (C++)</h4>
 <pre><code class="language-cpp">
 #include &lt;vector&gt;
 #include &lt;algorithm&gt; // For std::max
@@ -266,26 +277,26 @@ public:
           title: "Reverse a Linked List",
           content: `
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: Reversing a Train</h4>
-                        <p class="text-slate-600">Imagine a train where each car only knows about the car in front of it (the 'next' pointer). To reverse it, you go car by car. You stand at the current car. You first need to remember which car is next, so you don't lose the rest of the train. Then, you unhook the current car and hook it up to the car *behind* you. Finally, you move to the next car you remembered and repeat.</p>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">The Analogy: Reversing a Train</h4>
+                        <p class="text-slate-400">Imagine a train where each car only knows about the car in front of it (the 'next' pointer). To reverse it, you go car by car. You stand at the current car. You first need to remember which car is next, so you don't lose the rest of the train. Then, you unhook the current car and hook it up to the car *behind* you. Finally, you move to the next car you remembered and repeat.</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It (Iterative)</h4>
-                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
-                            <li>You need three pointers: <code class="bg-slate-200 text-sm p-1 rounded">previous</code>, <code class="bg-slate-200 text-sm p-1 rounded">current</code>, and <code class="bg-slate-200 text-sm p-1 rounded">next_node</code>.</li>
-                            <li><code class="bg-slate-200 text-sm p-1 rounded">previous</code> starts as <code class="bg-slate-200 text-sm p-1 rounded">nullptr</code>. <code class="bg-slate-200 text-sm p-1 rounded">current</code> starts as the <code class="bg-slate-200 text-sm p-1 rounded">head</code>.</li>
-                            <li>Loop while <code class="bg-slate-200 text-sm p-1 rounded">current</code> is not null:
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">How to Approach It (Iterative)</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-400">
+                            <li>You need three pointers: <code class="bg-slate-700 text-sm p-1 rounded">previous</code>, <code class="bg-slate-700 text-sm p-1 rounded">current</code>, and <code class="bg-slate-700 text-sm p-1 rounded">next_node</code>.</li>
+                            <li><code class="bg-slate-700 text-sm p-1 rounded">previous</code> starts as <code class="bg-slate-700 text-sm p-1 rounded">nullptr</code>. <code class="bg-slate-700 text-sm p-1 rounded">current</code> starts as the <code class="bg-slate-700 text-sm p-1 rounded">head</code>.</li>
+                            <li>Loop while <code class="bg-slate-700 text-sm p-1 rounded">current</code> is not null:
                                 <ol class="list-decimal list-inside ml-4 mt-1">
-                                    <li>Save the next node: <code class="bg-slate-200 text-sm p-1 rounded">next_node = current->next</code>.</li>
-                                    <li>Reverse the pointer: <code class="bg-slate-200 text-sm p-1 rounded">current->next = previous</code>.</li>
-                                    <li>Move pointers forward: <code class="bg-slate-200 text-sm p-1 rounded">previous = current</code> and <code class="bg-slate-200 text-sm p-1 rounded">current = next_node</code>.</li>
+                                    <li>Save the next node: <code class="bg-slate-700 text-sm p-1 rounded">next_node = current->next</code>.</li>
+                                    <li>Reverse the pointer: <code class="bg-slate-700 text-sm p-1 rounded">current->next = previous</code>.</li>
+                                    <li>Move pointers forward: <code class="bg-slate-700 text-sm p-1 rounded">previous = current</code> and <code class="bg-slate-700 text-sm p-1 rounded">current = next_node</code>.</li>
                                 </ol>
                             </li>
-                            <li>When the loop finishes, <code class="bg-slate-200 text-sm p-1 rounded">previous</code> will be the new head.</li>
+                            <li>When the loop finishes, <code class="bg-slate-700 text-sm p-1 rounded">previous</code> will be the new head.</li>
                         </ol>
                     </div>
                     <div>
-                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+                         <h4 class="font-semibold text-lg text-amber-300 mb-2">The Code (C++)</h4>
 <pre><code class="language-cpp">
 // Definition for singly-linked list.
 struct ListNode {
@@ -317,20 +328,20 @@ public:
           title: "Valid Parentheses",
           content: `
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Plate Stacker</h4>
-                        <p class="text-slate-600">When you see an opening plate '(', you place it on a stack. When you see a closing plate ')', you must check if the topmost plate on your stack is the matching opening plate. If it is, you remove it. If it's not, or if the stack is empty, it's an invalid arrangement. At the end, the stack must be empty.</p>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">The Analogy: The Plate Stacker</h4>
+                        <p class="text-slate-400">When you see an opening plate '(', you place it on a stack. When you see a closing plate ')', you must check if the topmost plate on your stack is the matching opening plate. If it is, you remove it. If it's not, or if the stack is empty, it's an invalid arrangement. At the end, the stack must be empty.</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It</h4>
-                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
-                            <li>This "last-in, first-out" behavior is a perfect use case for a <strong class="text-slate-800">Stack</strong>.</li>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">How to Approach It</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-400">
+                            <li>This "last-in, first-out" behavior is a perfect use case for a <strong class="text-white">Stack</strong>.</li>
                             <li>Loop through the string. If it's an opening bracket, push it onto the stack.</li>
                             <li>If it's a closing bracket, check if the stack is empty or if the top element isn't the matching opener. If either is true, the string is invalid. Otherwise, pop the stack.</li>
                             <li>After the loop, the string is valid only if the stack is empty.</li>
                         </ol>
                     </div>
                     <div>
-                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+                         <h4 class="font-semibold text-lg text-amber-300 mb-2">The Code (C++)</h4>
 <pre><code class="language-cpp">
 #include &lt;string&gt;
 #include &lt;stack&gt;
@@ -364,18 +375,18 @@ public:
           title: "Maximum Depth of Binary Tree",
           content: `
                      <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: Exploring a Cave System</h4>
-                        <p class="text-slate-600">You are at the entrance ('root') of a cave system. The longest path from the entrance is 1 (for the current chamber) plus the length of the longest path you can take from here (either the deeper left path or the deeper right path).</p>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">The Analogy: Exploring a Cave System</h4>
+                        <p class="text-slate-400">You are at the entrance ('root') of a cave system. The longest path from the entrance is 1 (for the current chamber) plus the length of the longest path you can take from here (either the deeper left path or the deeper right path).</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It (Recursive DFS)</h4>
-                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
-                            <li><strong>The Base Case:</strong> If you reach a point where there is no cave (a <code class="bg-slate-200 text-sm p-1 rounded">nullptr</code> node), the depth from here is 0.</li>
-                            <li><strong>The Recursive Step:</strong> For any given chamber (node), the depth is <code class="bg-slate-200 text-sm p-1 rounded">1 + max(depth of left path, depth of right path)</code>.</li>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">How to Approach It (Recursive DFS)</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-400">
+                            <li><strong>The Base Case:</strong> If you reach a point where there is no cave (a <code class="bg-slate-700 text-sm p-1 rounded">nullptr</code> node), the depth from here is 0.</li>
+                            <li><strong>The Recursive Step:</strong> For any given chamber (node), the depth is <code class="bg-slate-700 text-sm p-1 rounded">1 + max(depth of left path, depth of right path)</code>.</li>
                         </ol>
                     </div>
                     <div>
-                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+                         <h4 class="font-semibold text-lg text-amber-300 mb-2">The Code (C++)</h4>
 <pre><code class="language-cpp">
 // Definition for a binary tree node.
 struct TreeNode {
@@ -404,16 +415,16 @@ public:
           title: "Number of Islands",
           content: `
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: Mapping an Archipelago</h4>
-                        <p class="text-slate-600">You have a satellite map of '1's (land) and '0's (water). When you find a piece of land ('1'), you increment your island count. Then, you send out an explorer (a DFS or BFS traversal) from that spot. The explorer's job is to visit every connected piece of land and "sink" it by changing its value to '0'. This ensures you don't count the same island twice.</p>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">The Analogy: Mapping an Archipelago</h4>
+                        <p class="text-slate-400">You have a satellite map of '1's (land) and '0's (water). When you find a piece of land ('1'), you increment your island count. Then, you send out an explorer (a DFS or BFS traversal) from that spot. The explorer's job is to visit every connected piece of land and "sink" it by changing its value to '0'. This ensures you don't count the same island twice.</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It</h4>
-                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">How to Approach It</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-400">
                             <li>Iterate through every cell of the grid.</li>
                             <li>If you find a cell that is '1':
                                 <ul class="list-disc list-inside ml-4 mt-1">
-                                    <li>Increment your <code class="bg-slate-200 text-sm p-1 rounded">island_count</code>.</li>
+                                    <li>Increment your <code class="bg-slate-700 text-sm p-1 rounded">island_count</code>.</li>
                                     <li>Start a traversal (DFS is common) from this cell to find and "sink" all parts of this same island by changing them to '0'.</li>
                                 </ul>
                             </li>
@@ -421,7 +432,7 @@ public:
                         </ol>
                     </div>
                     <div>
-                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+                         <h4 class="font-semibold text-lg text-amber-300 mb-2">The Code (C++)</h4>
 <pre><code class="language-cpp">
 #include &lt;vector&gt;
 
@@ -469,22 +480,22 @@ private:
           title: "Kth Largest Element in an Array",
           content: `
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Exclusive Club</h4>
-                        <p class="text-slate-600">Imagine a club with a strict capacity of 'k' members, where membership is based on being the wealthiest. They use a "min-heap" rule: the member with the least wealth is always at the door. When a new person wants to join, they are only admitted if they are wealthier than the current least-wealthy member. If they are, the least-wealthy member is kicked out, and the new person joins. After everyone in town has tried to join, the person at the door (the minimum of the club) is the kth wealthiest person in town.</p>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">The Analogy: The Exclusive Club</h4>
+                        <p class="text-slate-400">Imagine a club with a strict capacity of 'k' members, where membership is based on being the wealthiest. They use a "min-heap" rule: the member with the least wealth is always at the door. When a new person wants to join, they are only admitted if they are wealthier than the current least-wealthy member. If they are, the least-wealthy member is kicked out, and the new person joins. After everyone in town has tried to join, the person at the door (the minimum of the club) is the kth wealthiest person in town.</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It</h4>
-                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
-                            <li>The right tool is a <strong class="text-slate-800">Min-Priority Queue (Min-Heap)</strong>.</li>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">How to Approach It</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-400">
+                            <li>The right tool is a <strong class="text-white">Min-Priority Queue (Min-Heap)</strong>.</li>
                             <li>Iterate through the numbers. For each number:</li>
                             <li class="ml-4">Push the number into the min-heap.</li>
-                            <li class="ml-4">If the heap's size grows larger than <code class="bg-slate-200 text-sm p-1 rounded">k</code>, pop the smallest element (the top of the min-heap).</li>
-                            <li>This process maintains a heap of the <code class="bg-slate-200 text-sm p-1 rounded">k</code> largest elements seen so far.</li>
+                            <li class="ml-4">If the heap's size grows larger than <code class="bg-slate-700 text-sm p-1 rounded">k</code>, pop the smallest element (the top of the min-heap).</li>
+                            <li>This process maintains a heap of the <code class="bg-slate-700 text-sm p-1 rounded">k</code> largest elements seen so far.</li>
                             <li>After the loop, the top of the heap is the kth largest element overall.</li>
                         </ol>
                     </div>
                     <div>
-                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+                         <h4 class="font-semibold text-lg text-amber-300 mb-2">The Code (C++)</h4>
 <pre><code class="language-cpp">
 #include &lt;vector&gt;
 #include &lt;queue&gt;
@@ -513,16 +524,16 @@ public:
           title: "LRU Cache",
           content: `
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Librarian's Desk</h4>
-                        <p class="text-slate-600">A librarian has a small desk (the cache capacity) for frequently requested books. To find a book instantly, they have a card catalog (a <strong class="text-slate-800">HashMap</strong>) that points to the book's location on the desk. The books on the desk are arranged in a line (<strong class="text-slate-800">Doubly Linked List</strong>). When a book is requested, the librarian moves it to the front of the line. If a new book is needed and the desk is full, the book at the very end of the line (the one that hasn't been touched for the longest time) is sent back to the main library shelves to make space.</p>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">The Analogy: The Librarian's Desk</h4>
+                        <p class="text-slate-400">A librarian has a small desk (the cache capacity) for frequently requested books. To find a book instantly, they have a card catalog (a <strong class="text-white">HashMap</strong>) that points to the book's location on the desk. The books on the desk are arranged in a line (<strong class="text-white">Doubly Linked List</strong>). When a book is requested, the librarian moves it to the front of the line. If a new book is needed and the desk is full, the book at the very end of the line (the one that hasn't been touched for the longest time) is sent back to the main library shelves to make space.</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It</h4>
-                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">How to Approach It</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-400">
                             <li>Combine two data structures:
                                 <ul class="list-disc list-inside ml-4 mt-1">
-                                    <li>A <strong class="text-slate-800">HashMap</strong> for O(1) key-to-node lookup.</li>
-                                    <li>A <strong class="text-slate-800">Doubly Linked List</strong> to maintain the order of use. The head is the most-recently-used, the tail is the least-recently-used.</li>
+                                    <li>A <strong class="text-white">HashMap</strong> for O(1) key-to-node lookup.</li>
+                                    <li>A <strong class="text-white">Doubly Linked List</strong> to maintain the order of use. The head is the most-recently-used, the tail is the least-recently-used.</li>
                                 </ul>
                             </li>
                             <li><strong>Get Operation:</strong> Use the map to find the node. If found, move this node to the head of the list and return its value.</li>
@@ -535,7 +546,7 @@ public:
                         </ol>
                     </div>
                     <div>
-                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+                         <h4 class="font-semibold text-lg text-amber-300 mb-2">The Code (C++)</h4>
 <pre><code class="language-cpp">
 #include &lt;unordered_map&gt;
 #include &lt;list&gt;
@@ -587,19 +598,19 @@ public:
           title: "N-Queens",
           content: `
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Careful Planner</h4>
-                        <p class="text-slate-600">Imagine placing items in a grid, one row at a time. For each row, you try placing an item in the first column. You then ask recursively, "Can a valid arrangement be completed from here?" If the answer is no (you hit a dead end), you backtrack, remove the item, and try the next column in the same row. This "Choose, Explore, Unchoose" pattern is the heart of backtracking.</p>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">The Analogy: The Careful Planner</h4>
+                        <p class="text-slate-400">Imagine placing items in a grid, one row at a time. For each row, you try placing an item in the first column. You then ask recursively, "Can a valid arrangement be completed from here?" If the answer is no (you hit a dead end), you backtrack, remove the item, and try the next column in the same row. This "Choose, Explore, Unchoose" pattern is the heart of backtracking.</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It</h4>
-                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
-                            <li>Write a recursive function, say <code class="bg-slate-200 text-sm p-1 rounded">solve(row)</code>.</li>
-                            <li><strong>Base Case:</strong> If <code class="bg-slate-200 text-sm p-1 rounded">row == N</code>, you have successfully placed N queens. Add the current board configuration to your list of solutions.</li>
-                            <li><strong>Recursive Step:</strong> For the current <code class="bg-slate-200 text-sm p-1 rounded">row</code>, iterate through each <code class="bg-slate-200 text-sm p-1 rounded">col</code> from 0 to N-1.
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">How to Approach It</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-400">
+                            <li>Write a recursive function, say <code class="bg-slate-700 text-sm p-1 rounded">solve(row)</code>.</li>
+                            <li><strong>Base Case:</strong> If <code class="bg-slate-700 text-sm p-1 rounded">row == N</code>, you have successfully placed N queens. Add the current board configuration to your list of solutions.</li>
+                            <li><strong>Recursive Step:</strong> For the current <code class="bg-slate-700 text-sm p-1 rounded">row</code>, iterate through each <code class="bg-slate-700 text-sm p-1 rounded">col</code> from 0 to N-1.
                                 <ul class="list-disc list-inside ml-4 mt-1">
-                                    <li>Check if placing a queen at <code class="bg-slate-200 text-sm p-1 rounded">(row, col)</code> is "safe" (not attacked by queens in previous rows).</li>
+                                    <li>Check if placing a queen at <code class="bg-slate-700 text-sm p-1 rounded">(row, col)</code> is "safe" (not attacked by queens in previous rows).</li>
                                     <li>If safe: <strong>(Choose)</strong> Place a queen.</li>
-                                    <li><strong>(Explore)</strong> Call <code class="bg-slate-200 text-sm p-1 rounded">solve(row + 1)</code>.</li>
+                                    <li><strong>(Explore)</strong> Call <code class="bg-slate-700 text-sm p-1 rounded">solve(row + 1)</code>.</li>
                                     <li><strong>(Unchoose)</strong> Backtrack by removing the queen, allowing you to try the next column.</li>
                                 </ul>
                             </li>
@@ -607,7 +618,7 @@ public:
                         </ol>
                     </div>
                     <div>
-                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+                         <h4 class="font-semibold text-lg text-amber-300 mb-2">The Code (C++)</h4>
 <pre><code class="language-cpp">
 #include &lt;vector&gt;
 #include &lt;string&gt;
@@ -661,26 +672,26 @@ private:
           title: "Coin Change",
           content: `
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Efficient Cashier</h4>
-                        <p class="text-slate-600">You need to give change for a specific amount. You have different coin denominations. What's the fewest number of coins you can use? A dynamic programming approach is like building a cheat sheet. You first figure out the fewest coins for 1 cent, then 2 cents, then 3 cents, and so on. To figure out the answer for 10 cents, you can look at your sheet and ask: "What's better? The answer for 9 cents + a 1-cent coin, or the answer for 5 cents + a 5-cent coin, or the answer for 0 cents + a 10-cent coin?" You use your previous work to solve the bigger problem.</p>
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">The Analogy: The Efficient Cashier</h4>
+                        <p class="text-slate-400">You need to give change for a specific amount. You have different coin denominations. What's the fewest number of coins you can use? A dynamic programming approach is like building a cheat sheet. You first figure out the fewest coins for 1 cent, then 2 cents, then 3 cents, and so on. To figure out the answer for 10 cents, you can look at your sheet and ask: "What's better? The answer for 9 cents + a 1-cent coin, or the answer for 5 cents + a 5-cent coin, or the answer for 0 cents + a 10-cent coin?" You use your previous work to solve the bigger problem.</p>
                     </div>
                     <div>
-                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It (Bottom-Up DP)</h4>
-                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
-                            <li>Create a DP array, let's call it <code class="bg-slate-200 text-sm p-1 rounded">dp</code>, of size <code class="bg-slate-200 text-sm p-1 rounded">amount + 1</code>. <code class="bg-slate-200 text-sm p-1 rounded">dp[i]</code> will store the minimum number of coins to make amount <code class="bg-slate-200 text-sm p-1 rounded">i</code>.</li>
-                            <li>Initialize all values in <code class="bg-slate-200 text-sm p-1 rounded">dp</code> to a large number (like <code class="bg-slate-200 text-sm p-1 rounded">amount + 1</code>) to signify that these amounts are not yet reachable. Set <code class="bg-slate-200 text-sm p-1 rounded">dp[0] = 0</code>, as 0 coins are needed to make amount 0.</li>
-                            <li>Loop through each amount <code class="bg-slate-200 text-sm p-1 rounded">i</code> from 1 to <code class="bg-slate-200 text-sm p-1 rounded">amount</code>.
+                        <h4 class="font-semibold text-lg text-amber-300 mb-2">How to Approach It (Bottom-Up DP)</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-400">
+                            <li>Create a DP array, let's call it <code class="bg-slate-700 text-sm p-1 rounded">dp</code>, of size <code class="bg-slate-700 text-sm p-1 rounded">amount + 1</code>. <code class="bg-slate-700 text-sm p-1 rounded">dp[i]</code> will store the minimum number of coins to make amount <code class="bg-slate-700 text-sm p-1 rounded">i</code>.</li>
+                            <li>Initialize all values in <code class="bg-slate-700 text-sm p-1 rounded">dp</code> to a large number (like <code class="bg-slate-700 text-sm p-1 rounded">amount + 1</code>) to signify that these amounts are not yet reachable. Set <code class="bg-slate-700 text-sm p-1 rounded">dp[0] = 0</code>, as 0 coins are needed to make amount 0.</li>
+                            <li>Loop through each amount <code class="bg-slate-700 text-sm p-1 rounded">i</code> from 1 to <code class="bg-slate-700 text-sm p-1 rounded">amount</code>.
                                 <ul class="list-disc list-inside ml-4 mt-1">
-                                    <li>Inside this loop, loop through each available <code class="bg-slate-200 text-sm p-1 rounded">coin</code>.</li>
-                                    <li>If a <code class="bg-slate-200 text-sm p-1 rounded">coin</code> is less than or equal to the current amount <code class="bg-slate-200 text-sm p-1 rounded">i</code>, it means we can potentially use this coin.</li>
-                                    <li>The number of coins would be <code class="bg-slate-200 text-sm p-1 rounded">1 + dp[i - coin]</code>. We update <code class="bg-slate-200 text-sm p-1 rounded">dp[i]</code> to be the minimum of its current value and this new value.</li>
+                                    <li>Inside this loop, loop through each available <code class="bg-slate-700 text-sm p-1 rounded">coin</code>.</li>
+                                    <li>If a <code class="bg-slate-700 text-sm p-1 rounded">coin</code> is less than or equal to the current amount <code class="bg-slate-700 text-sm p-1 rounded">i</code>, it means we can potentially use this coin.</li>
+                                    <li>The number of coins would be <code class="bg-slate-700 text-sm p-1 rounded">1 + dp[i - coin]</code>. We update <code class="bg-slate-700 text-sm p-1 rounded">dp[i]</code> to be the minimum of its current value and this new value.</li>
                                 </ul>
                             </li>
-                            <li>The final answer is <code class="bg-slate-200 text-sm p-1 rounded">dp[amount]</code>. If it's still the large number we initialized with, the amount is unreachable.</li>
+                            <li>The final answer is <code class="bg-slate-700 text-sm p-1 rounded">dp[amount]</code>. If it's still the large number we initialized with, the amount is unreachable.</li>
                         </ol>
                     </div>
                     <div>
-                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+                         <h4 class="font-semibold text-lg text-amber-300 mb-2">The Code (C++)</h4>
 <pre><code class="language-cpp">
 #include &lt;vector&gt;
 #include &lt;algorithm&gt;
@@ -808,7 +819,7 @@ public:
         "trees-tries": {
           title: "Trees & Tries",
           description: `Trees represent hierarchical data. Binary Search Trees (BSTs) provide efficient O(log n) searching. Tries are specialized trees for ultra-fast prefix-based string searches, like in autocomplete features.
-                    <div class="mermaid mt-4 p-4 bg-sky-50 rounded-lg">
+                    <div class="mermaid mt-4 p-4 bg-slate-800 rounded-lg border border-slate-700">
 graph TD
     A[Root] --> B[Left Child]
     A --> C[Right Child]
@@ -821,7 +832,7 @@ graph TD
         graphs: {
           title: "Graphs",
           description: `Graphs model networks of interconnected nodes. Traversal (DFS/BFS) is fundamental. Key problems include finding shortest paths (Dijkstra's), detecting cycles, and ordering tasks with dependencies (Topological Sort).
-                <div class="mermaid mt-4 p-4 bg-sky-50 rounded-lg">
+                <div class="mermaid mt-4 p-4 bg-slate-800 rounded-lg border border-slate-700">
 graph LR
     A --- B
     B-->C
@@ -927,16 +938,14 @@ graph LR
         });
 
         dsaData.forEach((topic) => {
-          // Populate sidebar
           const li = document.createElement("li");
           li.innerHTML = `
-                    <a href="#" data-target="${topic.id}" class="nav-link flex items-center p-3 rounded-md text-slate-700 hover:bg-sky-100 transition duration-150 ease-in-out">
-                        <svg class="w-5 h-5 mr-3 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${topic.icon}"></path></svg>
+                    <a href="#" data-target="${topic.id}" class="nav-link flex items-center p-3 rounded-md text-slate-300 transition duration-150 ease-in-out">
+                        <svg class="w-5 h-5 mr-3 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${topic.icon}"></path></svg>
                         <span>${topic.title}</span>
                     </a>`;
           sidebarNav.appendChild(li);
 
-          // Populate content area
           const data = contentData[topic.id];
           const contentDiv = document.createElement("div");
           contentDiv.id = topic.id;
@@ -945,18 +954,18 @@ graph LR
           let problemsHtml = data.problems
             .map((problemId) => {
               const problem = problemSolutions[problemId];
-              return `<button data-problem-id="${problemId}" class="problem-btn w-full bg-white hover:bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200 text-left">
-                                <h4 class="font-semibold text-sky-700">${problem.title}</h4>
-                                <p class="text-sm text-slate-500 mt-1">View approach & C++ solution</p>
+              return `<button data-problem-id="${problemId}" class="problem-btn w-full p-4 rounded-lg border border-slate-700 text-left">
+                                <h4 class="font-semibold text-amber-400">${problem.title}</h4>
+                                <p class="text-sm text-slate-400 mt-1">View approach & C++ solution</p>
                             </button>`;
             })
             .join("");
 
           contentDiv.innerHTML = `
-                    <div class="bg-white p-6 rounded-lg shadow-sm">
-                        <h3 class="text-3xl font-bold text-slate-800 mb-2">${data.title}</h3>
-                        <p class="text-slate-600 leading-relaxed mb-6">${data.description}</p>
-                        ${problemsHtml.length > 0 ? `<h4 class="text-xl font-bold text-slate-700 mb-4 border-t pt-6">Must-Know Problems</h4><div class="grid md:grid-cols-2 gap-4">${problemsHtml}</div>` : ""}
+                    <div class="bg-card p-6 rounded-lg shadow-lg border border-slate-700">
+                        <h3 class="text-3xl font-bold text-slate-100 mb-2">${data.title}</h3>
+                        <p class="text-slate-400 leading-relaxed mb-6">${data.description}</p>
+                        ${problemsHtml.length > 0 ? `<h4 class="text-xl font-bold text-slate-200 mb-4 border-t border-slate-700 pt-6">Must-Know Problems</h4><div class="grid md:grid-cols-2 gap-4">${problemsHtml}</div>` : ""}
                     </div>
                 `;
           contentArea.appendChild(contentDiv);
@@ -968,17 +977,17 @@ graph LR
         const priorityValues = dsaData.map((d) => d.priority);
         const bgColors = priorityValues.map((p) =>
           p >= 5
-            ? "rgba(2, 132, 199, 0.7)"
+            ? "rgba(245, 158, 11, 0.7)"
             : p >= 4
-              ? "rgba(14, 165, 233, 0.7)"
-              : "rgba(56, 189, 248, 0.7)",
+              ? "rgba(251, 191, 36, 0.7)"
+              : "rgba(252, 211, 77, 0.7)",
         );
         const borderColors = priorityValues.map((p) =>
           p >= 5
-            ? "rgba(2, 132, 199, 1)"
+            ? "rgba(245, 158, 11, 1)"
             : p >= 4
-              ? "rgba(14, 165, 233, 1)"
-              : "rgba(56, 189, 248, 1)",
+              ? "rgba(251, 191, 36, 1)"
+              : "rgba(252, 211, 77, 1)",
         );
 
         const ctx = document.getElementById("priorityChart").getContext("2d");
@@ -1005,9 +1014,13 @@ graph LR
               x: {
                 beginAtZero: true,
                 max: 5.5,
-                grid: { color: "rgba(203, 213, 225, 0.5)" },
+                grid: { color: "rgba(51, 65, 85, 0.5)" },
+                ticks: { color: "#94a3b8" },
               },
-              y: { grid: { display: false } },
+              y: {
+                grid: { display: false },
+                ticks: { color: "#94a3b8" },
+              },
             },
             plugins: {
               legend: { display: false },
@@ -1017,6 +1030,8 @@ graph LR
                 bodyFont: { size: 12 },
                 padding: 12,
                 cornerRadius: 4,
+                titleColor: "#f59e0b",
+                bodyColor: "#cbd5e1",
               },
             },
             onClick: (e, elements) => {
