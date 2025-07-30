@@ -1,348 +1,71 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mobotron's Digital Universe</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary Meta Tags -->
+    <title>Dr. Mobotron's Lab of Wonders</title>
+    <meta name="title" content="Dr. Mobotron's Lab of Wonders">
+    <meta name="description" content="A showcase of the wild, wonderful, and sometimes wacky web experiments cooked up in Dr. Mobotron's laboratory.">
+    <meta name="keywords" content="mobotronst, portfolio, web developer, projects, experiments, html, css, javascript">
+    <meta name="author" content="Mobotronst">
+    <link rel="icon" href="https://placehold.co/32x32/FFC300/000000?text=🧪" type="image/x-icon">
 
-    <meta
-      name="description"
-      content="A complete infographic deep-dive analyzing Viktor Gyökeres. Explore his stats, player profile, comparison to elite strikers like Haaland and Mbappé, and his tactical fit at Arsenal."
-    />
-    <meta
-      name="keywords"
-      content="Viktor Gyökeres, Arsenal, Sporting CP, Premier League, striker, football, soccer, infographic, data visualization, Haaland, Mbappé, Isak, Lewandowski, mobotronst, tactical analysis, football stats"
-    />
-    <meta name="author" content="mobotronst" />
-    <link rel="canonical" href="https://mobotronst.github.io/" />
 
-    <!-- Open Graph Meta Tags (for social sharing) -->
-    <meta
-      property="og:title"
-      content="Viktor Gyökeres to Arsenal: A Deep-Dive Infographic Analysis"
-    />
-    <meta
-      property="og:description"
-      content="Is Viktor Gyökeres the catalyst for an Arsenal title? Explore our deep-dive infographic on his stats, profile, and tactical fit."
-    />
-    <meta
-      property="og:image"
-      content="https://mobotronst.github.io/social-preview.png"
-    />
-    <meta property="og:url" content="https://mobotronst.github.io/" />
-    <meta property="og:type" content="website" />
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mobotronst.github.io/">
+    <meta property="og:title" content="Dr. Mobotron's Lab of Wonders">
+    <meta property="og:description" content="Peer into the lab and discover a collection of peculiar projects and digital creations.">
+    <meta property="og:image" content="https://placehold.co/1200x630/1a202c/ffc300?text=Mad+Scientist's+Lab">
 
-    <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="Viktor Gyökeres to Arsenal: A Deep-Dive Infographic Analysis"
-    />
-    <meta
-      name="twitter:description"
-      content="Is Viktor Gyökeres the catalyst for an Arsenal title? Explore our deep-dive infographic on his stats, profile, and tactical fit."
-    />
-    <meta
-      name="twitter:image"
-      content="https://mobotronst.github.io/social-preview.png"
-    />
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://mobotronst.github.io/">
+    <meta property="twitter:title" content="Dr. Mobotron's Lab of Wonders">
+    <meta property="twitter:description" content="A showcase of the wild, wonderful, and sometimes wacky web experiments cooked up in Dr. Mobotron's laboratory.">
+    <meta property="twitter:image" content="https://placehold.co/1200x630/1a202c/ffc300?text=Mad+Scientist's+Lab">
 
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Stylesheet and Fonts -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=VT323&display=swap" rel="stylesheet">
+    
+</head>
+<body>
 
-    <!-- Google Fonts: 'Orbitron' for a futuristic feel -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- three.js for 3D animation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-
-    <style>
-      /* Custom styles to blend with Tailwind */
-      body {
-        font-family: "Orbitron", sans-serif;
-        overflow: hidden; /* Prevents scrollbars from the canvas */
-      }
-      #bg-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1; /* Place canvas behind all other content */
-      }
-      /* Style for the glass-like container */
-      .glass-container {
-        background: rgba(17, 24, 39, 0.6); /* Semi-transparent dark blue/gray */
-        backdrop-filter: blur(10px); /* Frosted glass effect */
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      }
-      /* Custom animation for link glow */
-      .link-item:hover .glow {
-        opacity: 1;
-        transform: scale(1.1);
-      }
-      .glow {
-        transition:
-          opacity 0.3s ease-in-out,
-          transform 0.3s ease-in-out;
-      }
-    </style>
-  </head>
-  <body class="bg-gray-900 text-white">
-    <!-- The 3D background canvas -->
-    <canvas id="bg-canvas"></canvas>
-
-    <!-- Main content container -->
-    <div
-      class="relative min-h-screen flex flex-col items-center justify-center p-4"
-    >
-      <!-- Header Section -->
-      <header class="text-center mb-8 z-10">
-        <h1 class="text-4xl md:text-6xl font-bold tracking-widest uppercase">
-          Mobotron's Universe
-        </h1>
-        <p class="text-lg md:text-xl text-cyan-300 mt-2 tracking-wider">
-          A Gateway to Digital Creations
-        </p>
-      </header>
-
-      <!-- The main portal window -->
-      <main
-        id="portal-window"
-        class="glass-container w-full max-w-2xl rounded-2xl p-6 md:p-8 z-10"
-      >
-        <h2
-          class="text-2xl font-semibold text-center mb-6 border-b border-cyan-500/30 pb-3"
-        >
-          Available Projects
-        </h2>
-
-        <!-- Container where links will be dynamically inserted -->
-        <div id="links-container" class="space-y-4">
-          <!-- Loading state indicator -->
-          <div id="loader" class="flex items-center justify-center space-x-3">
-            <svg
-              class="animate-spin h-8 w-8 text-cyan-400"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                class="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="4"
-              ></circle>
-              <path
-                class="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
-            <span class="text-lg">Contacting GitHub mothership...</span>
-          </div>
-          <!-- Error message placeholder -->
-          <div id="error-message" class="hidden text-center text-red-400"></div>
+    <header class="lab-header">
+        <div class="header-content">
+            <div class="gears">
+                <div class="gear" id="gear1">⚙️</div>
+                <div class="gear" id="gear2">⚙️</div>
+            </div>
+            <h1>Dr. Mobotron's Lab <span class="subtitle">of Wonders</span></h1>
+            <p>Behold! A collection of my finest (and most volatile) digital experiments.</p>
         </div>
-      </main>
+        <div class="power-lever">
+            <div class="lever-handle"></div>
+        </div>
+    </header>
 
-      <!-- Footer -->
-      <footer class="absolute bottom-4 text-center text-gray-400 text-sm z-10">
-        <p>
-          &copy; <span id="year"></span> mobotronst.github.io | All projects
-          loaded dynamically.
-        </p>
-      </footer>
-    </div>
+    <main id="workbench" class="workbench-container">
+        <!-- Projects will be dynamically loaded here by script.js -->
+        <div class="loader">
+            <div class="beaker">
+                <div class="liquid"></div>
+            </div>
+            <p>Brewing up the experiments...</p>
+        </div>
+    </main>
 
-    <script>
-      // --- GitHub API Configuration ---
-      // IMPORTANT: Replace with your GitHub username and repository name.
-      const GITHUB_USER = "mobotronst";
-      const GITHUB_REPO = "mobotronst.github.io";
-      const SITES_FOLDER = "sites"; // The folder containing your HTML files
+    <footer class="lab-footer">
+        <p>&copy; <span id="year"></span> Dr. Mobotron. All rights reserved. No liability for digital explosions.</p>
+        <p>Powered by <span class="footer-highlight">caffeine</span> and <span class="footer-highlight">questionable genius</span>.</p>
+    </footer>
 
-      // --- DOM Element References ---
-      const linksContainer = document.getElementById("links-container");
-      const loader = document.getElementById("loader");
-      const errorMessage = document.getElementById("error-message");
-      document.getElementById("year").textContent = new Date().getFullYear();
-
-      // --- Dynamic Link Fetching ---
-      async function fetchProjects() {
-        const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${SITES_FOLDER}`;
-
-        try {
-          const response = await fetch(apiUrl);
-          if (!response.ok) {
-            throw new Error(
-              `Network response was not ok: ${response.statusText}`,
-            );
-          }
-          const files = await response.json();
-
-          // Filter for HTML files only
-          const htmlFiles = files.filter(
-            (file) => file.name.endsWith(".html") && file.type === "file",
-          );
-
-          // Hide loader and display projects
-          loader.style.display = "none";
-
-          if (htmlFiles.length === 0) {
-            displayError('No HTML projects found in the "sites" directory.');
-            return;
-          }
-
-          htmlFiles.forEach(createLinkElement);
-        } catch (error) {
-          console.error("Failed to fetch projects:", error);
-          loader.style.display = "none";
-          displayError(
-            "Could not retrieve projects from GitHub. Please check the console for details.",
-          );
-        }
-      }
-
-      // --- UI Creation Functions ---
-
-      /**
-       * Creates and appends a single project link to the container.
-       * @param {object} file - The file object from the GitHub API.
-       */
-      function createLinkElement(file) {
-        // Create a more readable name from the filename
-        const projectName = file.name
-          .replace(".html", "") // Remove extension
-          .replace(/[-_]/g, " ") // Replace hyphens/underscores with spaces
-          .replace(/\b\w/g, (l) => l.toUpperCase()); // Capitalize each word
-
-        const projectUrl = `/${SITES_FOLDER}/${file.name}`;
-
-        const linkWrapper = document.createElement("a");
-        linkWrapper.href = projectUrl;
-        linkWrapper.className =
-          "link-item relative block bg-gray-800/50 hover:bg-gray-700/70 p-4 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 cursor-pointer";
-
-        // The glowing effect element
-        const glowElement = document.createElement("div");
-        glowElement.className =
-          "glow absolute -inset-px bg-cyan-400 opacity-0 rounded-lg blur-md";
-
-        // The content of the link
-        const contentWrapper = document.createElement("div");
-        contentWrapper.className = "relative flex items-center space-x-4";
-
-        const icon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-cyan-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>`;
-
-        const textElement = document.createElement("span");
-        textElement.className = "text-lg font-semibold tracking-wide";
-        textElement.textContent = projectName;
-
-        contentWrapper.innerHTML = icon;
-        contentWrapper.appendChild(textElement);
-
-        linkWrapper.appendChild(glowElement);
-        linkWrapper.appendChild(contentWrapper);
-
-        linksContainer.appendChild(linkWrapper);
-      }
-
-      /**
-       * Displays an error message in the UI.
-       * @param {string} message - The error message to display.
-       */
-      function displayError(message) {
-        errorMessage.textContent = message;
-        errorMessage.classList.remove("hidden");
-      }
-
-      // --- Three.js Background Animation ---
-      let scene, camera, renderer, stars;
-
-      function init3D() {
-        // Scene setup
-        scene = new THREE.Scene();
-
-        // Camera setup
-        camera = new THREE.PerspectiveCamera(
-          60,
-          window.innerWidth / window.innerHeight,
-          1,
-          1000,
-        );
-        camera.position.z = 1;
-        camera.rotation.x = Math.PI / 2;
-
-        // Renderer setup
-        const canvas = document.getElementById("bg-canvas");
-        renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        document.body.appendChild(renderer.domElement);
-
-        // Create stars
-        const starGeometry = new THREE.BufferGeometry();
-        const starCount = 10000;
-        const positions = new Float32Array(starCount * 3);
-
-        for (let i = 0; i < starCount; i++) {
-          const i3 = i * 3;
-          positions[i3] = (Math.random() - 0.5) * 1000; // x
-          positions[i3 + 1] = (Math.random() - 0.5) * 1000; // y
-          positions[i3 + 2] = (Math.random() - 0.5) * 1000; // z
-        }
-
-        starGeometry.setAttribute(
-          "position",
-          new THREE.BufferAttribute(positions, 3),
-        );
-
-        const starMaterial = new THREE.PointsMaterial({
-          color: 0xaaaaaa,
-          size: 0.7,
-        });
-
-        stars = new THREE.Points(starGeometry, starMaterial);
-        scene.add(stars);
-
-        // Handle window resize
-        window.addEventListener("resize", onWindowResize, false);
-
-        // Start animation
-        animate();
-      }
-
-      function animate() {
-        // Animation loop
-        requestAnimationFrame(animate);
-
-        // Slowly rotate the stars
-        stars.rotation.z += 0.0002;
-
-        renderer.render(scene, camera);
-      }
-
-      function onWindowResize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      }
-
-      // --- Initial Load ---
-      document.addEventListener("DOMContentLoaded", () => {
-        init3D();
-        fetchProjects();
-      });
-    </script>
-  </body>
+    <script src="script.js"></script>
+</body>
 </html>
+

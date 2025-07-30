@@ -1,0 +1,209 @@
+/* --- Custom Properties (The Lab's Chemical Shelf) --- */
+:root {
+    --bg-color: #1a202c; /* Dark slate */
+    --wall-texture: url('https://www.transparenttextures.com/patterns/dark-denim-3.png');
+    --primary-accent: #ffc300; /* Amber/Gold */
+    --secondary-accent: #00ff89; /* Glowing Green */
+    --card-bg: #2d3748; /* Darker Gray */
+    --card-border: #4a5568;
+    --text-color: #e2e8f0;
+    --header-font: 'Special Elite', cursive;
+    --body-font: 'VT323', monospace;
+}
+
+/* --- General Body & Layout --- */
+body {
+    background-color: var(--bg-color);
+    background-image: var(--wall-texture);
+    color: var(--text-color);
+    font-family: var(--body-font);
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* --- Lab Header --- */
+.lab-header {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.2));
+    border-bottom: 4px solid var(--primary-accent);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 -4px 10px var(--primary-accent);
+    position: relative;
+}
+
+.lab-header h1 {
+    font-family: var(--header-font);
+    font-size: 3rem;
+    margin: 0;
+    color: var(--primary-accent);
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
+}
+
+.lab-header .subtitle {
+    color: var(--secondary-accent);
+    font-size: 2rem;
+}
+
+.lab-header p {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    max-width: 600px;
+    margin: 10px auto 0;
+}
+
+/* --- Header Animations: Gears --- */
+.gears {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    font-size: 50px;
+    opacity: 0.3;
+}
+.gear {
+    display: inline-block;
+    animation: spin 8s linear infinite;
+}
+#gear2 {
+    animation-direction: reverse;
+    animation-duration: 6s;
+    margin-left: -15px;
+}
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+
+/* --- The Workbench: Project Container --- */
+.workbench-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    padding: 40px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* --- Experiment Card (Project Styling) --- */
+.experiment-card {
+    background-color: var(--card-bg);
+    border: 2px solid var(--card-border);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.experiment-card:hover {
+    transform: translateY(-10px) rotate(1deg);
+    box-shadow: 0 10px 25px var(--secondary-accent), 0 0 10px var(--primary-accent);
+    border-color: var(--primary-accent);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px dashed var(--card-border);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    filter: drop-shadow(0 0 5px var(--secondary-accent));
+}
+
+.card-title {
+    font-family: var(--header-font);
+    font-size: 1.5rem;
+    color: var(--primary-accent);
+    margin: 0;
+}
+
+.card-description {
+    font-size: 1.2rem;
+    flex-grow: 1; /* Makes description take up available space */
+    line-height: 1.6;
+}
+
+.card-tags {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    background-color: var(--card-border);
+    color: var(--secondary-accent);
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/* --- Loader Animation --- */
+.loader {
+    grid-column: 1 / -1; /* Span full width */
+    text-align: center;
+    padding: 50px;
+}
+.loader p {
+    font-size: 1.5rem;
+    color: var(--primary-accent);
+}
+.beaker {
+    width: 100px;
+    height: 120px;
+    border: 5px solid var(--card-border);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    margin: 0 auto 20px;
+    position: relative;
+    overflow: hidden;
+}
+.liquid {
+    width: 100%;
+    height: 40%;
+    background-color: var(--secondary-accent);
+    position: absolute;
+    bottom: 0;
+    animation: fill-beaker 3s ease-in-out infinite;
+}
+@keyframes fill-beaker {
+    0%, 100% { height: 20%; }
+    50% { height: 80%; }
+}
+
+/* --- Footer --- */
+.lab-footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    background-color: #111;
+    border-top: 2px solid var(--card-border);
+    font-size: 1.1rem;
+}
+.footer-highlight {
+    color: var(--primary-accent);
+    font-family: var(--header-font);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .lab-header h1 {
+        font-size: 2.5rem;
+    }
+    .workbench-container {
+        padding: 20px;
+        gap: 20px;
+    }
+}
+
