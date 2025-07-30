@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>James Trafford: The £40M Goalkeeper Paradox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f0f4f8;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 320px;
+        max-height: 400px;
+      }
+      @media (min-width: 768px) {
+        .chart-container {
+          height: 350px;
+        }
+      }
+      .kpi-card {
+        background-color: white;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+        box-shadow:
+          0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        transition:
+          transform 0.3s ease,
+          box-shadow 0.3s ease;
+      }
+      .kpi-card:hover {
+        transform: translateY(-5px);
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      .gradient-text {
+        background: linear-gradient(to right, #00a5e3, #8dd7bf);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .timeline-item {
+        position: relative;
+        padding-bottom: 2rem;
+        padding-left: 2.5rem;
+        border-left: 2px solid #cbd5e1;
+      }
+      .timeline-dot {
+        position: absolute;
+        left: -0.6rem;
+        top: 0.1rem;
+        height: 1rem;
+        width: 1rem;
+        border-radius: 9999px;
+        border: 2px solid white;
+      }
+      .flow-step {
+        position: relative;
+        padding-left: 1.5rem;
+      }
+      .flow-arrow::after {
+        content: "→";
+        position: absolute;
+        right: -1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.5rem;
+        color: #9ca3af;
+      }
+    </style>
+  </head>
+  <body class="text-gray-800">
+    <div class="container mx-auto p-4 md:p-8">
+      <header class="text-center mb-12">
+        <h1 class="text-4xl md:text-6xl font-black text-gray-900 mb-2">
+          James Trafford
+        </h1>
+        <h2 class="text-2xl md:text-4xl font-bold gradient-text">
+          The £40M Goalkeeper Paradox
+        </h2>
+        <p class="max-w-3xl mx-auto text-gray-600 mt-4">
+          An in-depth analysis of a goalkeeper defined by statistical extremes.
+          Is he Manchester City's future, or is the Premier League leap too
+          great? This is the story told by the data.
+        </p>
+      </header>
+
+      <main class="space-y-16">
+        <section id="paradox">
+          <div class="text-center mb-8">
+            <h3 class="text-3xl font-bold text-gray-900">
+              The Burnley Paradox
+            </h3>
+            <p class="text-gray-600 max-w-2xl mx-auto mt-2">
+              Trafford's two seasons at Burnley present one of the starkest
+              performance contrasts imaginable, highlighting his sensitivity to
+              tactical context.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div class="kpi-card">
+              <div class="chart-container">
+                <canvas id="burnleyComparisonChart"></canvas>
+              </div>
+            </div>
+            <div class="space-y-4">
+              <div class="kpi-card p-4 flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500">23/24 PL Save %</p>
+                  <p class="text-3xl font-bold text-[#FF5768]">63.9%</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500 text-right">
+                    24/25 Champ Save %
+                  </p>
+                  <p class="text-3xl font-bold text-[#8DD7BF]">84.5%</p>
+                </div>
+              </div>
+              <div class="kpi-card p-4 flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500">23/24 PL Clean Sheets</p>
+                  <p class="text-3xl font-bold text-[#FF5768]">2</p>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500 text-right">
+                    24/25 Champ Clean Sheets
+                  </p>
+                  <p class="text-3xl font-bold text-[#8DD7BF]">29</p>
+                </div>
+              </div>
+              <p class="text-gray-700 p-4 bg-blue-50 rounded-lg">
+                The data reveals two different goalkeepers. In the Premier
+                League, behind a struggling defence, his metrics plummeted. In
+                the Championship, as part of a dominant team, he produced a
+                historically elite season, breaking the league record for clean
+                sheets. This suggests he is a "front-foot" goalkeeper who
+                thrives on control, not a "siege" keeper who excels under
+                constant pressure.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="journey">
+          <div class="text-center mb-8">
+            <h3 class="text-3xl font-bold text-gray-900">Career Trajectory</h3>
+            <p class="text-gray-600 max-w-2xl mx-auto mt-2">
+              From City's academy to record-breaker, Trafford's path has been
+              one of peaks and troughs.
+            </p>
+          </div>
+          <div class="kpi-card max-w-4xl mx-auto">
+            <div class="p-4">
+              <div class="timeline-item">
+                <div class="timeline-dot bg-[#00A5E3]"></div>
+                <p class="font-semibold text-lg text-gray-800">
+                  Man City Academy (2015-2021)
+                </p>
+                <p class="text-gray-600">
+                  Forged in a possession-based philosophy, learning the
+                  fundamentals of a modern, ball-playing goalkeeper.
+                </p>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot bg-[#FF96C5]"></div>
+                <p class="font-semibold text-lg text-gray-800">
+                  Accrington Stanley (2021)
+                </p>
+                <p class="text-gray-600">
+                  A harsh introduction to senior football. Conceded 2.36 goals
+                  per 90 in a difficult but crucial learning experience.
+                </p>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot bg-[#FFBF65]"></div>
+                <p class="font-semibold text-lg text-gray-800">
+                  Bolton Wanderers (2022-23)
+                </p>
+                <p class="text-gray-600">
+                  A transformative spell. Set a club record with 26 clean sheets
+                  in one season, establishing himself as a top EFL keeper.
+                </p>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot bg-[#FF5768]"></div>
+                <p class="font-semibold text-lg text-gray-800">
+                  Burnley - Premier League (2023-24)
+                </p>
+                <p class="text-gray-600">
+                  A "baptism of fire." Struggled in a relegated side and was
+                  eventually dropped, highlighting key areas for development.
+                </p>
+              </div>
+              <div
+                class="timeline-item"
+                style="border-left: 2px solid transparent"
+              >
+                <div class="timeline-dot bg-[#8DD7BF]"></div>
+                <p class="font-semibold text-lg text-gray-800">
+                  Burnley - Championship (2024-25)
+                </p>
+                <p class="text-gray-600">
+                  A phenomenal redemption. Broke the Championship clean sheet
+                  record (29) and re-established his elite potential.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="profile">
+          <div class="text-center mb-8">
+            <h3 class="text-3xl font-bold text-gray-900">
+              Tale of the Tape: Strengths vs. Weaknesses
+            </h3>
+            <p class="text-gray-600 max-w-2xl mx-auto mt-2">
+              A granular look at the attributes that define Trafford's game,
+              revealing both his high ceiling and his critical development
+              areas.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="kpi-card space-y-4">
+              <h4 class="text-xl font-bold text-center text-green-600">
+                Strengths
+              </h4>
+              <div class="text-center">
+                <p class="text-gray-500 font-semibold">Shot-Stopping</p>
+                <p class="text-gray-700">
+                  His greatest asset. Combines a 6'6" frame with explosive
+                  agility. His Championship season saw him prevent nearly 13
+                  goals more than expected.
+                </p>
+              </div>
+              <div class="chart-container !h-64">
+                <canvas id="shotStoppingChart"></canvas>
+              </div>
+              <div class="text-center">
+                <p class="text-gray-500 font-semibold">Mental Fortitude</p>
+                <p class="text-gray-700">
+                  Supreme self-confidence and proven resilience, bouncing back
+                  from major setbacks at Accrington and in the Premier League to
+                  produce record-breaking form.
+                </p>
+              </div>
+            </div>
+            <div class="kpi-card space-y-4">
+              <h4 class="text-xl font-bold text-center text-red-600">
+                Weaknesses
+              </h4>
+              <div class="text-center">
+                <p class="text-gray-500 font-semibold">
+                  Distribution Under Pressure
+                </p>
+                <p class="text-gray-700">
+                  While competent with short passes, his long-range accuracy is
+                  a liability and his decision-making falters against an
+                  intense, coordinated press.
+                </p>
+              </div>
+              <div class="chart-container !h-64">
+                <canvas id="distributionChart"></canvas>
+              </div>
+              <div class="text-center">
+                <p class="text-gray-500 font-semibold">Aerial Dominance</p>
+                <p class="text-gray-700">
+                  A key area of concern in the Premier League. He struggled with
+                  the physicality and quality of crosses, logging very few
+                  successful high claims.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="tactical-fit">
+          <div class="text-center mb-8">
+            <h3 class="text-3xl font-bold text-gray-900">
+              Tactical Showdown: City's Goalkeeping DNA
+            </h3>
+            <p class="text-gray-600 max-w-2xl mx-auto mt-2">
+              How does Trafford's statistical profile stack up against
+              Manchester City's current options, Ederson and Stefan Ortega?
+            </p>
+          </div>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div class="space-y-4">
+              <p class="text-gray-700 p-4 bg-blue-50 rounded-lg">
+                The radar chart reveals distinct profiles.
+                <b class="text-[#00A5E3]">Ederson</b> is the revolutionary
+                distributor. <b class="text-[#FF96C5]">Ortega</b> is the
+                reliable, elite shot-stopper.
+                <b class="text-[#8DD7BF]">Trafford's</b> profile, based on his
+                best season, shows potential to match Ortega's shot-stopping but
+                significantly lags Ederson's offensive contribution via long
+                passing and aggressive sweeping.
+              </p>
+              <div class="kpi-card p-4">
+                <p class="font-semibold text-lg text-gray-800">The Verdict</p>
+                <p class="text-gray-600">
+                  Acquiring Trafford would signal a move towards the "Ortega
+                  model" (prioritizing saves) and away from the unique "Ederson
+                  model" (goalkeeper as an attacking catalyst).
+                </p>
+              </div>
+            </div>
+            <div class="kpi-card">
+              <div class="chart-container">
+                <canvas id="tacticalComparisonChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="pathway">
+          <div class="text-center mb-8">
+            <h3 class="text-3xl font-bold text-gray-900">
+              The Proven Pathway vs. Trafford's Journey
+            </h3>
+            <p class="text-gray-600 max-w-2xl mx-auto mt-2">
+              Successful keepers often have a "Premier League audition" season
+              before joining a top club. Trafford's path has a critical missing
+              step.
+            </p>
+          </div>
+          <div class="kpi-card max-w-5xl mx-auto p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <h4 class="font-bold text-lg mb-2 text-center">
+                  The Ideal Path (Hart, Pickford, Henderson)
+                </h4>
+                <div class="flex flex-col items-center space-y-2 text-center">
+                  <div class="flow-step bg-gray-100 p-2 rounded-md w-full">
+                    Academy / Lower League
+                  </div>
+                  <div class="text-2xl text-gray-400">↓</div>
+                  <div class="flow-step bg-gray-100 p-2 rounded-md w-full">
+                    Successful EFL Loan(s)
+                  </div>
+                  <div class="text-2xl text-gray-400">↓</div>
+                  <div
+                    class="flow-step bg-green-100 text-green-800 font-semibold p-2 rounded-md w-full border-2 border-green-300"
+                  >
+                    Successful PL "Audition" Season
+                  </div>
+                  <div class="text-2xl text-gray-400">↓</div>
+                  <div
+                    class="flow-step bg-blue-100 text-blue-800 p-2 rounded-md w-full"
+                  >
+                    Move to Top Club
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h4 class="font-bold text-lg mb-2 text-center">
+                  Trafford's Path
+                </h4>
+                <div class="flex flex-col items-center space-y-2 text-center">
+                  <div class="flow-step bg-gray-100 p-2 rounded-md w-full">
+                    Man City Academy
+                  </div>
+                  <div class="text-2xl text-gray-400">↓</div>
+                  <div class="flow-step bg-gray-100 p-2 rounded-md w-full">
+                    Successful EFL Loan (Bolton)
+                  </div>
+                  <div class="text-2xl text-gray-400">↓</div>
+                  <div
+                    class="flow-step bg-red-100 text-red-800 font-semibold p-2 rounded-md w-full border-2 border-red-300"
+                  >
+                    Failed PL "Audition" Season
+                  </div>
+                  <div class="text-2xl text-gray-400">↓</div>
+                  <div
+                    class="flow-step bg-yellow-100 text-yellow-800 p-2 rounded-md w-full"
+                  >
+                    Potential Move to Top Club?
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="text-center mt-6 text-gray-600">
+              Unlike his successful predecessors who proved their individual
+              quality in the top flight (even in relegated teams), Trafford's
+              first attempt ended with him being dropped. This makes his
+              potential leap to City a higher-risk proposition.
+            </p>
+          </div>
+        </section>
+
+        <footer class="text-center pt-8 border-t border-gray-200">
+          <h3 class="text-3xl font-bold text-gray-900">Final Recommendation</h3>
+          <div
+            class="max-w-2xl mx-auto mt-4 kpi-card p-6 bg-gradient-to-br from-[#00A5E3] to-[#8DD7BF]"
+          >
+            <h4 class="text-2xl font-bold text-white">
+              The "Competitive Apprentice" Model
+            </h4>
+            <p class="text-white/90 mt-2">
+              Trafford is not ready to be City's undisputed No. 1. The immediate
+              risk is too high. The recommended strategy is to activate the £40M
+              buy-back, but integrate him as a direct competitor to Stefan
+              Ortega. This allows him to develop within an elite environment,
+              gain experience in cup games, and address his weaknesses without
+              the crushing pressure of being the first choice, securing a
+              high-potential, homegrown asset for the long term.
+            </p>
+          </div>
+        </footer>
+      </main>
+    </div>
+
+    <script>
+      const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+          return label.join(" ");
+        }
+        return label;
+      };
+
+      const wrapLabels = (label) => {
+        if (typeof label === "string" && label.length > 16) {
+          const words = label.split(" ");
+          const lines = [];
+          let currentLine = "";
+          words.forEach((word) => {
+            if ((currentLine + word).length > 16) {
+              lines.push(currentLine.trim());
+              currentLine = "";
+            }
+            currentLine += word + " ";
+          });
+          lines.push(currentLine.trim());
+          return lines;
+        }
+        return label;
+      };
+
+      const brilliantBlues = {
+        primary: "#00A5E3",
+        secondary: "#8DD7BF",
+        accent1: "#FF96C5",
+        accent2: "#FF5768",
+        accent3: "#FFBF65",
+        gray: "#9CA3AF",
+      };
+
+      new Chart(document.getElementById("burnleyComparisonChart"), {
+        type: "bar",
+        data: {
+          labels: [
+            "Goals Conceded per 90",
+            "Save Percentage (%)",
+            "PSxG-GA per 90",
+          ],
+          datasets: [
+            {
+              label: "2023/24 (Premier League)",
+              data: [2.21, 63.9, -0.21],
+              backgroundColor: brilliantBlues.accent2,
+              borderColor: brilliantBlues.accent2,
+              borderWidth: 1,
+            },
+            {
+              label: "2024/25 (Championship)",
+              data: [0.36, 84.5, 0.26],
+              backgroundColor: brilliantBlues.secondary,
+              borderColor: brilliantBlues.secondary,
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom" },
+            title: {
+              display: true,
+              text: "Burnley Performance Dichotomy",
+              font: { size: 16 },
+            },
+            tooltip: { callbacks: { title: tooltipTitleCallback } },
+          },
+          scales: {
+            y: { beginAtZero: true },
+          },
+        },
+      });
+
+      new Chart(document.getElementById("shotStoppingChart"), {
+        type: "doughnut",
+        data: {
+          labels: ["Saves", "Goals Conceded"],
+          datasets: [
+            {
+              data: [84.5, 15.5],
+              backgroundColor: [
+                brilliantBlues.secondary,
+                brilliantBlues.accent2,
+              ],
+              borderColor: "#ffffff",
+              borderWidth: 2,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: "Championship Save % (2024/25)",
+              font: { size: 14 },
+            },
+            tooltip: { callbacks: { title: tooltipTitleCallback } },
+          },
+          cutout: "70%",
+        },
+      });
+
+      new Chart(document.getElementById("distributionChart"), {
+        type: "bar",
+        data: {
+          labels: ["Trafford (24/25)", "Ederson (Benchmark)"],
+          datasets: [
+            {
+              label: "Long Ball Accuracy (%)",
+              data: [31.8, 53.0],
+              backgroundColor: [
+                brilliantBlues.accent2,
+                brilliantBlues.secondary,
+              ],
+              borderColor: "#ffffff",
+              borderWidth: 1,
+              barPercentage: 0.6,
+            },
+          ],
+        },
+        options: {
+          indexAxis: "y",
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            title: {
+              display: true,
+              text: "Long Distribution vs. Elite",
+              font: { size: 14 },
+            },
+            tooltip: { callbacks: { title: tooltipTitleCallback } },
+          },
+          scales: {
+            x: { max: 100, beginAtZero: true },
+          },
+        },
+      });
+
+      new Chart(document.getElementById("tacticalComparisonChart"), {
+        type: "radar",
+        data: {
+          labels: [
+            "Shot-Stopping",
+            "Short Passing",
+            "Long Passing",
+            "Sweeping",
+            "Aerial Command",
+          ],
+          datasets: [
+            {
+              label: "Trafford (Potential)",
+              data: [9, 7, 3, 6, 5],
+              backgroundColor: "rgba(141, 215, 191, 0.2)",
+              borderColor: brilliantBlues.secondary,
+              pointBackgroundColor: brilliantBlues.secondary,
+            },
+            {
+              label: "Ederson",
+              data: [6, 9, 10, 9, 7],
+              backgroundColor: "rgba(0, 165, 227, 0.2)",
+              borderColor: brilliantBlues.primary,
+              pointBackgroundColor: brilliantBlues.primary,
+            },
+            {
+              label: "Ortega",
+              data: [8, 8, 6, 7, 8],
+              backgroundColor: "rgba(255, 150, 197, 0.2)",
+              borderColor: brilliantBlues.accent1,
+              pointBackgroundColor: brilliantBlues.accent1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: "bottom" },
+            title: {
+              display: true,
+              text: "Goalkeeper Profile Comparison",
+              font: { size: 16 },
+            },
+            tooltip: { callbacks: { title: tooltipTitleCallback } },
+          },
+          scales: {
+            r: {
+              angleLines: { color: "rgba(0, 0, 0, 0.1)" },
+              grid: { color: "rgba(0, 0, 0, 0.1)" },
+              pointLabels: { font: { size: 12 } },
+              suggestedMin: 0,
+              suggestedMax: 10,
+            },
+          },
+        },
+      });
+    </script>
+  </body>
+</html>

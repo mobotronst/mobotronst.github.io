@@ -3,559 +3,345 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project Ares: Viktor Gyökeres Infographic</title>
-    <meta name="description" content="A complete infographic deep-dive analyzing Viktor Gyökeres. Explore his stats, player profile, comparison to elite strikers like Haaland and Mbappé, and his tactical fit at Arsenal.">
-    <meta name="keywords" content="Viktor Gyökeres, Arsenal, Sporting CP, Premier League, striker, football, soccer, infographic, data visualization, Haaland, Mbappé, Isak, Lewandowski, mobotronst, tactical analysis, football stats">
-    <meta name="author" content="mobotronst">
-    <link rel="canonical" href="https://mobotronst.github.io/">
+    <title>Mobotron's Digital Universe</title>
+
+    <meta
+      name="description"
+      content="A complete infographic deep-dive analyzing Viktor Gyökeres. Explore his stats, player profile, comparison to elite strikers like Haaland and Mbappé, and his tactical fit at Arsenal."
+    />
+    <meta
+      name="keywords"
+      content="Viktor Gyökeres, Arsenal, Sporting CP, Premier League, striker, football, soccer, infographic, data visualization, Haaland, Mbappé, Isak, Lewandowski, mobotronst, tactical analysis, football stats"
+    />
+    <meta name="author" content="mobotronst" />
+    <link rel="canonical" href="https://mobotronst.github.io/" />
 
     <!-- Open Graph Meta Tags (for social sharing) -->
-    <meta property="og:title" content="Viktor Gyökeres to Arsenal: A Deep-Dive Infographic Analysis">
-    <meta property="og:description" content="Is Viktor Gyökeres the catalyst for an Arsenal title? Explore our deep-dive infographic on his stats, profile, and tactical fit.">
-    <meta property="og:image" content="https://mobotronst.github.io/social-preview.png">
-    <meta property="og:url" content="https://mobotronst.github.io/">
-    <meta property="og:type" content="website">
+    <meta
+      property="og:title"
+      content="Viktor Gyökeres to Arsenal: A Deep-Dive Infographic Analysis"
+    />
+    <meta
+      property="og:description"
+      content="Is Viktor Gyökeres the catalyst for an Arsenal title? Explore our deep-dive infographic on his stats, profile, and tactical fit."
+    />
+    <meta
+      property="og:image"
+      content="https://mobotronst.github.io/social-preview.png"
+    />
+    <meta property="og:url" content="https://mobotronst.github.io/" />
+    <meta property="og:type" content="website" />
 
     <!-- Twitter Card Meta Tags -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Viktor Gyökeres to Arsenal: A Deep-Dive Infographic Analysis">
-    <meta name="twitter:description" content="Is Viktor Gyökeres the catalyst for an Arsenal title? Explore our deep-dive infographic on his stats, profile, and tactical fit.">
-    <meta name="twitter:image" content="https://mobotronst.github.io/social-preview.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Viktor Gyökeres to Arsenal: A Deep-Dive Infographic Analysis"
+    />
+    <meta
+      name="twitter:description"
+      content="Is Viktor Gyökeres the catalyst for an Arsenal title? Explore our deep-dive infographic on his stats, profile, and tactical fit."
+    />
+    <meta
+      name="twitter:image"
+      content="https://mobotronst.github.io/social-preview.png"
+    />
 
-
+    <!-- Tailwind CSS for styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts: 'Orbitron' for a futuristic feel -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- three.js for 3D animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
     <style>
+      /* Custom styles to blend with Tailwind */
       body {
-        font-family: "Inter", sans-serif;
+        font-family: "Orbitron", sans-serif;
+        overflow: hidden; /* Prevents scrollbars from the canvas */
       }
-      .chart-container {
-        position: relative;
+      #bg-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
-        max-width: 500px;
-        margin-left: auto;
-        margin-right: auto;
-        height: 300px;
-        max-height: 400px;
+        height: 100%;
+        z-index: -1; /* Place canvas behind all other content */
       }
-      @media (min-width: 768px) {
-        .chart-container {
-          height: 350px;
-        }
-      }
-      .gradient-text {
-        background: linear-gradient(90deg, #00f0b5, #00e0f0);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-      .swot-card {
-        background-color: rgba(255, 255, 255, 0.05);
+      /* Style for the glass-like container */
+      .glass-container {
+        background: rgba(17, 24, 39, 0.6); /* Semi-transparent dark blue/gray */
+        backdrop-filter: blur(10px); /* Frosted glass effect */
+        -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      }
+      /* Custom animation for link glow */
+      .link-item:hover .glow {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+      .glow {
         transition:
-          transform 0.3s ease,
-          box-shadow 0.3s ease;
-      }
-      .swot-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      }
-      .flow-arrow {
-        content: "▶";
-        color: #00f0b5;
-        font-size: 1.5rem;
-        line-height: 1;
+          opacity 0.3s ease-in-out,
+          transform 0.3s ease-in-out;
       }
     </style>
   </head>
-  <body class="bg-gray-900 text-gray-200">
-    <div class="container mx-auto p-4 md:p-8">
-      <header class="text-center mb-12">
-        <h1
-          class="text-4xl md:text-6xl font-black uppercase tracking-wider gradient-text"
-        >
-          PROJECT ARES
+  <body class="bg-gray-900 text-white">
+    <!-- The 3D background canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Main content container -->
+    <div
+      class="relative min-h-screen flex flex-col items-center justify-center p-4"
+    >
+      <!-- Header Section -->
+      <header class="text-center mb-8 z-10">
+        <h1 class="text-4xl md:text-6xl font-bold tracking-widest uppercase">
+          Mobotron's Universe
         </h1>
-        <p class="text-xl md:text-2xl font-light text-gray-400 mt-2">
-          An Infographic Deep-Dive on Viktor Gyökeres
+        <p class="text-lg md:text-xl text-cyan-300 mt-2 tracking-wider">
+          A Gateway to Digital Creations
         </p>
       </header>
 
-      <section id="headline-stats" class="mb-16">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div class="bg-gray-800 p-8 rounded-2xl shadow-lg">
-            <p class="text-6xl md:text-7xl font-black text-[#00F0B5]">43</p>
-            <p class="text-lg font-semibold mt-2 text-gray-300">Total Goals</p>
-            <p class="text-sm text-gray-500">(2023/24 Season)</p>
-          </div>
-          <div class="bg-gray-800 p-8 rounded-2xl shadow-lg">
-            <p class="text-6xl md:text-7xl font-black text-[#00E0F0]">10</p>
-            <p class="text-lg font-semibold mt-2 text-gray-300">
-              Total Assists
-            </p>
-            <p class="text-sm text-gray-500">(2023/24 Season)</p>
-          </div>
-          <div class="bg-gray-800 p-8 rounded-2xl shadow-lg">
-            <p class="text-6xl md:text-7xl font-black text-[#F000B5]">+6.5</p>
-            <p class="text-lg font-semibold mt-2 text-gray-300">Goals vs xG</p>
-            <p class="text-sm text-gray-500">(Primeira Liga)</p>
-          </div>
-        </div>
-        <p class="text-center text-gray-400 mt-8 max-w-3xl mx-auto">
-          Viktor Gyökeres's 2023/24 season was a statistical explosion,
-          establishing him as one of Europe's most lethal forwards by not just
-          scoring in volume, but by demonstrating elite finishing ability far
-          exceeding statistical expectation.
-        </p>
-      </section>
-
-      <section id="player-profile" class="mb-16">
-        <h2 class="text-3xl font-bold text-center mb-8">
-          Anatomy of a Powerhouse
+      <!-- The main portal window -->
+      <main
+        id="portal-window"
+        class="glass-container w-full max-w-2xl rounded-2xl p-6 md:p-8 z-10"
+      >
+        <h2
+          class="text-2xl font-semibold text-center mb-6 border-b border-cyan-500/30 pb-3"
+        >
+          Available Projects
         </h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-          <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
-            <h3 class="text-xl font-bold mb-4 text-center">
-              The Complete Attacking Hub
-            </h3>
-            <div class="chart-container h-80 md:h-96">
-              <canvas id="profileRadarChart"></canvas>
-            </div>
-            <p class="text-center text-gray-400 mt-4 text-sm">
-              Percentile ranks vs. forwards in Europe's next 14 competitions
-              (last 365 days). Gyökeres is not just a finisher; he is an elite
-              creator, ball-carrier, and penalty-area presence, making him a
-              complete attacking engine.
-            </p>
-          </div>
 
-          <div class="space-y-8">
-            <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
-              <h3 class="text-xl font-bold mb-4 text-center">
-                Physical Profile
-              </h3>
-              <div class="flex justify-around items-center text-center">
-                <div>
-                  <p class="text-4xl font-black text-[#00F0B5]">6'2"</p>
-                  <p class="font-semibold">Height</p>
-                </div>
-                <div class="text-gray-600 text-4xl">+</div>
-                <div>
-                  <p class="text-4xl font-black text-[#00E0F0]">86kg</p>
-                  <p class="font-semibold">Weight</p>
-                </div>
-                <div class="text-gray-600 text-4xl">+</div>
-                <div>
-                  <p class="text-4xl font-black text-[#F000B5]">⚡</p>
-                  <p class="font-semibold">Explosive Pace</p>
-                </div>
-              </div>
-              <p class="text-center text-gray-400 mt-4 text-sm">
-                A rare blend of imposing size and blistering speed, creating a
-                tactical nightmare for defenders. He can physically dominate in
-                duels or outpace a defensive line.
-              </p>
-            </div>
-            <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
-              <h3 class="text-xl font-bold mb-4 text-center">
-                Finishing Versatility
-              </h3>
-              <div class="chart-container h-56">
-                <canvas id="finishingDonutChart"></canvas>
-              </div>
-              <p class="text-center text-gray-400 mt-4 text-sm">
-                Highly proficient with both feet, Gyökeres is unpredictable in
-                the box. His ability to shoot powerfully and accurately without
-                needing to shift to a preferred foot is a hallmark of an elite
-                finisher.
-              </p>
-            </div>
+        <!-- Container where links will be dynamically inserted -->
+        <div id="links-container" class="space-y-4">
+          <!-- Loading state indicator -->
+          <div id="loader" class="flex items-center justify-center space-x-3">
+            <svg
+              class="animate-spin h-8 w-8 text-cyan-400"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <span class="text-lg">Contacting GitHub mothership...</span>
           </div>
+          <!-- Error message placeholder -->
+          <div id="error-message" class="hidden text-center text-red-400"></div>
         </div>
-      </section>
+      </main>
 
-      <section id="elite-comparison" class="mb-16">
-        <h2 class="text-3xl font-bold text-center mb-8">
-          Clash of the Titans: Benchmarking the Elite
-        </h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
-            <h3 class="text-xl font-bold mb-4 text-center">
-              2023/24 League Non-Penalty Goals (NPG)
-            </h3>
-            <div class="chart-container h-80 md:h-96">
-              <canvas id="npgBarChart"></canvas>
-            </div>
-            <p class="text-center text-gray-400 mt-4 text-sm">
-              Gyökeres's non-penalty goal tally places him at the very top of
-              European football, outperforming established names in tougher
-              leagues and showcasing his pure goal-scoring prowess.
-            </p>
-          </div>
-          <div class="bg-gray-800 p-6 rounded-2xl shadow-lg">
-            <h3 class="text-xl font-bold mb-4 text-center">
-              Striker Archetypes: Poacher vs Protagonist
-            </h3>
-            <div class="chart-container h-80 md:h-96">
-              <canvas id="archetypeBubbleChart"></canvas>
-            </div>
-            <p class="text-center text-gray-400 mt-4 text-sm">
-              This chart visualizes player involvement. Haaland is a
-              hyper-efficient finisher (high shots, lower touches). Gyökeres is
-              a protagonist, heavily involved in play (high touches) while
-              maintaining elite shot volume, demonstrating his ability to create
-              his own chances.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section id="arsenal-fit" class="mb-16">
-        <h2 class="text-3xl font-bold text-center mb-8">
-          The Arsenal Crucible: Tactical Integration
-        </h2>
-        <div class="bg-gray-800 p-6 rounded-2xl shadow-lg mb-8">
-          <h3 class="text-xl font-bold mb-6 text-center">
-            The Role of the No. 9 in 'Arteta-ball'
-          </h3>
-          <div
-            class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 text-center"
-          >
-            <div class="p-4 bg-gray-700 rounded-lg">
-              <p class="font-bold text-[#00F0B5]">1. LEAD PRESS</p>
-              <p class="text-xs text-gray-400">Trigger defensive actions</p>
-            </div>
-            <div class="flow-arrow hidden md:block">▶</div>
-            <div class="p-4 bg-gray-700 rounded-lg">
-              <p class="font-bold text-[#00E0F0]">2. LINK & FLOAT</p>
-              <p class="text-xs text-gray-400">Create space for others</p>
-            </div>
-            <div class="flow-arrow hidden md:block">▶</div>
-            <div class="p-4 bg-gray-700 rounded-lg">
-              <p class="font-bold text-[#6600F0]">3. OCCUPY & PIN</p>
-              <p class="text-xs text-gray-400">Draw defenders</p>
-            </div>
-            <div class="flow-arrow hidden md:block">▶</div>
-            <div class="p-4 bg-gray-700 rounded-lg">
-              <p class="font-bold text-[#F000B5]">4. PROVIDE OUTLET</p>
-              <p class="text-xs text-gray-400">Attack channels</p>
-            </div>
-          </div>
-          <p class="text-center text-gray-400 mt-6 text-sm">
-            The striker in Arteta's fluid system is more than a goalscorer; they
-            are a tactical engine. Gyökeres's skillset appears tailor-made for
-            this demanding, multi-faceted role.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div class="swot-card p-6 rounded-2xl">
-            <h4 class="text-lg font-bold text-[#00F0B5] mb-2">STRENGTHS</h4>
-            <ul class="list-disc list-inside text-sm space-y-1 text-gray-300">
-              <li>Relentless, intelligent pressing</li>
-              <li>Elite, high-volume finishing</li>
-              <li>Physical dominance & pace</li>
-              <li>Channel running threat</li>
-            </ul>
-          </div>
-          <div class="swot-card p-6 rounded-2xl">
-            <h4 class="text-lg font-bold text-[#F0E000] mb-2">WEAKNESSES</h4>
-            <ul class="list-disc list-inside text-sm space-y-1 text-gray-300">
-              <li>Technical security under pressure</li>
-              <li>First touch can be inconsistent</li>
-              <li>Passing in congested areas</li>
-            </ul>
-          </div>
-          <div class="swot-card p-6 rounded-2xl">
-            <h4 class="text-lg font-bold text-[#00E0F0] mb-2">OPPORTUNITIES</h4>
-            <ul class="list-disc list-inside text-sm space-y-1 text-gray-300">
-              <li>Be the "missing piece" for Arsenal</li>
-              <li>Solve issues vs. low blocks</li>
-              <li>Add tactical flexibility</li>
-              <li>Create space for Saka/Martinelli</li>
-            </ul>
-          </div>
-          <div class="swot-card p-6 rounded-2xl">
-            <h4 class="text-lg font-bold text-[#F000B5] mb-2">THREATS</h4>
-            <ul class="list-disc list-inside text-sm space-y-1 text-gray-300">
-              <li>Adapting to Premier League intensity</li>
-              <li>Pressure of a high transfer fee</li>
-              <li>Adapting from transitional to possession style</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <footer class="text-center border-t border-gray-700 pt-8">
-        <h2 class="text-3xl font-bold mb-4">
-          Final Verdict: The Title Catalyst?
-        </h2>
-        <p class="text-lg text-gray-400 max-w-3xl mx-auto mb-4">
-          While surpassing Haaland's individual tally is unlikely due to system
-          differences, Gyökeres has every tool to enter the Golden Boot
-          conversation. His arrival provides the directness, physical fear
-          factor, and ruthless finishing Arsenal has lacked.
-        </p>
-        <p class="text-2xl font-black uppercase tracking-wider gradient-text">
-          He is more than an upgrade; he is a potential paradigm shift in the
-          title race.
+      <!-- Footer -->
+      <footer class="absolute bottom-4 text-center text-gray-400 text-sm z-10">
+        <p>
+          &copy; <span id="year"></span> mobotronst.github.io | All projects
+          loaded dynamically.
         </p>
       </footer>
     </div>
 
     <script>
-      const wrapLabel = (label, maxWidth) => {
-        const words = label.split(" ");
-        let lines = [];
-        let currentLine = "";
-        words.forEach((word) => {
-          if ((currentLine + word).length > maxWidth) {
-            lines.push(currentLine.trim());
-            currentLine = "";
+      // --- GitHub API Configuration ---
+      // IMPORTANT: Replace with your GitHub username and repository name.
+      const GITHUB_USER = "mobotronst";
+      const GITHUB_REPO = "mobotronst.github.io";
+      const SITES_FOLDER = "sites"; // The folder containing your HTML files
+
+      // --- DOM Element References ---
+      const linksContainer = document.getElementById("links-container");
+      const loader = document.getElementById("loader");
+      const errorMessage = document.getElementById("error-message");
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // --- Dynamic Link Fetching ---
+      async function fetchProjects() {
+        const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${SITES_FOLDER}`;
+
+        try {
+          const response = await fetch(apiUrl);
+          if (!response.ok) {
+            throw new Error(
+              `Network response was not ok: ${response.statusText}`,
+            );
           }
-          currentLine += word + " ";
-        });
-        lines.push(currentLine.trim());
-        return lines;
-      };
+          const files = await response.json();
 
-      const tooltipTitleCallback = (tooltipItems) => {
-        const item = tooltipItems[0];
-        let label = item.chart.data.labels[item.dataIndex];
-        if (Array.isArray(label)) {
-          return label.join(" ");
+          // Filter for HTML files only
+          const htmlFiles = files.filter(
+            (file) => file.name.endsWith(".html") && file.type === "file",
+          );
+
+          // Hide loader and display projects
+          loader.style.display = "none";
+
+          if (htmlFiles.length === 0) {
+            displayError('No HTML projects found in the "sites" directory.');
+            return;
+          }
+
+          htmlFiles.forEach(createLinkElement);
+        } catch (error) {
+          console.error("Failed to fetch projects:", error);
+          loader.style.display = "none";
+          displayError(
+            "Could not retrieve projects from GitHub. Please check the console for details.",
+          );
         }
-        return label;
-      };
+      }
 
-      const sharedTooltipOptions = {
-        plugins: {
-          tooltip: {
-            callbacks: {
-              title: tooltipTitleCallback,
-            },
-          },
-        },
-      };
+      // --- UI Creation Functions ---
 
-      const energeticPalette = {
-        green: "#00F0B5",
-        cyan: "#00E0F0",
-        purple: "#6600F0",
-        magenta: "#F000B5",
-        yellow: "#F0E000",
-        lightGray: "rgba(229, 231, 235, 0.6)",
-        gridGray: "rgba(255, 255, 255, 0.1)",
-      };
+      /**
+       * Creates and appends a single project link to the container.
+       * @param {object} file - The file object from the GitHub API.
+       */
+      function createLinkElement(file) {
+        // Create a more readable name from the filename
+        const projectName = file.name
+          .replace(".html", "") // Remove extension
+          .replace(/[-_]/g, " ") // Replace hyphens/underscores with spaces
+          .replace(/\b\w/g, (l) => l.toUpperCase()); // Capitalize each word
 
-      const radarChartLabels = [
-        "Shot-Creating Actions",
-        "Progressive Carries",
-        "Successful Take-Ons",
-        "Touches in Att Pen Area",
-        "Shots Total",
-        "npxG per shot",
-      ];
+        const projectUrl = `/${SITES_FOLDER}/${file.name}`;
 
-      new Chart(document.getElementById("profileRadarChart"), {
-        type: "radar",
-        data: {
-          labels: radarChartLabels.map((label) => wrapLabel(label, 16)),
-          datasets: [
-            {
-              label: "Gyökeres Percentile Rank",
-              data: [99, 99, 97, 99, 99, 80],
-              backgroundColor: "rgba(0, 240, 181, 0.2)",
-              borderColor: energeticPalette.green,
-              pointBackgroundColor: energeticPalette.green,
-              pointBorderColor: "#fff",
-              pointHoverBackgroundColor: "#fff",
-              pointHoverBorderColor: energeticPalette.green,
-            },
-          ],
-        },
-        options: {
-          ...sharedTooltipOptions,
-          maintainAspectRatio: false,
-          scales: {
-            r: {
-              angleLines: { color: energeticPalette.gridGray },
-              grid: { color: energeticPalette.gridGray },
-              pointLabels: {
-                color: energeticPalette.lightGray,
-                font: { size: 10 },
-              },
-              ticks: {
-                color: energeticPalette.lightGray,
-                backdropColor: "transparent",
-                stepSize: 20,
-                max: 100,
-                min: 0,
-              },
-            },
-          },
-          plugins: {
-            ...sharedTooltipOptions.plugins,
-            legend: { display: false },
-          },
-        },
-      });
+        const linkWrapper = document.createElement("a");
+        linkWrapper.href = projectUrl;
+        linkWrapper.className =
+          "link-item relative block bg-gray-800/50 hover:bg-gray-700/70 p-4 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 cursor-pointer";
 
-      new Chart(document.getElementById("finishingDonutChart"), {
-        type: "doughnut",
-        data: {
-          labels: ["Right Foot", "Left Foot", "Other"],
-          datasets: [
-            {
-              label: "Goal Method",
-              data: [18, 8, 3],
-              backgroundColor: [
-                energeticPalette.green,
-                energeticPalette.cyan,
-                energeticPalette.magenta,
-              ],
-              borderColor: "#4A5568",
-              hoverOffset: 4,
-            },
-          ],
-        },
-        options: {
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              position: "bottom",
-              labels: {
-                color: energeticPalette.lightGray,
-              },
-            },
-            title: {
-              display: false,
-            },
-          },
-        },
-      });
+        // The glowing effect element
+        const glowElement = document.createElement("div");
+        glowElement.className =
+          "glow absolute -inset-px bg-cyan-400 opacity-0 rounded-lg blur-md";
 
-      const npgBarChartLabels = [
-        "Gyökeres",
-        "Mbappé",
-        "Haaland",
-        "Isak",
-        "Lewandowski",
-      ];
-      new Chart(document.getElementById("npgBarChart"), {
-        type: "bar",
-        data: {
-          labels: npgBarChartLabels,
-          datasets: [
-            {
-              label: "Non-Penalty Goals 23/24",
-              data: [24, 21, 20, 16, 15],
-              backgroundColor: [
-                energeticPalette.green,
-                energeticPalette.cyan,
-                energeticPalette.purple,
-                energeticPalette.magenta,
-                energeticPalette.yellow,
-              ],
-              borderColor: "rgba(0,0,0,0)",
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          indexAxis: "y",
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              beginAtZero: true,
-              ticks: { color: energeticPalette.lightGray },
-              grid: { display: false },
-            },
-            x: {
-              ticks: { color: energeticPalette.lightGray },
-              grid: { color: energeticPalette.gridGray },
-            },
-          },
-          plugins: {
-            legend: { display: false },
-          },
-        },
-      });
+        // The content of the link
+        const contentWrapper = document.createElement("div");
+        contentWrapper.className = "relative flex items-center space-x-4";
 
-      new Chart(document.getElementById("archetypeBubbleChart"), {
-        type: "bubble",
-        data: {
-          labels: ["Gyökeres", "Haaland", "Mbappé", "Isak", "Lewandowski"],
-          datasets: [
-            {
-              label: "Gyökeres",
-              data: [{ x: 4.08, y: 9.12, r: 29 / 2 }],
-              backgroundColor: energeticPalette.green,
-            },
-            {
-              label: "Haaland",
-              data: [{ x: 3.9, y: 6.31, r: 27 / 2 }],
-              backgroundColor: energeticPalette.cyan,
-            },
-            {
-              label: "Mbappé",
-              data: [{ x: 4.67, y: 7.0, r: 27 / 2 }],
-              backgroundColor: energeticPalette.purple,
-            },
-            {
-              label: "Isak",
-              data: [{ x: 3.09, y: 6.09, r: 21 / 2 }],
-              backgroundColor: energeticPalette.magenta,
-            },
-            {
-              label: "Lewandowski",
-              data: [{ x: 3.01, y: 5.83, r: 19 / 2 }],
-              backgroundColor: energeticPalette.yellow,
-            },
-          ],
-        },
-        options: {
-          maintainAspectRatio: false,
-          scales: {
-            y: {
-              title: {
-                display: true,
-                text: "Touches in Att Pen Area p90",
-                color: energeticPalette.lightGray,
-              },
-              ticks: { color: energeticPalette.lightGray },
-              grid: { color: energeticPalette.gridGray },
-            },
-            x: {
-              title: {
-                display: true,
-                text: "Shots p90",
-                color: energeticPalette.lightGray,
-              },
-              ticks: { color: energeticPalette.lightGray },
-              grid: { color: energeticPalette.gridGray },
-            },
-          },
-          plugins: {
-            legend: {
-              labels: { color: energeticPalette.lightGray },
-            },
-            tooltip: {
-              callbacks: {
-                label: function (context) {
-                  const d = context.raw;
-                  const label = context.chart.data.labels[context.datasetIndex];
-                  return `${label}: Shots p90: ${d.x}, Touches p90: ${d.y}, Goals: ${d.r * 2}`;
-                },
-              },
-            },
-          },
-        },
+        const icon = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-cyan-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>`;
+
+        const textElement = document.createElement("span");
+        textElement.className = "text-lg font-semibold tracking-wide";
+        textElement.textContent = projectName;
+
+        contentWrapper.innerHTML = icon;
+        contentWrapper.appendChild(textElement);
+
+        linkWrapper.appendChild(glowElement);
+        linkWrapper.appendChild(contentWrapper);
+
+        linksContainer.appendChild(linkWrapper);
+      }
+
+      /**
+       * Displays an error message in the UI.
+       * @param {string} message - The error message to display.
+       */
+      function displayError(message) {
+        errorMessage.textContent = message;
+        errorMessage.classList.remove("hidden");
+      }
+
+      // --- Three.js Background Animation ---
+      let scene, camera, renderer, stars;
+
+      function init3D() {
+        // Scene setup
+        scene = new THREE.Scene();
+
+        // Camera setup
+        camera = new THREE.PerspectiveCamera(
+          60,
+          window.innerWidth / window.innerHeight,
+          1,
+          1000,
+        );
+        camera.position.z = 1;
+        camera.rotation.x = Math.PI / 2;
+
+        // Renderer setup
+        const canvas = document.getElementById("bg-canvas");
+        renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.body.appendChild(renderer.domElement);
+
+        // Create stars
+        const starGeometry = new THREE.BufferGeometry();
+        const starCount = 10000;
+        const positions = new Float32Array(starCount * 3);
+
+        for (let i = 0; i < starCount; i++) {
+          const i3 = i * 3;
+          positions[i3] = (Math.random() - 0.5) * 1000; // x
+          positions[i3 + 1] = (Math.random() - 0.5) * 1000; // y
+          positions[i3 + 2] = (Math.random() - 0.5) * 1000; // z
+        }
+
+        starGeometry.setAttribute(
+          "position",
+          new THREE.BufferAttribute(positions, 3),
+        );
+
+        const starMaterial = new THREE.PointsMaterial({
+          color: 0xaaaaaa,
+          size: 0.7,
+        });
+
+        stars = new THREE.Points(starGeometry, starMaterial);
+        scene.add(stars);
+
+        // Handle window resize
+        window.addEventListener("resize", onWindowResize, false);
+
+        // Start animation
+        animate();
+      }
+
+      function animate() {
+        // Animation loop
+        requestAnimationFrame(animate);
+
+        // Slowly rotate the stars
+        stars.rotation.z += 0.0002;
+
+        renderer.render(scene, camera);
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      // --- Initial Load ---
+      document.addEventListener("DOMContentLoaded", () => {
+        init3D();
+        fetchProjects();
       });
     </script>
   </body>

@@ -1,0 +1,1036 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comprehensive DSA Roadmap for Developers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <!-- Chosen Palette: Slate Gray, Sky Blue, and White -->
+    <!-- Application Structure Plan: Retained the effective sidebar/main content layout. Major enhancements include a full visual redesign using a modern card-based UI with SVG icons and hover effects. The core interactive element, the modal, is now powered by C++ solutions and includes Mermaid.js diagrams for visual learning, creating a more comprehensive and engaging educational tool. -->
+    <!-- Visualization & Content Choices: Report Info: DSA Topics. Goal: Educate and provide practice. Viz: Interactive cards with SVG icons. Interaction: Clicking a problem opens a modal. Justification: The card UI is more scannable and modern. Report Info: Complex algorithms (e.g., Tree Traversals). Goal: Visually explain processes. Viz: Mermaid.js diagrams. Interaction: Static diagrams within content sections. Justification: Visual diagrams are superior to text for explaining structural concepts and algorithms, significantly improving comprehension. -->
+    <!-- CONFIRMATION: SVG graphics and Mermaid JS are now used as requested. -->
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8fafc;
+      }
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+      .content-section {
+        display: none;
+      }
+      .content-section.active {
+        display: block;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .nav-link.active {
+        background-color: #0284c7;
+        color: white;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 900px;
+        margin: auto;
+        height: 350px;
+        max-height: 400px;
+      }
+      @media (min-width: 768px) {
+        .chart-container {
+          height: 400px;
+        }
+      }
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(15, 23, 42, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease;
+        backdrop-filter: blur(4px);
+      }
+      .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .modal-content {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 0.75rem;
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+        transform: scale(0.95);
+        transition: transform 0.3s ease;
+        box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+      }
+      .modal-overlay.active .modal-content {
+        transform: scale(1);
+      }
+      .problem-btn {
+        transition: all 0.2s ease-in-out;
+      }
+      .problem-btn:hover {
+        transform: translateY(-2px);
+        box-shadow:
+          0 4px 6px -1px rgb(0 0 0 / 0.1),
+          0 2px 4px -2px rgb(0 0 0 / 0.1);
+      }
+      pre {
+        background-color: #1e293b;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.875rem;
+      }
+    </style>
+  </head>
+  <body class="text-slate-800">
+    <div id="app-container" class="max-w-screen-2xl mx-auto">
+      <header
+        class="text-center p-6 md:p-10 bg-white border-b border-slate-200"
+      >
+        <h1 class="text-3xl md:text-5xl font-bold text-sky-800 mb-2">
+          The Definitive DSA Roadmap
+        </h1>
+        <p class="text-lg md:text-xl text-slate-600">
+          An Interactive Guide for Interview Success
+        </p>
+      </header>
+
+      <main class="p-4 md:p-8">
+        <div class="flex flex-col xl:flex-row xl:space-x-8">
+          <aside class="w-full xl:w-1/4 mb-8 xl:mb-0">
+            <nav
+              id="sidebar-nav"
+              class="sticky top-8 bg-white p-4 rounded-lg shadow-sm"
+            >
+              <h3 class="text-lg font-bold text-sky-800 mb-4 px-3">Topics</h3>
+              <ul class="space-y-1"></ul>
+            </nav>
+          </aside>
+
+          <div class="w-full xl:w-3/4">
+            <section
+              id="priority-chart-section"
+              class="mb-8 bg-white p-6 rounded-lg shadow-sm"
+            >
+              <h2 class="text-2xl font-bold text-sky-800 mb-4 text-center">
+                Topic Study Priority
+              </h2>
+              <div class="chart-container">
+                <canvas id="priorityChart"></canvas>
+              </div>
+            </section>
+            <div id="content-area"></div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="solution-modal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="flex justify-between items-center mb-6">
+          <h3 id="modal-title" class="text-2xl font-bold text-sky-800"></h3>
+          <button
+            id="modal-close-btn"
+            class="text-3xl font-bold text-slate-400 hover:text-slate-800 transition"
+          >
+            &times;
+          </button>
+        </div>
+        <div id="modal-body" class="space-y-6"></div>
+      </div>
+    </div>
+
+    <script>
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: "base",
+        themeVariables: {
+          primaryColor: "#f0f9ff",
+          primaryTextColor: "#0c4a6e",
+          primaryBorderColor: "#bae6fd",
+          lineColor: "#0369a1",
+          textColor: "#334155",
+        },
+      });
+
+      const problemSolutions = {
+        "two-sum": {
+          title: "Two Sum",
+          content: `
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Shopping Trip</h4>
+                        <p class="text-slate-600">You have a gift card for a specific amount (the <code class="bg-slate-200 text-sm p-1 rounded">target</code>). You need to buy exactly two items. The smart way is to keep a mental list of items you've already seen. For each new item you pick up, you ask: "Have I already seen the item that would complete my gift card?" A HashMap is this perfect memory.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                            <li><strong>The "Aha!" Moment:</strong> Instead of checking every pair (O(n²)), what if we could check for the needed complement in an instant? A HashMap gives us this O(1) lookup superpower.</li>
+                            <li><strong>The Optimal Algorithm:</strong>
+                                <ul class="list-disc list-inside ml-4 mt-1">
+                                    <li>Create an empty HashMap to store <code class="bg-slate-200 text-sm p-1 rounded">{number: index}</code>.</li>
+                                    <li>Loop through the array. For each number, calculate the <code class="bg-slate-200 text-sm p-1 rounded">complement</code> you need (<code class="bg-slate-200 text-sm p-1 rounded">target - current_number</code>).</li>
+                                    <li>Check the HashMap: Is the complement in our map? If YES, we've found our pair!</li>
+                                    <li>If NO, add the current number and its index to the map. This way, a future number can find it.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                    <div>
+                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+<pre><code class="language-cpp">
+#include &lt;vector&gt;
+#include &lt;unordered_map&gt;
+
+class Solution {
+public:
+    std::vector&lt;int&gt; twoSum(std::vector&lt;int&gt;& nums, int target) {
+        std::unordered_map&lt;int, int&gt; num_map; // Key: number, Value: index
+        for (int i = 0; i < nums.size(); ++i) {
+            int complement = target - nums[i];
+            if (num_map.count(complement)) {
+                return {num_map[complement], i};
+            }
+            num_map[nums[i]] = i;
+        }
+        return {}; // Should not be reached given the problem constraints
+    }
+};
+</code></pre>
+                    </div>`,
+        },
+        "max-subarray": {
+          title: "Maximum Subarray (Kadane's Algorithm)",
+          content: `
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Optimistic Hiker</h4>
+                        <p class="text-slate-600">A hiker walks along a path with varying altitudes (the numbers). They want to find the stretch with the greatest total elevation gain. If their current climb's gain becomes negative, they know this stretch is a lost cause. An optimist would abandon that segment and start a fresh climb from the next point, always remembering the best climb completed so far.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It (Kadane's Algorithm)</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                            <li>The maximum subarray ending at position <code class="bg-slate-200 text-sm p-1 rounded">i</code> is either the element at <code class="bg-slate-200 text-sm p-1 rounded">i</code> itself, OR the element <code class="bg-slate-200 text-sm p-1 rounded">i</code> plus the maximum subarray that ended at <code class="bg-slate-200 text-sm p-1 rounded">i-1</code>.</li>
+                            <li>We maintain a <code class="bg-slate-200 text-sm p-1 rounded">current_max</code> (the best climb ending at our current position) and a <code class="bg-slate-200 text-sm p-1 rounded">global_max</code> (the best climb seen anywhere on the trail).</li>
+                            <li>At each step, we decide: do we continue the current climb (<code class="bg-slate-200 text-sm p-1 rounded">current_max + num</code>) or start a new one (<code class="bg-slate-200 text-sm p-1 rounded">num</code>)? We take whichever is better.</li>
+                        </ol>
+                    </div>
+                    <div>
+                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+<pre><code class="language-cpp">
+#include &lt;vector&gt;
+#include &lt;algorithm&gt; // For std::max
+
+class Solution {
+public:
+    int maxSubArray(std::vector&lt;int&gt;& nums) {
+        if (nums.empty()) return 0;
+        
+        int global_max = nums[0];
+        int current_max = nums[0];
+        
+        for (size_t i = 1; i < nums.size(); ++i) {
+            current_max = std::max(nums[i], current_max + nums[i]);
+            global_max = std::max(global_max, current_max);
+        }
+        
+        return global_max;
+    }
+};
+</code></pre>
+                    </div>`,
+        },
+        "reverse-linked-list": {
+          title: "Reverse a Linked List",
+          content: `
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: Reversing a Train</h4>
+                        <p class="text-slate-600">Imagine a train where each car only knows about the car in front of it (the 'next' pointer). To reverse it, you go car by car. You stand at the current car. You first need to remember which car is next, so you don't lose the rest of the train. Then, you unhook the current car and hook it up to the car *behind* you. Finally, you move to the next car you remembered and repeat.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It (Iterative)</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                            <li>You need three pointers: <code class="bg-slate-200 text-sm p-1 rounded">previous</code>, <code class="bg-slate-200 text-sm p-1 rounded">current</code>, and <code class="bg-slate-200 text-sm p-1 rounded">next_node</code>.</li>
+                            <li><code class="bg-slate-200 text-sm p-1 rounded">previous</code> starts as <code class="bg-slate-200 text-sm p-1 rounded">nullptr</code>. <code class="bg-slate-200 text-sm p-1 rounded">current</code> starts as the <code class="bg-slate-200 text-sm p-1 rounded">head</code>.</li>
+                            <li>Loop while <code class="bg-slate-200 text-sm p-1 rounded">current</code> is not null:
+                                <ol class="list-decimal list-inside ml-4 mt-1">
+                                    <li>Save the next node: <code class="bg-slate-200 text-sm p-1 rounded">next_node = current->next</code>.</li>
+                                    <li>Reverse the pointer: <code class="bg-slate-200 text-sm p-1 rounded">current->next = previous</code>.</li>
+                                    <li>Move pointers forward: <code class="bg-slate-200 text-sm p-1 rounded">previous = current</code> and <code class="bg-slate-200 text-sm p-1 rounded">current = next_node</code>.</li>
+                                </ol>
+                            </li>
+                            <li>When the loop finishes, <code class="bg-slate-200 text-sm p-1 rounded">previous</code> will be the new head.</li>
+                        </ol>
+                    </div>
+                    <div>
+                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+<pre><code class="language-cpp">
+// Definition for singly-linked list.
+struct ListNode {
+    int val;
+    ListNode *next;
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
+};
+
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode* prev = nullptr;
+        ListNode* curr = head;
+        while (curr != nullptr) {
+            ListNode* nextTemp = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+        return prev;
+    }
+};
+</code></pre>
+                    </div>`,
+        },
+        "valid-parentheses": {
+          title: "Valid Parentheses",
+          content: `
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Plate Stacker</h4>
+                        <p class="text-slate-600">When you see an opening plate '(', you place it on a stack. When you see a closing plate ')', you must check if the topmost plate on your stack is the matching opening plate. If it is, you remove it. If it's not, or if the stack is empty, it's an invalid arrangement. At the end, the stack must be empty.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                            <li>This "last-in, first-out" behavior is a perfect use case for a <strong class="text-slate-800">Stack</strong>.</li>
+                            <li>Loop through the string. If it's an opening bracket, push it onto the stack.</li>
+                            <li>If it's a closing bracket, check if the stack is empty or if the top element isn't the matching opener. If either is true, the string is invalid. Otherwise, pop the stack.</li>
+                            <li>After the loop, the string is valid only if the stack is empty.</li>
+                        </ol>
+                    </div>
+                    <div>
+                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+<pre><code class="language-cpp">
+#include &lt;string&gt;
+#include &lt;stack&gt;
+#include &lt;unordered_map&gt;
+
+class Solution {
+public:
+    bool isValid(std::string s) {
+        std::stack&lt;char&gt; brackets;
+        std::unordered_map&lt;char, char&gt; mapping = {
+            {')', '('}, {']', '['}, {'}', '{'}
+        };
+        
+        for (char c : s) {
+            if (mapping.count(c)) { // It's a closing bracket
+                if (brackets.empty() || brackets.top() != mapping[c]) {
+                    return false;
+                }
+                brackets.pop();
+            } else { // It's an opening bracket
+                brackets.push(c);
+            }
+        }
+        return brackets.empty();
+    }
+};
+</code></pre>
+                    </div>`,
+        },
+        "max-depth-tree": {
+          title: "Maximum Depth of Binary Tree",
+          content: `
+                     <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: Exploring a Cave System</h4>
+                        <p class="text-slate-600">You are at the entrance ('root') of a cave system. The longest path from the entrance is 1 (for the current chamber) plus the length of the longest path you can take from here (either the deeper left path or the deeper right path).</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It (Recursive DFS)</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                            <li><strong>The Base Case:</strong> If you reach a point where there is no cave (a <code class="bg-slate-200 text-sm p-1 rounded">nullptr</code> node), the depth from here is 0.</li>
+                            <li><strong>The Recursive Step:</strong> For any given chamber (node), the depth is <code class="bg-slate-200 text-sm p-1 rounded">1 + max(depth of left path, depth of right path)</code>.</li>
+                        </ol>
+                    </div>
+                    <div>
+                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+<pre><code class="language-cpp">
+// Definition for a binary tree node.
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+};
+
+class Solution {
+public:
+    int maxDepth(TreeNode* root) {
+        if (root == nullptr) {
+            return 0;
+        }
+        int left_depth = maxDepth(root->left);
+        int right_depth = maxDepth(root->right);
+        return 1 + std::max(left_depth, right_depth);
+    }
+};
+</code></pre>
+                    </div>`,
+        },
+        "num-islands": {
+          title: "Number of Islands",
+          content: `
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: Mapping an Archipelago</h4>
+                        <p class="text-slate-600">You have a satellite map of '1's (land) and '0's (water). When you find a piece of land ('1'), you increment your island count. Then, you send out an explorer (a DFS or BFS traversal) from that spot. The explorer's job is to visit every connected piece of land and "sink" it by changing its value to '0'. This ensures you don't count the same island twice.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                            <li>Iterate through every cell of the grid.</li>
+                            <li>If you find a cell that is '1':
+                                <ul class="list-disc list-inside ml-4 mt-1">
+                                    <li>Increment your <code class="bg-slate-200 text-sm p-1 rounded">island_count</code>.</li>
+                                    <li>Start a traversal (DFS is common) from this cell to find and "sink" all parts of this same island by changing them to '0'.</li>
+                                </ul>
+                            </li>
+                            <li>The DFS function explores up, down, left, and right, stopping only when it goes out of bounds or hits water.</li>
+                        </ol>
+                    </div>
+                    <div>
+                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+<pre><code class="language-cpp">
+#include &lt;vector&gt;
+
+class Solution {
+public:
+    int numIslands(std::vector&lt;std::vector&lt;char&gt;&gt;& grid) {
+        if (grid.empty()) return 0;
+        
+        int rows = grid.size();
+        int cols = grid[0].size();
+        int island_count = 0;
+        
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                if (grid[i][j] == '1') {
+                    island_count++;
+                    dfs(grid, i, j);
+                }
+            }
+        }
+        return island_count;
+    }
+
+private:
+    void dfs(std::vector&lt;std::vector&lt;char&gt;&gt;& grid, int r, int c) {
+        int rows = grid.size();
+        int cols = grid[0].size();
+        
+        if (r < 0 || c < 0 || r >= rows || c >= cols || grid[r][c] == '0') {
+            return;
+        }
+        
+        grid[r][c] = '0'; // Sink the land
+        
+        dfs(grid, r + 1, c);
+        dfs(grid, r - 1, c);
+        dfs(grid, r, c + 1);
+        dfs(grid, r, c - 1);
+    }
+};
+</code></pre>
+                    </div>`,
+        },
+        "kth-largest": {
+          title: "Kth Largest Element in an Array",
+          content: `
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Exclusive Club</h4>
+                        <p class="text-slate-600">Imagine a club with a strict capacity of 'k' members, where membership is based on being the wealthiest. They use a "min-heap" rule: the member with the least wealth is always at the door. When a new person wants to join, they are only admitted if they are wealthier than the current least-wealthy member. If they are, the least-wealthy member is kicked out, and the new person joins. After everyone in town has tried to join, the person at the door (the minimum of the club) is the kth wealthiest person in town.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                            <li>The right tool is a <strong class="text-slate-800">Min-Priority Queue (Min-Heap)</strong>.</li>
+                            <li>Iterate through the numbers. For each number:</li>
+                            <li class="ml-4">Push the number into the min-heap.</li>
+                            <li class="ml-4">If the heap's size grows larger than <code class="bg-slate-200 text-sm p-1 rounded">k</code>, pop the smallest element (the top of the min-heap).</li>
+                            <li>This process maintains a heap of the <code class="bg-slate-200 text-sm p-1 rounded">k</code> largest elements seen so far.</li>
+                            <li>After the loop, the top of the heap is the kth largest element overall.</li>
+                        </ol>
+                    </div>
+                    <div>
+                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+<pre><code class="language-cpp">
+#include &lt;vector&gt;
+#include &lt;queue&gt;
+
+class Solution {
+public:
+    int findKthLargest(std::vector&lt;int&gt;& nums, int k) {
+        // A min-heap, which is the default for std::priority_queue
+        // but requires std::greater to get the min-element at top.
+        std::priority_queue&lt;int, std::vector&lt;int&gt;, std::greater&lt;int&gt;&gt; min_heap;
+        
+        for (int num : nums) {
+            min_heap.push(num);
+            if (min_heap.size() > k) {
+                min_heap.pop();
+            }
+        }
+        
+        return min_heap.top();
+    }
+};
+</code></pre>
+                    </div>`,
+        },
+        "lru-cache": {
+          title: "LRU Cache",
+          content: `
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Librarian's Desk</h4>
+                        <p class="text-slate-600">A librarian has a small desk (the cache capacity) for frequently requested books. To find a book instantly, they have a card catalog (a <strong class="text-slate-800">HashMap</strong>) that points to the book's location on the desk. The books on the desk are arranged in a line (<strong class="text-slate-800">Doubly Linked List</strong>). When a book is requested, the librarian moves it to the front of the line. If a new book is needed and the desk is full, the book at the very end of the line (the one that hasn't been touched for the longest time) is sent back to the main library shelves to make space.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                            <li>Combine two data structures:
+                                <ul class="list-disc list-inside ml-4 mt-1">
+                                    <li>A <strong class="text-slate-800">HashMap</strong> for O(1) key-to-node lookup.</li>
+                                    <li>A <strong class="text-slate-800">Doubly Linked List</strong> to maintain the order of use. The head is the most-recently-used, the tail is the least-recently-used.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Get Operation:</strong> Use the map to find the node. If found, move this node to the head of the list and return its value.</li>
+                            <li><strong>Put Operation:</strong>
+                                <ul class="list-disc list-inside ml-4 mt-1">
+                                    <li>If key exists, update its value and move the node to the head.</li>
+                                    <li>If new key: create a new node, add it to the head. If capacity is exceeded, remove the tail node from both the list and the map.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </div>
+                    <div>
+                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+<pre><code class="language-cpp">
+#include &lt;unordered_map&gt;
+#include &lt;list&gt;
+
+class LRUCache {
+private:
+    int capacity;
+    // list of {key, value} pairs
+    std::list&lt;std::pair&lt;int, int&gt;&gt; items; 
+    // map from key to iterator in the list
+    std::unordered_map&lt;int, std::list&lt;std::pair&lt;int, int&gt;&gt;::iterator&gt; cache;
+
+public:
+    LRUCache(int capacity) : capacity(capacity) {}
+    
+    int get(int key) {
+        if (cache.find(key) == cache.end()) {
+            return -1;
+        }
+        // Move the accessed item to the front of the list (most recently used)
+        items.splice(items.begin(), items, cache[key]);
+        return cache[key]->second;
+    }
+    
+    void put(int key, int value) {
+        if (cache.find(key) != cache.end()) {
+            // Key exists, update value and move to front
+            cache[key]->second = value;
+            items.splice(items.begin(), items, cache[key]);
+            return;
+        }
+        
+        if (items.size() == capacity) {
+            // Cache is full, evict the least recently used item (the one at the back)
+            int key_to_del = items.back().first;
+            items.pop_back();
+            cache.erase(key_to_del);
+        }
+        
+        // Insert new item at the front
+        items.emplace_front(key, value);
+        cache[key] = items.begin();
+    }
+};
+</code></pre>
+                    </div>`,
+        },
+        "n-queens": {
+          title: "N-Queens",
+          content: `
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Careful Planner</h4>
+                        <p class="text-slate-600">Imagine placing items in a grid, one row at a time. For each row, you try placing an item in the first column. You then ask recursively, "Can a valid arrangement be completed from here?" If the answer is no (you hit a dead end), you backtrack, remove the item, and try the next column in the same row. This "Choose, Explore, Unchoose" pattern is the heart of backtracking.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                            <li>Write a recursive function, say <code class="bg-slate-200 text-sm p-1 rounded">solve(row)</code>.</li>
+                            <li><strong>Base Case:</strong> If <code class="bg-slate-200 text-sm p-1 rounded">row == N</code>, you have successfully placed N queens. Add the current board configuration to your list of solutions.</li>
+                            <li><strong>Recursive Step:</strong> For the current <code class="bg-slate-200 text-sm p-1 rounded">row</code>, iterate through each <code class="bg-slate-200 text-sm p-1 rounded">col</code> from 0 to N-1.
+                                <ul class="list-disc list-inside ml-4 mt-1">
+                                    <li>Check if placing a queen at <code class="bg-slate-200 text-sm p-1 rounded">(row, col)</code> is "safe" (not attacked by queens in previous rows).</li>
+                                    <li>If safe: <strong>(Choose)</strong> Place a queen.</li>
+                                    <li><strong>(Explore)</strong> Call <code class="bg-slate-200 text-sm p-1 rounded">solve(row + 1)</code>.</li>
+                                    <li><strong>(Unchoose)</strong> Backtrack by removing the queen, allowing you to try the next column.</li>
+                                </ul>
+                            </li>
+                            <li>To check safety efficiently, use helper sets or arrays to track occupied columns and diagonals.</li>
+                        </ol>
+                    </div>
+                    <div>
+                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+<pre><code class="language-cpp">
+#include &lt;vector&gt;
+#include &lt;string&gt;
+
+class Solution {
+public:
+    std::vector&lt;std::vector&lt;std::string&gt;&gt; solveNQueens(int n) {
+        std::vector&lt;std::vector&lt;std::string&gt;&gt; result;
+        std::vector&lt;std::string&gt; board(n, std::string(n, '.'));
+        backtrack(result, board, 0, n);
+        return result;
+    }
+
+private:
+    void backtrack(std::vector&lt;std::vector&lt;std::string&gt;&gt;& res, 
+                   std::vector&lt;std::string&gt;& board, int row, int n) {
+        if (row == n) {
+            res.push_back(board);
+            return;
+        }
+        
+        for (int col = 0; col < n; ++col) {
+            if (isSafe(board, row, col, n)) {
+                board[row][col] = 'Q';
+                backtrack(res, board, row + 1, n);
+                board[row][col] = '.'; // Backtrack
+            }
+        }
+    }
+    
+    bool isSafe(const std::vector&lt;std::string&gt;& board, int row, int col, int n) {
+        // Check column
+        for (int i = 0; i < row; ++i) {
+            if (board[i][col] == 'Q') return false;
+        }
+        // Check upper-left diagonal
+        for (int i = row, j = col; i >= 0 && j >= 0; --i, --j) {
+            if (board[i][j] == 'Q') return false;
+        }
+        // Check upper-right diagonal
+        for (int i = row, j = col; i >= 0 && j < n; --i, ++j) {
+            if (board[i][j] == 'Q') return false;
+        }
+        return true;
+    }
+};
+</code></pre>
+                    </div>`,
+        },
+        "coin-change": {
+          title: "Coin Change",
+          content: `
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">The Analogy: The Efficient Cashier</h4>
+                        <p class="text-slate-600">You need to give change for a specific amount. You have different coin denominations. What's the fewest number of coins you can use? A dynamic programming approach is like building a cheat sheet. You first figure out the fewest coins for 1 cent, then 2 cents, then 3 cents, and so on. To figure out the answer for 10 cents, you can look at your sheet and ask: "What's better? The answer for 9 cents + a 1-cent coin, or the answer for 5 cents + a 5-cent coin, or the answer for 0 cents + a 10-cent coin?" You use your previous work to solve the bigger problem.</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-lg text-slate-700 mb-2">How to Approach It (Bottom-Up DP)</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-slate-600">
+                            <li>Create a DP array, let's call it <code class="bg-slate-200 text-sm p-1 rounded">dp</code>, of size <code class="bg-slate-200 text-sm p-1 rounded">amount + 1</code>. <code class="bg-slate-200 text-sm p-1 rounded">dp[i]</code> will store the minimum number of coins to make amount <code class="bg-slate-200 text-sm p-1 rounded">i</code>.</li>
+                            <li>Initialize all values in <code class="bg-slate-200 text-sm p-1 rounded">dp</code> to a large number (like <code class="bg-slate-200 text-sm p-1 rounded">amount + 1</code>) to signify that these amounts are not yet reachable. Set <code class="bg-slate-200 text-sm p-1 rounded">dp[0] = 0</code>, as 0 coins are needed to make amount 0.</li>
+                            <li>Loop through each amount <code class="bg-slate-200 text-sm p-1 rounded">i</code> from 1 to <code class="bg-slate-200 text-sm p-1 rounded">amount</code>.
+                                <ul class="list-disc list-inside ml-4 mt-1">
+                                    <li>Inside this loop, loop through each available <code class="bg-slate-200 text-sm p-1 rounded">coin</code>.</li>
+                                    <li>If a <code class="bg-slate-200 text-sm p-1 rounded">coin</code> is less than or equal to the current amount <code class="bg-slate-200 text-sm p-1 rounded">i</code>, it means we can potentially use this coin.</li>
+                                    <li>The number of coins would be <code class="bg-slate-200 text-sm p-1 rounded">1 + dp[i - coin]</code>. We update <code class="bg-slate-200 text-sm p-1 rounded">dp[i]</code> to be the minimum of its current value and this new value.</li>
+                                </ul>
+                            </li>
+                            <li>The final answer is <code class="bg-slate-200 text-sm p-1 rounded">dp[amount]</code>. If it's still the large number we initialized with, the amount is unreachable.</li>
+                        </ol>
+                    </div>
+                    <div>
+                         <h4 class="font-semibold text-lg text-slate-700 mb-2">The Code (C++)</h4>
+<pre><code class="language-cpp">
+#include &lt;vector&gt;
+#include &lt;algorithm&gt;
+
+class Solution {
+public:
+    int coinChange(std::vector&lt;int&gt;& coins, int amount) {
+        // dp[i] will be storing the minimum number of coins required for amount i
+        std::vector&lt;int&gt; dp(amount + 1, amount + 1);
+        dp[0] = 0;
+        
+        for (int i = 1; i <= amount; ++i) {
+            for (int coin : coins) {
+                if (i - coin >= 0) {
+                    dp[i] = std::min(dp[i], 1 + dp[i - coin]);
+                }
+            }
+        }
+        
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+};
+</code></pre>
+                    </div>`,
+        },
+      };
+
+      const dsaData = [
+        {
+          id: "arrays",
+          title: "Arrays & Patterns",
+          priority: 5,
+          icon: "M3 5a2 2 0 012-2h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5z",
+        },
+        {
+          id: "strings",
+          title: "Strings & Algorithms",
+          priority: 5,
+          icon: "M4.5 12.75l6 6 9-13.5",
+        },
+        {
+          id: "linked-lists",
+          title: "Linked Lists",
+          priority: 5,
+          icon: "M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244",
+        },
+        {
+          id: "stacks-queues",
+          title: "Stacks & Queues",
+          priority: 4,
+          icon: "M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5",
+        },
+        {
+          id: "trees-tries",
+          title: "Trees & Tries",
+          priority: 4,
+          icon: "M9.594 3.94c.09-.542.56-1.008 1.11-1.212l2.29-.815a.5.5 0 01.622.392l.815 2.29a.5.5 0 01-.392.622l-2.29.815a1.5 1.5 0 01-1.824-1.11zM15 12a3 3 0 11-6 0 3 3 0 016 0zM8.03 9.97a1.5 1.5 0 01-1.824-1.11l-.815-2.29a.5.5 0 01.392-.622l2.29-.815a.5.5 0 01.622.392l.815 2.29a1.5 1.5 0 01-1.11 1.824l-2.29.815z",
+        },
+        {
+          id: "graphs",
+          title: "Graphs",
+          priority: 4,
+          icon: "M10.5 6a7.5 7.5 0 100 15 7.5 7.5 0 000-15zM10.5 21a7.5 7.5 0 100-15 7.5 7.5 0 000 15z",
+        },
+        {
+          id: "heaps",
+          title: "Heaps & Priority Queues",
+          priority: 3,
+          icon: "M3 4.5h14.25M3 9h14.25m-14.25 4.5h14.25",
+        },
+        {
+          id: "hashing",
+          title: "Hashing / Hash Maps",
+          priority: 3,
+          icon: "M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.773 4.773zM21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+        },
+        {
+          id: "sorting-searching",
+          title: "Sorting & Searching",
+          priority: 3,
+          icon: "M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5",
+        },
+        {
+          id: "recursion",
+          title: "Recursion & Backtracking",
+          priority: 3,
+          icon: "M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.092 1.21-.138 2.43-.138 3.662v.114M19.5 12a9 9 0 11-18 0 9 9 0 0118 0z",
+        },
+        {
+          id: "dp",
+          title: "Dynamic Programming",
+          priority: 3.5,
+          icon: "M9 17.25v1.007a3 3 0 01-.375 1.437l-1.5 2.25c-.29.434-.86.586-1.314.33a3.002 3.002 0 01-1.437-2.107V11.25M15 17.25v1.007a3 3 0 00.375 1.437l1.5 2.25c.29.434.86.586 1.314.33a3.002 3.002 0 001.437-2.107V11.25",
+        },
+        {
+          id: "bit-manipulation",
+          title: "Bit Manipulation",
+          priority: 2,
+          icon: "M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+        },
+      ];
+
+      const contentData = {
+        arrays: {
+          title: "Arrays & Patterns",
+          description: `Arrays are the most fundamental data structure, offering constant-time O(1) access but linear-time O(n) insertion and deletion. Mastering patterns like Two-Pointers and Sliding Window is crucial for optimizing brute-force solutions.`,
+          problems: ["two-sum", "max-subarray"],
+        },
+        strings: {
+          title: "Strings & Algorithms",
+          description:
+            "Strings are immutable sequences of characters. Problems often overlap with array patterns. Key concepts include palindrome checks, anagrams, and efficient substring searching with algorithms like KMP or Rabin-Karp.",
+          problems: ["valid-parentheses"],
+        },
+        "linked-lists": {
+          title: "Linked Lists",
+          description: `Linked Lists excel at O(1) insertions and deletions at their ends, but suffer from O(n) access time. Pointer manipulation is key. The "fast & slow pointer" technique is a versatile pattern for cycle detection and finding the middle.`,
+          problems: ["reverse-linked-list"],
+        },
+        "stacks-queues": {
+          title: "Stacks & Queues",
+          description: `Stacks (Last-In, First-Out) and Queues (First-In, First-Out) are abstract data types. Stacks are perfect for parsing and backtracking (DFS), while Queues are ideal for level-order traversals (BFS) and managing tasks.`,
+          problems: ["valid-parentheses"],
+        },
+        "trees-tries": {
+          title: "Trees & Tries",
+          description: `Trees represent hierarchical data. Binary Search Trees (BSTs) provide efficient O(log n) searching. Tries are specialized trees for ultra-fast prefix-based string searches, like in autocomplete features.
+                    <div class="mermaid mt-4 p-4 bg-sky-50 rounded-lg">
+graph TD
+    A[Root] --> B[Left Child]
+    A --> C[Right Child]
+    B --> D[L-L]
+    B --> E[L-R]
+    C --> F[R-L]
+                    </div>`,
+          problems: ["max-depth-tree"],
+        },
+        graphs: {
+          title: "Graphs",
+          description: `Graphs model networks of interconnected nodes. Traversal (DFS/BFS) is fundamental. Key problems include finding shortest paths (Dijkstra's), detecting cycles, and ordering tasks with dependencies (Topological Sort).
+                <div class="mermaid mt-4 p-4 bg-sky-50 rounded-lg">
+graph LR
+    A --- B
+    B-->C
+    C-->A
+    C-->D
+</div>`,
+          problems: ["num-islands"],
+        },
+        heaps: {
+          title: "Heaps & Priority Queues",
+          description:
+            'Heaps are tree-based structures that implement Priority Queues, always providing O(1) access to the min or max element. They are essential for problems involving ordering, like finding the "top K" items or scheduling by priority.',
+          problems: ["kth-largest"],
+        },
+        hashing: {
+          title: "Hashing / Hash Maps",
+          description: `Hashing provides average O(1) time for lookups, insertions, and deletions by mapping keys to array indices. It's the ultimate tool for trading memory for time, forming the basis for caches, frequency counters, and efficient lookups.`,
+          problems: ["two-sum", "lru-cache"],
+        },
+        "sorting-searching": {
+          title: "Sorting & Searching",
+          description: `Understanding the trade-offs between sorting algorithms (e.g., Quick Sort's speed vs. Merge Sort's stability) is key. Binary Search provides powerful O(log n) searching on sorted data and is a foundational divide-and-conquer algorithm.`,
+          problems: [],
+        },
+        recursion: {
+          title: "Recursion & Backtracking",
+          description: `Recursion solves problems by breaking them into smaller, self-similar versions. Backtracking is a recursive technique for exploring all possible solutions to a problem, pruning paths that cannot lead to a valid solution. It's key for puzzles like N-Queens and Sudoku.`,
+          problems: ["n-queens"],
+        },
+        dp: {
+          title: "Dynamic Programming",
+          description: `DP solves complex problems by breaking them into overlapping subproblems and storing their solutions to avoid re-computation. It's a powerful optimization technique for problems asking for the "optimal" (min, max, longest) solution.`,
+          problems: ["coin-change"],
+        },
+        "bit-manipulation": {
+          title: "Bit Manipulation",
+          description: `Directly manipulating the binary representation of numbers can lead to highly efficient and clever solutions for a niche set of problems, such as finding unique elements, checking for powers of two, or managing flags in a single integer.`,
+          problems: [],
+        },
+      };
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const sidebarNav = document
+          .getElementById("sidebar-nav")
+          .querySelector("ul");
+        const contentArea = document.getElementById("content-area");
+        const modal = document.getElementById("solution-modal");
+        const modalTitle = document.getElementById("modal-title");
+        const modalBody = document.getElementById("modal-body");
+        const modalCloseBtn = document.getElementById("modal-close-btn");
+
+        function openModal(problemId) {
+          const problem = problemSolutions[problemId];
+          if (problem) {
+            modalTitle.textContent = problem.title;
+            modalBody.innerHTML = problem.content;
+            modal.classList.add("active");
+          }
+        }
+
+        function closeModal() {
+          modal.classList.remove("active");
+        }
+
+        contentArea.addEventListener("click", (e) => {
+          const button = e.target.closest(".problem-btn");
+          if (button) {
+            const problemId = button.dataset.problemId;
+            openModal(problemId);
+          }
+        });
+
+        modalCloseBtn.addEventListener("click", closeModal);
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) closeModal();
+        });
+
+        function showContent(id) {
+          const currentActive = contentArea.querySelector(".active");
+          if (currentActive) currentActive.classList.remove("active");
+
+          const newActive = document.getElementById(id);
+          if (newActive) {
+            newActive.classList.add("active");
+            const mermaidElements = newActive.querySelectorAll(".mermaid");
+            if (mermaidElements.length > 0) {
+              mermaid.run({ nodes: mermaidElements });
+            }
+          }
+
+          document.querySelectorAll(".nav-link").forEach((link) => {
+            link.classList.toggle("active", link.dataset.target === id);
+          });
+        }
+
+        sidebarNav.addEventListener("click", (e) => {
+          const link = e.target.closest(".nav-link");
+          if (link) {
+            e.preventDefault();
+            const id = link.dataset.target;
+            showContent(id);
+          }
+        });
+
+        dsaData.forEach((topic) => {
+          // Populate sidebar
+          const li = document.createElement("li");
+          li.innerHTML = `
+                    <a href="#" data-target="${topic.id}" class="nav-link flex items-center p-3 rounded-md text-slate-700 hover:bg-sky-100 transition duration-150 ease-in-out">
+                        <svg class="w-5 h-5 mr-3 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="${topic.icon}"></path></svg>
+                        <span>${topic.title}</span>
+                    </a>`;
+          sidebarNav.appendChild(li);
+
+          // Populate content area
+          const data = contentData[topic.id];
+          const contentDiv = document.createElement("div");
+          contentDiv.id = topic.id;
+          contentDiv.className = "content-section";
+
+          let problemsHtml = data.problems
+            .map((problemId) => {
+              const problem = problemSolutions[problemId];
+              return `<button data-problem-id="${problemId}" class="problem-btn w-full bg-white hover:bg-slate-50 p-4 rounded-lg shadow-sm border border-slate-200 text-left">
+                                <h4 class="font-semibold text-sky-700">${problem.title}</h4>
+                                <p class="text-sm text-slate-500 mt-1">View approach & C++ solution</p>
+                            </button>`;
+            })
+            .join("");
+
+          contentDiv.innerHTML = `
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="text-3xl font-bold text-slate-800 mb-2">${data.title}</h3>
+                        <p class="text-slate-600 leading-relaxed mb-6">${data.description}</p>
+                        ${problemsHtml.length > 0 ? `<h4 class="text-xl font-bold text-slate-700 mb-4 border-t pt-6">Must-Know Problems</h4><div class="grid md:grid-cols-2 gap-4">${problemsHtml}</div>` : ""}
+                    </div>
+                `;
+          contentArea.appendChild(contentDiv);
+        });
+
+        showContent(dsaData[0].id);
+
+        const priorityLabels = dsaData.map((d) => d.title);
+        const priorityValues = dsaData.map((d) => d.priority);
+        const bgColors = priorityValues.map((p) =>
+          p >= 5
+            ? "rgba(2, 132, 199, 0.7)"
+            : p >= 4
+              ? "rgba(14, 165, 233, 0.7)"
+              : "rgba(56, 189, 248, 0.7)",
+        );
+        const borderColors = priorityValues.map((p) =>
+          p >= 5
+            ? "rgba(2, 132, 199, 1)"
+            : p >= 4
+              ? "rgba(14, 165, 233, 1)"
+              : "rgba(56, 189, 248, 1)",
+        );
+
+        const ctx = document.getElementById("priorityChart").getContext("2d");
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: priorityLabels,
+            datasets: [
+              {
+                label: "Study Priority",
+                data: priorityValues,
+                backgroundColor: bgColors,
+                borderColor: borderColors,
+                borderWidth: 1,
+                borderRadius: 4,
+              },
+            ],
+          },
+          options: {
+            indexAxis: "y",
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                beginAtZero: true,
+                max: 5.5,
+                grid: { color: "rgba(203, 213, 225, 0.5)" },
+              },
+              y: { grid: { display: false } },
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: "#0f172a",
+                titleFont: { size: 14 },
+                bodyFont: { size: 12 },
+                padding: 12,
+                cornerRadius: 4,
+              },
+            },
+            onClick: (e, elements) => {
+              if (elements.length > 0) {
+                const topicId = dsaData[elements[0].index].id;
+                showContent(topicId);
+                document
+                  .getElementById(topicId)
+                  .scrollIntoView({ behavior: "smooth", block: "start" });
+              }
+            },
+          },
+        });
+      });
+    </script>
+  </body>
+</html>
