@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aptitude Prep Toolkit for Mass Recruiters</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The SPA is designed as an interactive toolkit with a tabbed/navigated interface for four main sections: 'Company Deep Dive', 'Aptitude Arsenal', 'Specialized Skills', and 'Study Plan'. This task-oriented structure was chosen over a linear report layout because students preparing for placements need to quickly access specific information (e.g., a single company's pattern or a specific topic's tricks) rather than reading sequentially. This design facilitates targeted learning and quick reference, improving usability. -->
+    <!-- Visualization & Content Choices: 1. Company Patterns (Goal: Compare): Presented via interactive buttons that dynamically update a content area and a Chart.js donut chart showing time distribution per section. This provides focused, at-a-glance comparison. 2. Aptitude Tricks (Goal: Organize/Inform): A nested accordion using HTML/JS to break down dense information by skill and topic, preventing overload. 3. Study Plan (Goal: Organize): A simple accordion to present the 4-week plan in a digestible, step-by-step format. All diagrams and icons are built with HTML/CSS/Unicode to avoid SVG/images. Library: Chart.js (Canvas). -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+      }
+      .active-nav {
+        color: #1e40af;
+        border-bottom-color: #1e40af;
+      }
+      .inactive-nav {
+        border-bottom-color: transparent;
+      }
+      .company-btn-active {
+        background-color: #1e40af;
+        color: white;
+      }
+      .chart-container {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        height: 300px;
+        max-height: 350px;
+      }
+      @media (min-width: 768px) {
+        .chart-container {
+          height: 350px;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 text-gray-800">
+    <div id="app" class="container mx-auto p-4 md:p-8">
+      <header class="text-center mb-8">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-900">
+          The Mass Recruiter Aptitude Blueprint
+        </h1>
+        <p class="text-lg text-gray-600 mt-2">
+          Your interactive guide to ace the placement season.
+        </p>
+      </header>
+
+      <nav class="mb-8 border-b border-gray-200">
+        <ul
+          class="flex flex-wrap justify-center -mb-px text-sm font-medium text-center"
+        >
+          <li class="mr-2">
+            <button
+              class="nav-link inline-block p-4 border-b-2 rounded-t-lg transition-colors duration-300"
+              data-view="companies"
+            >
+              🏢 Company Deep Dive
+            </button>
+          </li>
+          <li class="mr-2">
+            <button
+              class="nav-link inline-block p-4 border-b-2 rounded-t-lg transition-colors duration-300"
+              data-view="arsenal"
+            >
+              🎯 Aptitude Arsenal
+            </button>
+          </li>
+          <li class="mr-2">
+            <button
+              class="nav-link inline-block p-4 border-b-2 rounded-t-lg transition-colors duration-300"
+              data-view="special"
+            >
+              ✨ Specialized Skills
+            </button>
+          </li>
+          <li>
+            <button
+              class="nav-link inline-block p-4 border-b-2 rounded-t-lg transition-colors duration-300"
+              data-view="plan"
+            >
+              🗓️ 4-Week Plan
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <main id="main-content"></main>
+    </div>
+
+    <script>
+      const appData = {
+        companies: {
+          tcs: {
+            name: "TCS",
+            assessmentName: "NQT (Foundation + Advanced)",
+            totalDuration: 190,
+            negativeMarking: "No",
+            sections: [
+              {
+                name: "Foundation: Numerical Ability",
+                questions: 20,
+                duration: 25,
+              },
+              {
+                name: "Foundation: Verbal Ability",
+                questions: 25,
+                duration: 25,
+              },
+              {
+                name: "Foundation: Reasoning Ability",
+                questions: 20,
+                duration: 25,
+              },
+              {
+                name: "Advanced: Quant & Reasoning",
+                questions: 15,
+                duration: 25,
+              },
+              { name: "Advanced: Coding", questions: 3, duration: 90 },
+            ],
+            strategy:
+              "The test environment is extremely strict with a 'no revisit' policy for questions, demanding high concentration. The Foundation section is a gateway, but the Advanced section is crucial for top roles. Time management within each section's fixed timer is key.",
+          },
+          accenture: {
+            name: "Accenture",
+            assessmentName: "Cognitive & Technical, Coding, Communication",
+            totalDuration: "~155-160",
+            negativeMarking: "No",
+            sections: [
+              { name: "Cognitive & Technical", questions: 90, duration: 90 },
+              { name: "Coding", questions: 2, duration: 45 },
+              { name: "Communication", questions: 0, duration: 25 },
+            ],
+            strategy:
+              "A multi-stage gauntlet where the initial Cognitive & Technical assessment is a major elimination round. Success requires a broad skillset covering logic, verbal, pseudocode, and fundamental IT concepts. The Pseudocode section is a known hurdle requiring dedicated practice.",
+          },
+          wipro: {
+            name: "Wipro",
+            assessmentName: "Elite National Talent Hunt (NLTH)",
+            totalDuration: 128,
+            negativeMarking: "No",
+            sections: [
+              {
+                name: "Aptitude (Quant, Logical, Verbal)",
+                questions: 48,
+                duration: 48,
+              },
+              { name: "Written Communication", questions: 1, duration: 20 },
+              { name: "Online Programming", questions: 2, duration: 60 },
+            ],
+            strategy:
+              "The test is adaptive, meaning question difficulty changes based on your performance. Accuracy is paramount. The shared 48-minute timer for the three aptitude sections offers flexibility but requires disciplined time allocation. Tackle your strongest section first to save time.",
+          },
+          capgemini: {
+            name: "Capgemini",
+            assessmentName: "Exceller Assessment",
+            totalDuration: "~175",
+            negativeMarking: "No",
+            sections: [
+              { name: "Technical Test", questions: 40, duration: 40 },
+              { name: "Essay Writing", questions: 1, duration: 30 },
+              { name: "Game-Based Aptitude", questions: 4, duration: 30 },
+              { name: "Spoken English", questions: 30, duration: 30 },
+              { name: "Coding", questions: 2, duration: 45 },
+            ],
+            strategy:
+              "A highly innovative process that replaces traditional quant/logical sections with game-based aptitude. Preparation must focus on cognitive skills (logic puzzles, memory games) rather than math problems. Strong CS fundamentals are non-negotiable for the Technical Test.",
+          },
+          infosys: {
+            name: "Infosys",
+            assessmentName: "Online Test",
+            totalDuration: 120,
+            negativeMarking: "No",
+            sections: [
+              { name: "Reasoning Ability", questions: 15, duration: 25 },
+              {
+                name: "Technical (Quant) Ability",
+                questions: 10,
+                duration: 35,
+              },
+              { name: "Verbal Ability", questions: 20, duration: 20 },
+              { name: "Pseudocode", questions: 5, duration: 10 },
+              { name: "Numerical Puzzle", questions: 4, duration: 10 },
+            ],
+            strategy:
+              "A comprehensive test with strict sectional timers. The Reasoning section is often the most challenging. The Pseudocode and Numerical Puzzle sections are fast-paced and test quick logical thinking over memorized formulas. Time management is critical.",
+          },
+        },
+        arsenal: {
+          quantitative: {
+            title: "Quantitative Ability",
+            icon: "📊",
+            topics: [
+              {
+                name: "Time and Work",
+                tricks: [
+                  {
+                    variation: "Basic 'A and B' Problems",
+                    technique:
+                      "Use the LCM Method. Assume Total Work = LCM of days. This avoids fractions and speeds up calculation. Eg: A=10d, B=15d. Work=LCM(10,15)=30 units. A's rate=3, B's rate=2. Together=30/5=6 days.",
+                  },
+                  {
+                    variation: "Efficiency Comparison",
+                    technique:
+                      "Ratio of Efficiency is the inverse of the Ratio of Time. If A is twice as efficient as B (E_A:E_B = 2:1), then the time they take is in the ratio T_A:T_B = 1:2.",
+                  },
+                  {
+                    variation: "Men-Days-Hours Formula",
+                    technique:
+                      "Use the universal formula M1*D1*H1/W1 = M2*D2*H2/W2. If work (W) is constant, it simplifies to M1*D1*H1 = M2*D2*H2.",
+                  },
+                  {
+                    variation: "Pipes and Cisterns",
+                    technique:
+                      "Treat it as a Time & Work problem with negative efficiency. Inlet pipes have positive work rate, while outlet/leak pipes have a negative work rate. The LCM method works perfectly.",
+                  },
+                  {
+                    variation: "Alternate Days",
+                    technique:
+                      "Use the Cycle Method. Calculate the work done in one cycle (e.g., 2 days for A and B working alternately). Divide total work by cycle work to find the number of cycles, then calculate the total days.",
+                  },
+                ],
+              },
+              {
+                name: "Percentages, Profit & Loss",
+                tricks: [
+                  {
+                    variation: "Successive Percentage Change",
+                    technique:
+                      "Use the formula A + B + (AB/100). Use a positive sign for increase and a negative sign for decrease. Eg: +20% then -10% => 20 - 10 + (20*-10)/100 = 8% net increase.",
+                  },
+                  {
+                    variation: "Dishonest Dealer (False Weight)",
+                    technique:
+                      "Use the formula: Gain % = [Error / (True Value - Error)] * 100. Eg: Uses 900gm for 1kg. Error=100gm. Gain% = [100 / (1000-100)]*100 = 11.11%.",
+                  },
+                  {
+                    variation: "Two Items Sold at Same SP",
+                    technique:
+                      "If one is sold at x% profit and the other at x% loss, there is always a net loss. Use the direct formula: Loss % = (x^2 / 100).",
+                  },
+                  {
+                    variation: "CP of x articles = SP of y articles",
+                    technique:
+                      "Use the formula: Profit % = [(x - y) / y] * 100. If the result is negative, it's a loss.",
+                  },
+                ],
+              },
+            ],
+          },
+          logical: {
+            title: "Logical Reasoning",
+            icon: "🧠",
+            topics: [
+              {
+                name: "Syllogisms",
+                tricks: [
+                  {
+                    variation: "Standard Problems",
+                    technique:
+                      "The Venn Diagram method is the most reliable. Represent each statement as a relationship between circles (inside, overlapping, or separate). A conclusion is only true if it holds for ALL possible diagrams.",
+                  },
+                  {
+                    variation: "'Possibility' and 'Either/Or' Cases",
+                    technique:
+                      "A 'possibility' conclusion is true if you can draw at least one valid diagram that supports it. An 'Either/Or' case applies for two individually false conclusions that are complementary (e.g., 'Some A are B' and 'No A are B').",
+                  },
+                ],
+              },
+              {
+                name: "Seating Arrangements",
+                tricks: [
+                  {
+                    variation: "Linear Arrangements",
+                    technique:
+                      "Start with definite information (e.g., 'A is at an extreme end'). Draw dashes for seats and fill them in. Use relative clues ('B is second to the right of A') to complete the arrangement.",
+                  },
+                  {
+                    variation: "Circular Arrangements",
+                    technique:
+                      "Fix one person's position to create a reference point. Remember: when facing the center, 'left' is clockwise and 'right' is anti-clockwise. The opposite is true if facing outwards.",
+                  },
+                  {
+                    variation: "Matrix Puzzles",
+                    technique:
+                      "Use a table/matrix. List people in rows and parameters (company, city, etc.) in columns. Use ticks (✓) for positive matches and crosses (✗) for negative ones. Use elimination to solve.",
+                  },
+                ],
+              },
+              {
+                name: "Blood Relations",
+                tricks: [
+                  {
+                    variation: "Pointing/Introducing Statements",
+                    technique:
+                      "Work backwards from the pronoun 'my'. Start with yourself and trace the relationship step-by-step. Eg: 'son of the only son of my mother' -> my son.",
+                  },
+                  {
+                    variation: "Coded Relations (A+B, A*B)",
+                    technique:
+                      "Draw a family tree using symbols (+ for male, - for female, | for parent-child, = for couple). Do not solve it mentally. The diagram makes the relationships clear.",
+                  },
+                ],
+              },
+            ],
+          },
+          verbal: {
+            title: "Verbal Ability",
+            icon: "🗣️",
+            topics: [
+              {
+                name: "Error Spotting / Sentence Correction",
+                tricks: [
+                  {
+                    variation: "Finding the Error",
+                    technique:
+                      "Use the 'SCAN' method. Systematically check for: S-Subject-Verb Agreement, C-Comparisons & Conjunctions, A-Articles & Pronouns, N-No Parallelism & Modifier Placement. This is more reliable than what 'sounds right'.",
+                  },
+                ],
+              },
+              {
+                name: "Para Jumbles",
+                tricks: [
+                  {
+                    variation: "Arranging Sentences",
+                    technique:
+                      "First, find the opening sentence (a general, introductory statement). Then, look for mandatory pairs (e.g., noun-pronoun link, cause-effect). Finally, identify the closing sentence. This eliminates options quickly.",
+                  },
+                ],
+              },
+              {
+                name: "Reading Comprehension",
+                tricks: [
+                  {
+                    variation: "Answering Questions",
+                    technique:
+                      "Use the Question-First, Skim-Second approach. Read the questions first (not options) to know what to look for. Then, skim the passage to locate the answers. This makes reading an active search.",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+        special: [
+          {
+            name: "The Pseudocode Challenge (Accenture & Infosys)",
+            icon: "💻",
+            content:
+              "Pseudocode tests raw programming logic. The most effective way to solve these is with the 'Trace Table' technique. Create a table on your rough pad with a column for each variable. Go through the code line-by-line, updating the variable values in your table as they change. This manual simulation prevents mental errors, especially with loops and recursion.",
+          },
+          {
+            name: "Winning the Capgemini Games",
+            icon: "🎮",
+            content:
+              "This is a test of cognitive abilities, not gaming skills. The key is to understand the objective of each game. For example, the Motion Challenge tests strategic planning, so you should plan your moves before acting. The Grid Challenge tests working memory and multitasking. Practice with brain teasers, logic puzzles, and memory games to hone these underlying skills.",
+          },
+          {
+            name: "Acing Communication Rounds (Accenture & Wipro)",
+            icon: "🎤",
+            content:
+              "These are AI-proctored tests evaluating fluency, pronunciation, and clarity. The best preparation is to practice with a recorder. Record yourself reading articles or summarizing them, then listen back to find filler words ('um', 'ah') and pronunciation errors. During the test, use a good headset in a quiet room and speak slowly and clearly. Clarity is more important than speed.",
+          },
+        ],
+        plan: [
+          {
+            week: "Week 1: Foundation Building & Diagnostic",
+            details:
+              "Solidify concepts in core Quant and Logical Reasoning topics. Focus on understanding the fundamental methods (LCM, Venn diagrams). Take one full-length mock test of your top-priority company to identify your weak areas and establish a baseline score.",
+          },
+          {
+            week: "Week 2: Company-Specific Deep Dive",
+            details:
+              "Dedicate 1-2 days per target company. For Capgemini, practice game-based assessments. For Accenture/Infosys, focus heavily on Pseudocode. For TCS, practice advanced coding. Take at least one company-specific mock for each of your top 3 target companies.",
+          },
+          {
+            week: "Week 3: Speed Building & Accuracy",
+            details:
+              "Take topic-wise, timed quizzes for all sections. The goal is to apply the shortcuts and tricks from the 'Aptitude Arsenal' under time pressure. Aim to reduce your average time per question while maintaining over 85% accuracy.",
+          },
+          {
+            week: "Week 4: Full-Length Mocks & Final Revision",
+            details:
+              "Take at least two full-length mock tests for each target company. The most critical activity is analysis. Spend more time analyzing your mistakes than taking tests. Understand the 'why' behind each error (conceptual gap, calculation error, etc.) and revise that specific topic.",
+          },
+        ],
+      };
+
+      const mainContent = document.getElementById("main-content");
+      const navLinks = document.querySelectorAll(".nav-link");
+      let currentChart = null;
+
+      function clearContent() {
+        mainContent.innerHTML = "";
+      }
+
+      function renderCompaniesView(activeCompany = "tcs") {
+        clearContent();
+        const companyData = appData.companies;
+
+        const intro = `
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">Company Deep Dive</h2>
+                    <p class="mt-2 text-gray-600">Select a company to see a detailed breakdown of its assessment pattern, key strategies, and a visualization of the time allocation per section. Understanding these nuances is the first step to building a targeted preparation strategy.</p>
+                </div>
+            `;
+
+        const companyButtons = `
+                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                    ${Object.keys(companyData)
+                      .map(
+                        (key) => `
+                        <button class="company-btn py-2 px-4 rounded-full text-sm font-semibold transition-all duration-300 border-2 border-transparent ${key === activeCompany ? "company-btn-active" : "bg-white text-gray-700 hover:bg-gray-200"}" data-company="${key}">
+                            ${companyData[key].name}
+                        </button>
+                    `,
+                      )
+                      .join("")}
+                </div>
+            `;
+
+        const company = companyData[activeCompany];
+        const content = `
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-bold text-blue-800 mb-2">${company.name} - ${company.assessmentName}</h3>
+                            <div class="flex items-center text-sm text-gray-600 mb-4">
+                                <span class="mr-4"><strong>Total Duration:</strong> ${company.totalDuration} mins</span>
+                                <span><strong>Negative Marking:</strong> ${company.negativeMarking}</span>
+                            </div>
+                            <h4 class="font-semibold mb-2 text-gray-700">Section Breakdown:</h4>
+                            <ul class="list-disc list-inside space-y-2 text-gray-600">
+                                ${company.sections.map((s) => `<li><strong>${s.name}:</strong> ${s.questions > 0 ? `${s.questions}Q` : ""} in ${s.duration} mins</li>`).join("")}
+                            </ul>
+                            <h4 class="font-semibold mt-4 mb-2 text-gray-700">Key Strategy:</h4>
+                            <p class="text-gray-600">${company.strategy}</p>
+                        </div>
+                        <div class="flex flex-col items-center justify-center">
+                            <h4 class="font-semibold mb-2 text-gray-700 text-center">Time Allocation per Section</h4>
+                            <div class="chart-container">
+                                <canvas id="companyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+        mainContent.innerHTML = intro + companyButtons + content;
+        createCompanyChart(company);
+      }
+
+      function createCompanyChart(company) {
+        const ctx = document.getElementById("companyChart").getContext("2d");
+        if (currentChart) {
+          currentChart.destroy();
+        }
+        currentChart = new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels: company.sections.map((s) => s.name),
+            datasets: [
+              {
+                label: "Duration (mins)",
+                data: company.sections.map((s) => s.duration),
+                backgroundColor: [
+                  "#3B82F6",
+                  "#10B981",
+                  "#F59E0B",
+                  "#EF4444",
+                  "#8B5CF6",
+                  "#EC4899",
+                ],
+                borderColor: "#FFFFFF",
+                borderWidth: 2,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  font: { size: 10 },
+                  boxWidth: 15,
+                  padding: 15,
+                },
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    let label = context.label || "";
+                    if (label) {
+                      label += ": ";
+                    }
+                    if (context.parsed !== null) {
+                      label += context.parsed + " mins";
+                    }
+                    return label;
+                  },
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function renderArsenalView() {
+        clearContent();
+        const arsenalData = appData.arsenal;
+        const intro = `
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">Aptitude Arsenal</h2>
+                    <p class="mt-2 text-gray-600 max-w-3xl mx-auto">This is your strategic toolkit for mastering every question type. Each section breaks down high-frequency topics into specific variations and provides proven, time-saving tricks. Click on a skill, then a topic, to reveal the techniques.</p>
+                </div>
+            `;
+        const content = `
+                <div class="space-y-4">
+                    ${Object.values(arsenalData)
+                      .map(
+                        (skill) => `
+                        <div class="bg-white rounded-xl shadow-md">
+                            <button class="accordion-btn w-full p-4 text-left font-bold text-lg flex justify-between items-center text-gray-800 hover:bg-gray-100 rounded-xl transition-colors">
+                                <span>${skill.icon} ${skill.title}</span>
+                                <span class="transform transition-transform duration-300">▼</span>
+                            </button>
+                            <div class="accordion-content px-4 pb-2">
+                                <div class="border-t pt-4 space-y-3">
+                                ${skill.topics
+                                  .map(
+                                    (topic) => `
+                                    <div class="border rounded-lg">
+                                        <button class="accordion-btn w-full p-3 text-left font-semibold flex justify-between items-center text-gray-700 hover:bg-gray-50 rounded-lg">
+                                            <span>${topic.name}</span>
+                                            <span class="transform transition-transform duration-300 text-sm">▼</span>
+                                        </button>
+                                        <div class="accordion-content p-3 border-t">
+                                            <ul class="space-y-3 text-sm text-gray-600">
+                                            ${topic.tricks
+                                              .map(
+                                                (trick) => `
+                                                <li>
+                                                    <strong class="text-gray-800">${trick.variation}:</strong> ${trick.technique}
+                                                </li>
+                                            `,
+                                              )
+                                              .join("")}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                `,
+                                  )
+                                  .join("")}
+                                </div>
+                            </div>
+                        </div>
+                    `,
+                      )
+                      .join("")}
+                </div>
+            `;
+        mainContent.innerHTML = intro + content;
+      }
+
+      function renderSpecialView() {
+        clearContent();
+        const specialData = appData.special;
+        const intro = `
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">Specialized Skill Development</h2>
+                    <p class="mt-2 text-gray-600 max-w-3xl mx-auto">Modern recruitment goes beyond traditional aptitude. This section covers the non-traditional assessments that are increasingly becoming deciding factors. Mastering these skills is crucial for companies like Accenture, Capgemini, and Infosys.</p>
+                </div>
+            `;
+        const content = `
+                <div class="grid md:grid-cols-3 gap-6">
+                    ${specialData
+                      .map(
+                        (item) => `
+                        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                            <div class="text-3xl mb-3">${item.icon}</div>
+                            <h3 class="font-bold text-lg mb-2 text-gray-800">${item.name}</h3>
+                            <p class="text-gray-600 text-sm">${item.content}</p>
+                        </div>
+                    `,
+                      )
+                      .join("")}
+                </div>
+            `;
+        mainContent.innerHTML = intro + content;
+      }
+
+      function renderPlanView() {
+        clearContent();
+        const planData = appData.plan;
+        const intro = `
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">The Final Countdown: A 4-Week Plan</h2>
+                    <p class="mt-2 text-gray-600 max-w-3xl mx-auto">With one month to go, a structured plan is essential for comprehensive coverage and effective revision. Follow this week-by-week guide to build your skills methodically and peak at the right time for placement season.</p>
+                </div>
+            `;
+        const content = `
+                <div class="space-y-3 max-w-3xl mx-auto">
+                    ${planData
+                      .map(
+                        (item) => `
+                        <div class="bg-white rounded-xl shadow-md">
+                            <button class="accordion-btn w-full p-4 text-left font-bold text-lg flex justify-between items-center text-gray-800 hover:bg-gray-100 rounded-xl transition-colors">
+                                <span>${item.week}</span>
+                                <span class="transform transition-transform duration-300">▼</span>
+                            </button>
+                            <div class="accordion-content p-4 border-t">
+                                <p class="text-gray-600">${item.details}</p>
+                            </div>
+                        </div>
+                    `,
+                      )
+                      .join("")}
+                </div>
+            `;
+        mainContent.innerHTML = intro + content;
+      }
+
+      function handleNavigation(e) {
+        const target = e.target.closest(".nav-link");
+        if (!target) return;
+
+        const view = target.dataset.view;
+
+        navLinks.forEach((link) => {
+          link.classList.remove("active-nav");
+          link.classList.add("inactive-nav");
+        });
+        target.classList.add("active-nav");
+        target.classList.remove("inactive-nav");
+
+        switch (view) {
+          case "companies":
+            renderCompaniesView();
+            break;
+          case "arsenal":
+            renderArsenalView();
+            break;
+          case "special":
+            renderSpecialView();
+            break;
+          case "plan":
+            renderPlanView();
+            break;
+        }
+      }
+
+      function handleMainContentClick(e) {
+        const companyBtn = e.target.closest(".company-btn");
+        if (companyBtn) {
+          renderCompaniesView(companyBtn.dataset.company);
+        }
+
+        const accordionBtn = e.target.closest(".accordion-btn");
+        if (accordionBtn) {
+          accordionBtn.classList.toggle("active");
+          const content = accordionBtn.nextElementSibling;
+          const arrow = accordionBtn.querySelector("span:last-child");
+          if (content.style.maxHeight) {
+            content.style.maxHeight = null;
+            arrow.style.transform = "rotate(0deg)";
+          } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+            arrow.style.transform = "rotate(180deg)";
+          }
+        }
+      }
+
+      document.querySelector("nav").addEventListener("click", handleNavigation);
+      mainContent.addEventListener("click", handleMainContentClick);
+
+      document.querySelector('.nav-link[data-view="companies"]').click();
+    </script>
+  </body>
+</html>
