@@ -3,14 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Aptitude Prep Toolkit for Mass Recruiters</title>
+    <title>Aptitude Prep Toolkit with Gemini AI (Dark Mode)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Chosen Palette: Dark Mode Neutrals -->
     <!-- Application Structure Plan: The SPA is designed as an interactive toolkit with a tabbed/navigated interface for four main sections: 'Company Deep Dive', 'Aptitude Arsenal', 'Specialized Skills', and 'Study Plan'. This task-oriented structure was chosen over a linear report layout because students preparing for placements need to quickly access specific information (e.g., a single company's pattern or a specific topic's tricks) rather than reading sequentially. This design facilitates targeted learning and quick reference, improving usability. -->
     <!-- Visualization & Content Choices: 1. Company Patterns (Goal: Compare): Presented via interactive buttons that dynamically update a content area and a Chart.js donut chart showing time distribution per section. This provides focused, at-a-glance comparison. 2. Aptitude Tricks (Goal: Organize/Inform): A nested accordion using HTML/JS to break down dense information by skill and topic, preventing overload. 3. Study Plan (Goal: Organize): A simple accordion to present the 4-week plan in a digestible, step-by-step format. All diagrams and icons are built with HTML/CSS/Unicode to avoid SVG/images. Library: Chart.js (Canvas). -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
@@ -24,14 +24,14 @@
         transition: max-height 0.3s ease-out;
       }
       .active-nav {
-        color: #1e40af;
-        border-bottom-color: #1e40af;
+        color: #60a5fa;
+        border-bottom-color: #60a5fa;
       }
       .inactive-nav {
         border-bottom-color: transparent;
       }
       .company-btn-active {
-        background-color: #1e40af;
+        background-color: #2563eb;
         color: white;
       }
       .chart-container {
@@ -48,20 +48,66 @@
           height: 350px;
         }
       }
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 50;
+        opacity: 0;
+        visibility: hidden;
+        transition:
+          opacity 0.3s,
+          visibility 0.3s;
+      }
+      .modal-overlay.visible {
+        opacity: 1;
+        visibility: visible;
+      }
+      .modal-content {
+        background: #1f2937;
+        padding: 2rem;
+        border-radius: 0.75rem;
+        max-width: 90%;
+        width: 600px;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+      .loader {
+        border: 4px solid #4b5563;
+        border-top: 4px solid #3b82f6;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
     </style>
   </head>
-  <body class="bg-gray-50 text-gray-800">
+  <body class="bg-gray-900 text-gray-300">
     <div id="app" class="container mx-auto p-4 md:p-8">
       <header class="text-center mb-8">
-        <h1 class="text-3xl md:text-4xl font-bold text-gray-900">
+        <h1 class="text-3xl md:text-4xl font-bold text-white">
           The Mass Recruiter Aptitude Blueprint
         </h1>
-        <p class="text-lg text-gray-600 mt-2">
-          Your interactive guide to ace the placement season.
+        <p class="text-lg text-gray-400 mt-2">
+          Your AI-powered interactive guide to ace the placement season.
         </p>
       </header>
 
-      <nav class="mb-8 border-b border-gray-200">
+      <nav class="mb-8 border-b border-gray-700">
         <ul
           class="flex flex-wrap justify-center -mb-px text-sm font-medium text-center"
         >
@@ -94,13 +140,29 @@
               class="nav-link inline-block p-4 border-b-2 rounded-t-lg transition-colors duration-300"
               data-view="plan"
             >
-              🗓️ 4-Week Plan
+              🗓️ AI Study Plan
             </button>
           </li>
         </ul>
       </nav>
 
       <main id="main-content"></main>
+    </div>
+
+    <div id="modal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="flex justify-between items-center mb-4">
+          <h3 id="modal-title" class="text-xl font-bold text-white"></h3>
+          <button id="modal-close" class="text-gray-400 hover:text-white">
+            &times;
+          </button>
+        </div>
+        <div id="modal-body"></div>
+      </div>
+    </div>
+
+    <div id="global-loader" class="modal-overlay">
+      <div class="loader"></div>
     </div>
 
     <script>
@@ -377,33 +439,83 @@
               "These are AI-proctored tests evaluating fluency, pronunciation, and clarity. The best preparation is to practice with a recorder. Record yourself reading articles or summarizing them, then listen back to find filler words ('um', 'ah') and pronunciation errors. During the test, use a good headset in a quiet room and speak slowly and clearly. Clarity is more important than speed.",
           },
         ],
-        plan: [
-          {
-            week: "Week 1: Foundation Building & Diagnostic",
-            details:
-              "Solidify concepts in core Quant and Logical Reasoning topics. Focus on understanding the fundamental methods (LCM, Venn diagrams). Take one full-length mock test of your top-priority company to identify your weak areas and establish a baseline score.",
-          },
-          {
-            week: "Week 2: Company-Specific Deep Dive",
-            details:
-              "Dedicate 1-2 days per target company. For Capgemini, practice game-based assessments. For Accenture/Infosys, focus heavily on Pseudocode. For TCS, practice advanced coding. Take at least one company-specific mock for each of your top 3 target companies.",
-          },
-          {
-            week: "Week 3: Speed Building & Accuracy",
-            details:
-              "Take topic-wise, timed quizzes for all sections. The goal is to apply the shortcuts and tricks from the 'Aptitude Arsenal' under time pressure. Aim to reduce your average time per question while maintaining over 85% accuracy.",
-          },
-          {
-            week: "Week 4: Full-Length Mocks & Final Revision",
-            details:
-              "Take at least two full-length mock tests for each target company. The most critical activity is analysis. Spend more time analyzing your mistakes than taking tests. Understand the 'why' behind each error (conceptual gap, calculation error, etc.) and revise that specific topic.",
-          },
-        ],
+        plan: {
+          default: [
+            {
+              week: "Week 1: Foundation Building & Diagnostic",
+              details:
+                "Solidify concepts in core Quant and Logical Reasoning topics. Focus on understanding the fundamental methods (LCM, Venn diagrams). Take one full-length mock test of your top-priority company to identify your weak areas and establish a baseline score.",
+            },
+            {
+              week: "Week 2: Company-Specific Deep Dive",
+              details:
+                "Dedicate 1-2 days per target company. For Capgemini, practice game-based assessments. For Accenture/Infosys, focus heavily on Pseudocode. For TCS, practice advanced coding. Take at least one company-specific mock for each of your top 3 target companies.",
+            },
+            {
+              week: "Week 3: Speed Building & Accuracy",
+              details:
+                "Take topic-wise, timed quizzes for all sections. The goal is to apply the shortcuts and tricks from the 'Aptitude Arsenal' under time pressure. Aim to reduce your average time per question while maintaining over 85% accuracy.",
+            },
+            {
+              week: "Week 4: Full-Length Mocks & Final Revision",
+              details:
+                "Take at least two full-length mock tests for each target company. The most critical activity is analysis. Spend more time analyzing your mistakes than taking tests. Understand the 'why' behind each error (conceptual gap, calculation error, etc.) and revise that specific topic.",
+            },
+          ],
+        },
       };
 
       const mainContent = document.getElementById("main-content");
       const navLinks = document.querySelectorAll(".nav-link");
+      const modal = document.getElementById("modal");
+      const modalTitle = document.getElementById("modal-title");
+      const modalBody = document.getElementById("modal-body");
+      const modalClose = document.getElementById("modal-close");
+      const globalLoader = document.getElementById("global-loader");
       let currentChart = null;
+
+      function showLoader() {
+        globalLoader.classList.add("visible");
+      }
+      function hideLoader() {
+        globalLoader.classList.remove("visible");
+      }
+
+      async function callGemini(prompt) {
+        showLoader();
+        let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+        const payload = { contents: chatHistory };
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (!response.ok) {
+            throw new Error(`API call failed with status: ${response.status}`);
+          }
+          const result = await response.json();
+          if (
+            result.candidates &&
+            result.candidates.length > 0 &&
+            result.candidates[0].content &&
+            result.candidates[0].content.parts &&
+            result.candidates[0].content.parts.length > 0
+          ) {
+            return result.candidates[0].content.parts[0].text;
+          } else {
+            return "Sorry, I couldn't generate a response. The API returned an unexpected result.";
+          }
+        } catch (error) {
+          console.error("Gemini API call error:", error);
+          return "An error occurred while contacting the AI. Please try again later.";
+        } finally {
+          hideLoader();
+        }
+      }
 
       function clearContent() {
         mainContent.innerHTML = "";
@@ -415,8 +527,8 @@
 
         const intro = `
                 <div class="text-center mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800">Company Deep Dive</h2>
-                    <p class="mt-2 text-gray-600">Select a company to see a detailed breakdown of its assessment pattern, key strategies, and a visualization of the time allocation per section. Understanding these nuances is the first step to building a targeted preparation strategy.</p>
+                    <h2 class="text-2xl font-bold text-white">Company Deep Dive</h2>
+                    <p class="mt-2 text-gray-400">Select a company to see a detailed breakdown of its assessment pattern, key strategies, and a visualization of the time allocation per section. Understanding these nuances is the first step to building a targeted preparation strategy.</p>
                 </div>
             `;
 
@@ -425,7 +537,7 @@
                     ${Object.keys(companyData)
                       .map(
                         (key) => `
-                        <button class="company-btn py-2 px-4 rounded-full text-sm font-semibold transition-all duration-300 border-2 border-transparent ${key === activeCompany ? "company-btn-active" : "bg-white text-gray-700 hover:bg-gray-200"}" data-company="${key}">
+                        <button class="company-btn py-2 px-4 rounded-full text-sm font-semibold transition-all duration-300 border-2 border-transparent ${key === activeCompany ? "company-btn-active" : "bg-gray-700 text-gray-300 hover:bg-gray-600"}" data-company="${key}">
                             ${companyData[key].name}
                         </button>
                     `,
@@ -436,23 +548,26 @@
 
         const company = companyData[activeCompany];
         const content = `
-                <div class="bg-white p-6 rounded-xl shadow-md">
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
                     <div class="grid md:grid-cols-2 gap-8">
                         <div>
-                            <h3 class="text-xl font-bold text-blue-800 mb-2">${company.name} - ${company.assessmentName}</h3>
-                            <div class="flex items-center text-sm text-gray-600 mb-4">
+                            <h3 class="text-xl font-bold text-blue-400 mb-2">${company.name} - ${company.assessmentName}</h3>
+                            <div class="flex items-center text-sm text-gray-400 mb-4">
                                 <span class="mr-4"><strong>Total Duration:</strong> ${company.totalDuration} mins</span>
                                 <span><strong>Negative Marking:</strong> ${company.negativeMarking}</span>
                             </div>
-                            <h4 class="font-semibold mb-2 text-gray-700">Section Breakdown:</h4>
-                            <ul class="list-disc list-inside space-y-2 text-gray-600">
-                                ${company.sections.map((s) => `<li><strong>${s.name}:</strong> ${s.questions > 0 ? `${s.questions}Q` : ""} in ${s.duration} mins</li>`).join("")}
+                            <h4 class="font-semibold mb-2 text-gray-200">Section Breakdown:</h4>
+                            <ul class="list-disc list-inside space-y-2 text-gray-400">
+                                ${company.sections.map((s) => `<li><strong class="text-gray-300">${s.name}:</strong> ${s.questions > 0 ? `${s.questions}Q` : ""} in ${s.duration} mins</li>`).join("")}
                             </ul>
-                            <h4 class="font-semibold mt-4 mb-2 text-gray-700">Key Strategy:</h4>
-                            <p class="text-gray-600">${company.strategy}</p>
+                            <h4 class="font-semibold mt-4 mb-2 text-gray-200">Key Strategy:</h4>
+                            <p class="text-gray-400">${company.strategy}</p>
+                             <button data-company-name="${company.name}" class="generate-interview-btn mt-6 inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                                ✨ Generate Mock Interview Questions
+                            </button>
                         </div>
                         <div class="flex flex-col items-center justify-center">
-                            <h4 class="font-semibold mb-2 text-gray-700 text-center">Time Allocation per Section</h4>
+                            <h4 class="font-semibold mb-2 text-gray-200 text-center">Time Allocation per Section</h4>
                             <div class="chart-container">
                                 <canvas id="companyChart"></canvas>
                             </div>
@@ -486,8 +601,8 @@
                   "#8B5CF6",
                   "#EC4899",
                 ],
-                borderColor: "#FFFFFF",
-                borderWidth: 2,
+                borderColor: "#111827",
+                borderWidth: 3,
               },
             ],
           },
@@ -498,12 +613,15 @@
               legend: {
                 position: "bottom",
                 labels: {
+                  color: "#D1D5DB",
                   font: { size: 10 },
                   boxWidth: 15,
                   padding: 15,
                 },
               },
               tooltip: {
+                titleColor: "#FFFFFF",
+                bodyColor: "#D1D5DB",
                 callbacks: {
                   label: function (context) {
                     let label = context.label || "";
@@ -527,8 +645,8 @@
         const arsenalData = appData.arsenal;
         const intro = `
                 <div class="text-center mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800">Aptitude Arsenal</h2>
-                    <p class="mt-2 text-gray-600 max-w-3xl mx-auto">This is your strategic toolkit for mastering every question type. Each section breaks down high-frequency topics into specific variations and provides proven, time-saving tricks. Click on a skill, then a topic, to reveal the techniques.</p>
+                    <h2 class="text-2xl font-bold text-white">Aptitude Arsenal</h2>
+                    <p class="mt-2 text-gray-400 max-w-3xl mx-auto">This is your strategic toolkit for mastering every question type. Each section breaks down high-frequency topics into specific variations and provides proven, time-saving tricks. Click on a skill, then a topic, to reveal the techniques.</p>
                 </div>
             `;
         const content = `
@@ -536,28 +654,28 @@
                     ${Object.values(arsenalData)
                       .map(
                         (skill) => `
-                        <div class="bg-white rounded-xl shadow-md">
-                            <button class="accordion-btn w-full p-4 text-left font-bold text-lg flex justify-between items-center text-gray-800 hover:bg-gray-100 rounded-xl transition-colors">
+                        <div class="bg-gray-800 rounded-xl shadow-lg">
+                            <button class="accordion-btn w-full p-4 text-left font-bold text-lg flex justify-between items-center text-gray-200 hover:bg-gray-700 rounded-xl transition-colors">
                                 <span>${skill.icon} ${skill.title}</span>
                                 <span class="transform transition-transform duration-300">▼</span>
                             </button>
                             <div class="accordion-content px-4 pb-2">
-                                <div class="border-t pt-4 space-y-3">
+                                <div class="border-t border-gray-700 pt-4 space-y-3">
                                 ${skill.topics
                                   .map(
                                     (topic) => `
-                                    <div class="border rounded-lg">
-                                        <button class="accordion-btn w-full p-3 text-left font-semibold flex justify-between items-center text-gray-700 hover:bg-gray-50 rounded-lg">
+                                    <div class="border border-gray-700 rounded-lg">
+                                        <button class="accordion-btn w-full p-3 text-left font-semibold flex justify-between items-center text-gray-300 hover:bg-gray-700/50 rounded-lg">
                                             <span>${topic.name}</span>
                                             <span class="transform transition-transform duration-300 text-sm">▼</span>
                                         </button>
-                                        <div class="accordion-content p-3 border-t">
-                                            <ul class="space-y-3 text-sm text-gray-600">
+                                        <div class="accordion-content p-3 border-t border-gray-700">
+                                            <ul class="space-y-3 text-sm text-gray-400">
                                             ${topic.tricks
                                               .map(
                                                 (trick) => `
                                                 <li>
-                                                    <strong class="text-gray-800">${trick.variation}:</strong> ${trick.technique}
+                                                    <strong class="text-gray-200">${trick.variation}:</strong> ${trick.technique}
                                                 </li>
                                             `,
                                               )
@@ -584,8 +702,8 @@
         const specialData = appData.special;
         const intro = `
                 <div class="text-center mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800">Specialized Skill Development</h2>
-                    <p class="mt-2 text-gray-600 max-w-3xl mx-auto">Modern recruitment goes beyond traditional aptitude. This section covers the non-traditional assessments that are increasingly becoming deciding factors. Mastering these skills is crucial for companies like Accenture, Capgemini, and Infosys.</p>
+                    <h2 class="text-2xl font-bold text-white">Specialized Skill Development</h2>
+                    <p class="mt-2 text-gray-400 max-w-3xl mx-auto">Modern recruitment goes beyond traditional aptitude. This section covers the non-traditional assessments that are increasingly becoming deciding factors. Mastering these skills is crucial for companies like Accenture, Capgemini, and Infosys.</p>
                 </div>
             `;
         const content = `
@@ -593,10 +711,10 @@
                     ${specialData
                       .map(
                         (item) => `
-                        <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                        <div class="bg-gray-800 p-6 rounded-xl shadow-lg hover:shadow-blue-500/10 transition-shadow">
                             <div class="text-3xl mb-3">${item.icon}</div>
-                            <h3 class="font-bold text-lg mb-2 text-gray-800">${item.name}</h3>
-                            <p class="text-gray-600 text-sm">${item.content}</p>
+                            <h3 class="font-bold text-lg mb-2 text-gray-200">${item.name}</h3>
+                            <p class="text-gray-400 text-sm">${item.content}</p>
                         </div>
                     `,
                       )
@@ -606,27 +724,46 @@
         mainContent.innerHTML = intro + content;
       }
 
-      function renderPlanView() {
+      function renderPlanView(planContent = null) {
         clearContent();
-        const planData = appData.plan;
+        const planData = planContent ? planContent : appData.plan.default;
         const intro = `
                 <div class="text-center mb-8">
-                    <h2 class="text-2xl font-bold text-gray-800">The Final Countdown: A 4-Week Plan</h2>
-                    <p class="mt-2 text-gray-600 max-w-3xl mx-auto">With one month to go, a structured plan is essential for comprehensive coverage and effective revision. Follow this week-by-week guide to build your skills methodically and peak at the right time for placement season.</p>
+                    <h2 class="text-2xl font-bold text-white">AI-Powered Study Plan</h2>
+                    <p class="mt-2 text-gray-400 max-w-3xl mx-auto">Use the default 4-week plan, or create a personalized schedule. Enter your weak and strong topics, and our AI will generate a custom plan to help you focus your efforts where they matter most.</p>
                 </div>
             `;
+
+        const form = `
+                <div class="bg-gray-800 p-6 rounded-xl shadow-lg max-w-3xl mx-auto mb-8">
+                    <div class="grid md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="weak-topics" class="block text-sm font-medium leading-6 text-gray-300">My Weak Topics</label>
+                            <input type="text" id="weak-topics" class="mt-2 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" placeholder="e.g., Time and Work, Syllogisms">
+                        </div>
+                        <div>
+                            <label for="strong-topics" class="block text-sm font-medium leading-6 text-gray-300">My Strong Topics</label>
+                            <input type="text" id="strong-topics" class="mt-2 block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6" placeholder="e.g., Percentages, Reading Comp">
+                        </div>
+                    </div>
+                    <button id="generate-plan-btn" class="w-full inline-flex justify-center items-center gap-2 rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600">
+                        ✨ Create My Plan
+                    </button>
+                </div>
+            `;
+
         const content = `
-                <div class="space-y-3 max-w-3xl mx-auto">
+                <div id="plan-display" class="space-y-3 max-w-3xl mx-auto">
                     ${planData
                       .map(
                         (item) => `
-                        <div class="bg-white rounded-xl shadow-md">
-                            <button class="accordion-btn w-full p-4 text-left font-bold text-lg flex justify-between items-center text-gray-800 hover:bg-gray-100 rounded-xl transition-colors">
+                        <div class="bg-gray-800 rounded-xl shadow-lg">
+                            <button class="accordion-btn w-full p-4 text-left font-bold text-lg flex justify-between items-center text-gray-200 hover:bg-gray-700 rounded-xl transition-colors">
                                 <span>${item.week}</span>
                                 <span class="transform transition-transform duration-300">▼</span>
                             </button>
-                            <div class="accordion-content p-4 border-t">
-                                <p class="text-gray-600">${item.details}</p>
+                            <div class="accordion-content p-4 border-t border-gray-700">
+                                <p class="text-gray-400 whitespace-pre-wrap">${item.details}</p>
                             </div>
                         </div>
                     `,
@@ -634,7 +771,7 @@
                       .join("")}
                 </div>
             `;
-        mainContent.innerHTML = intro + content;
+        mainContent.innerHTML = intro + form + content;
       }
 
       function handleNavigation(e) {
@@ -666,7 +803,7 @@
         }
       }
 
-      function handleMainContentClick(e) {
+      async function handleMainContentClick(e) {
         const companyBtn = e.target.closest(".company-btn");
         if (companyBtn) {
           renderCompaniesView(companyBtn.dataset.company);
@@ -685,10 +822,59 @@
             arrow.style.transform = "rotate(180deg)";
           }
         }
+
+        const interviewBtn = e.target.closest(".generate-interview-btn");
+        if (interviewBtn) {
+          const companyName = interviewBtn.dataset.companyName;
+          modalTitle.innerText = `Mock Interview: ${companyName}`;
+          modalBody.innerHTML = `<div class="flex justify-center"><div class="loader"></div></div>`;
+          modal.classList.add("visible");
+          const prompt = `Act as a senior technical recruiter for ${companyName}. Generate a list of 3 relevant technical interview questions and 2 HR interview questions for a typical entry-level software developer or system engineer role at your company. Format the response clearly with headings for 'Technical Questions' and 'HR Questions'.`;
+          const response = await callGemini(prompt);
+          modalBody.innerHTML = `<div class="text-gray-300 whitespace-pre-wrap">${response}</div>`;
+        }
+
+        const planBtn = e.target.closest("#generate-plan-btn");
+        if (planBtn) {
+          const weakTopics = document.getElementById("weak-topics").value;
+          const strongTopics = document.getElementById("strong-topics").value;
+          if (!weakTopics) {
+            alert("Please enter your weak topics to generate a plan.");
+            return;
+          }
+          const prompt = `
+                    Create a personalized 4-week study plan for a student preparing for placements.
+                    The student's weak topics are: ${weakTopics}.
+                    The student's strong topics are: ${strongTopics}.
+                    
+                    Structure the plan into 4 weeks. For each week, provide a detailed focus. 
+                    The plan should allocate significantly more time and specific practice exercises for the weak topics. 
+                    For the strong topics, suggest maintenance-level practice (e.g., one short quiz per week).
+                    The output should be a JSON array, where each object has a "week" and a "details" key. For example: [{"week": "Week 1: ...", "details": "..."}].
+                    Do not include any text outside of the JSON array.
+                `;
+          const response = await callGemini(prompt);
+          try {
+            const parsedPlan = JSON.parse(response);
+            renderPlanView(parsedPlan);
+          } catch (err) {
+            console.error("Failed to parse AI plan:", err);
+            alert("The AI generated an invalid plan format. Please try again.");
+          }
+        }
       }
 
       document.querySelector("nav").addEventListener("click", handleNavigation);
       mainContent.addEventListener("click", handleMainContentClick);
+
+      modalClose.addEventListener("click", () =>
+        modal.classList.remove("visible"),
+      );
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          modal.classList.remove("visible");
+        }
+      });
 
       document.querySelector('.nav-link[data-view="companies"]').click();
     </script>
