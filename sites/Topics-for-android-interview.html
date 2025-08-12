@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Android Interview Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Chosen Palette: Apple-inspired Dark Mode */
+      /* Application Structure Plan: A two-panel layout is chosen for optimal navigation and content consumption. A fixed sidebar on the left provides persistent access to all categories, allowing users to quickly switch contexts. The main content area on the right uses an accordion pattern to present questions, preventing information overload and allowing users to focus on one topic at a time. A live search bar provides a powerful tool for targeted learning, filtering questions across all categories instantly. This structure transforms a long, static list into a dynamic and efficient study tool, directly addressing the user's need to easily explore and synthesize the information. */
+      /* Visualization & Content Choices: The source material is purely textual and hierarchical, making traditional charts irrelevant. The primary goal is to organize and present this information effectively. The chosen method is a structured HTML layout styled with Tailwind CSS, featuring an interactive accordion for Q&A sections. Interactions (category filtering, search, accordion toggles) are handled with vanilla JavaScript. This approach is justified as it directly maps to the content's structure, enhances usability by reducing clutter, and provides powerful filtering mechanisms without the need for complex libraries or SVG graphics. */
+      /* CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. */
+
+      :root {
+        --bg-main: #1c1c1e;
+        --bg-sidebar: #000000;
+        --bg-element: #2c2c2e;
+        --text-primary: #f5f5f7;
+        --text-secondary: #a0a0a5;
+        --accent-primary: #0a84ff;
+        --accent-light: rgba(10, 132, 255, 0.2);
+        --border-color: #3a3a3c;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg-sidebar);
+        color: var(--text-primary);
+      }
+
+      .sidebar-link {
+        transition: all 0.2s ease-in-out;
+        color: var(--text-secondary);
+      }
+
+      .sidebar-link.active,
+      .sidebar-link:hover {
+        background-color: var(--accent-light);
+        color: var(--accent-primary);
+      }
+
+      .accordion-header {
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+      }
+
+      .accordion-header:hover {
+        background-color: #3a3a3c;
+      }
+
+      .accordion-content {
+        transition:
+          max-height 0.4s ease-in-out,
+          padding 0.4s ease-in-out;
+        max-height: 0;
+        overflow: hidden;
+      }
+
+      .accordion-item.open .accordion-content {
+        max-height: 5000px; /* Arbitrary large value */
+      }
+
+      .accordion-item.open .icon-plus {
+        display: none;
+      }
+      .accordion-item:not(.open) .icon-minus {
+        display: none;
+      }
+
+      .prose {
+        color: var(--text-secondary);
+      }
+      .prose strong {
+        color: var(--text-primary);
+      }
+      .prose a {
+        color: var(--accent-primary);
+      }
+      .prose a:hover {
+        text-decoration: underline;
+      }
+      .prose code {
+        background-color: #3a3a3c;
+        color: #f08f63;
+        padding: 3px 6px;
+        border-radius: 6px;
+        font-family: "Menlo", "Monaco", monospace;
+        font-size: 0.9em;
+      }
+      .prose pre {
+        background-color: #121212;
+        color: #dcdcdc;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+      }
+      .prose blockquote {
+        border-left-color: var(--accent-primary);
+      }
+      .prose table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .prose th,
+      .prose td {
+        border: 1px solid var(--border-color);
+        padding: 8px 12px;
+      }
+      .prose th {
+        background-color: #3a3a3c;
+        color: var(--text-primary);
+      }
+      .prose ul,
+      .prose ol {
+        padding-left: 1.5rem;
+      }
+
+      /* Scrollbar styles */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: var(--bg-main);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #555;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #777;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="antialiased">
+    <div class="flex h-screen">
+      <!-- Sidebar -->
+      <aside
+        id="sidebar"
+        class="w-72 bg-var(--bg-sidebar) flex-shrink-0 overflow-y-auto p-4 transition-transform duration-300 ease-in-out md:translate-x-0 -translate-x-full"
+      >
+        <h1 class="text-2xl font-bold text-var(--text-primary) mb-8 px-3">
+          Android Interview Guide
+        </h1>
+        <nav id="category-nav">
+          <ul class="space-y-2">
+            <li>
+              <a
+                href="#"
+                class="sidebar-link active block py-2 px-3 rounded-lg font-semibold"
+                data-category="all"
+                >All Topics</a
+              >
+            </li>
+            <!-- Categories will be dynamically inserted here -->
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 flex flex-col overflow-hidden bg-var(--bg-main)">
+        <header
+          class="bg-var(--bg-main)/80 backdrop-blur-sm border-b border-var(--border-color) p-4 flex items-center sticky top-0 z-10"
+        >
+          <button
+            id="menu-toggle"
+            class="md:hidden mr-4 p-2 rounded-md text-var(--text-secondary) hover:bg-var(--bg-element)"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
+            </svg>
+          </button>
+          <div class="relative w-full max-w-md">
+            <svg
+              class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-var(--text-secondary)"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              ></path>
+            </svg>
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search questions..."
+              class="w-full bg-var(--bg-element) text-var(--text-primary) pl-11 pr-4 py-2 border border-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-var(--accent-primary)"
+            />
+          </div>
+        </header>
+
+        <div id="content-area" class="flex-1 overflow-y-auto p-4 md:p-8">
+          <div
+            id="intro-section"
+            class="mb-8 p-6 bg-var(--bg-element) rounded-xl shadow-lg"
+          >
+            <h2 class="text-2xl font-bold text-var(--text-primary) mb-2">
+              Welcome to the Interactive Android Interview Guide!
+            </h2>
+            <p class="text-var(--text-secondary)">
+              This tool contains a comprehensive breakdown of topics for modern
+              Android development interviews. Use the navigation to browse
+              topics, or use the search bar to find specific questions. Click on
+              any question to reveal a detailed explanation. Good luck!
+            </p>
+          </div>
+          <div id="accordion-container" class="space-y-3">
+            <!-- Accordion items will be dynamically inserted here -->
+          </div>
+          <p
+            id="no-results"
+            class="text-center text-var(--text-secondary) text-lg mt-12 hidden"
+          >
+            No results found. Try a different search term or category.
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // 1. DATA AND VARIABLES
+        const data = [
+          {
+            category: "Kotlin",
+            question: "Explain inline functions in Kotlin.",
+            answer: `<div class="prose max-w-none">
+                                <p>An <code>inline</code> function is a directive to the Kotlin compiler that modifies how the function and its lambda parameters are compiled. At the bytecode level, the compiler replaces the function call with the actual body of the function at the compilation site. This process of copying the function's code directly into the place where it is called is known as inlining.</p>
+                                <strong>Primary Benefit: Performance</strong>
+                                <p>The primary motivation for using <code>inline</code> is to eliminate the runtime overhead associated with higher-order functions. By marking a higher-order function with <code>inline</code>, the compiler directly embeds the function's body and the body of the lambda passed to it into the call site. This completely avoids both the object allocation and the virtual method call, effectively creating a "zero-cost abstraction".</p>
+                                <strong>Enabling Non-Local Control Flow</strong>
+                                <p>A significant consequence of inlining is the ability to use non-local <code>return</code> statements. Because the code of an inlined lambda is copied directly into the calling function's body, a <code>return</code> statement within that lambda will return from the enclosing function.</p>
+                                <strong>Modifiers for Fine-Grained Control: <code>noinline</code> and <code>crossinline</code></strong>
+                                <ul>
+                                    <li><strong><code>noinline</code>:</strong> If an <code>inline</code> function accepts multiple lambda parameters, but one of them needs to be stored or passed elsewhere, it cannot be inlined. The <code>noinline</code> modifier can be applied to that specific lambda parameter, excluding it from the inlining process.</li>
+                                    <li><strong><code>crossinline</code>:</strong> This modifier is used for lambdas that are executed in a different context. It prevents non-local returns from the lambda while still providing the performance benefits of inlining.</li>
+                                </ul>
+                                <strong>Trade-offs and Compiler Warnings</strong>
+                                <p>While powerful, inlining large functions can significantly increase the size of the generated bytecode. The Kotlin compiler is aware of this and will issue a warning if an <code>inline</code> function has no inlinable function parameters or <code>reified</code> type parameters, as the benefit is often negligible.</p>
+                            </div>`,
+          },
+          {
+            category: "Kotlin",
+            question:
+              "What is the `reified` keyword in Kotlin and how does it work?",
+            answer: `<div class="prose max-w-none">
+                                <p>A common challenge on the JVM is <strong>type erasure</strong>. At runtime, the specific generic type information of a class or function is removed (e.g., a <code>List&lt;String&gt;</code> becomes just a <code>List</code>). This prevents operations that depend on the generic type, such as checking <code>value is T</code>.</p>
+                                <strong>The Solution: <code>reified</code> with <code>inline</code></strong>
+                                <p>Kotlin provides a powerful solution with the <code>reified</code> keyword, which can only be used on the generic type parameter of an <code>inline</code> function. When a function is inlined, the compiler knows the actual type being used at the specific call site. By marking the type parameter as <code>reified</code>, this type information is preserved and becomes accessible at runtime within the function's body.</p>
+                                <strong>Practical Use Cases</strong>
+                                <ul>
+                                    <li><strong>Generic Type Checking:</strong> <code>inline fun &lt;reified T&gt; Any.isInstanceOf(): Boolean = this is T</code></li>
+                                    <li><strong>Simplified Activity Navigation:</strong> <code>inline fun &lt;reified T: Activity&gt; Context.startActivity() { ... }</code></li>
+                                    <li><strong>Improved Serialization/Deserialization:</strong> <code>inline fun &lt;reified T&gt; Gson.fromJson(json: String): T = fromJson(json, T::class.java)</code></li>
+                                </ul>
+                            </div>`,
+          },
+          {
+            category: "Kotlin",
+            question:
+              "What is the difference between `const val` and `val` in Kotlin?",
+            answer: `<div class="prose max-w-none">
+                                <p>In Kotlin, both <code>val</code> and <code>const val</code> are used to declare read-only properties, but they differ fundamentally in when their value is determined and how they are handled by the compiler.</p>
+                                <ul>
+                                    <li><strong><code>val</code> (Read-only Runtime Property):</strong> A property declared with <code>val</code> is immutable, but its value can be assigned at <strong>runtime</strong> (e.g., from a function call).</li>
+                                    <li><strong><code>const val</code> (Compile-Time Constant):</strong> A property declared with <code>const val</code> is a true constant. Its value must be known at <strong>compile-time</strong> and must be a primitive type or String.</li>
+                                </ul>
+                                <strong>The Key Difference at the Bytecode Level</strong>
+                                <p>The value of a <code>const val</code> is <strong>inlined</strong> by the compiler. Wherever the constant is used, it is replaced by its literal value. In contrast, a <code>val</code> remains a field that is accessed via a method call at runtime.</p>
+                                <strong>Use Cases and Best Practices</strong>
+                                <ul>
+                                    <li><strong>Use <code>const val</code></strong> for values that are truly static and known before the program runs, like API keys, fixed numerical constants, or base URLs.</li>
+                                    <li><strong>Use <code>val</code></strong> for read-only properties whose values are determined at runtime, such as a singleton instance from a DI framework.</li>
+                                </ul>
+                            </div>`,
+          },
+          {
+            category: "Kotlin",
+            question:
+              "Compare and contrast `lateinit` and `lazy` initialization in Kotlin.",
+            answer: `<div class="prose max-w-none">
+                                <p><code>lateinit</code> and <code>lazy</code> are two distinct mechanisms for deferring the initialization of non-nullable properties, which is common in Android when dependencies or views are not available during object construction.</p>
+                                <strong><code>lateinit</code>:</strong>
+                                <p>The <code>lateinit</code> modifier is a promise to the compiler that a non-nullable <code>var</code> will be initialized before it is first accessed. The initialization is performed manually. If accessed before initialization, it throws an <code>UninitializedPropertyAccessException</code>. It's suited for properties initialized via dependency injection or in Android lifecycle callbacks (e.g., <code>onCreate</code>).</p>
+                                <strong><code>lazy</code>:</strong>
+                                <p>The <code>lazy</code> delegate provides a mechanism for initializing a <code>val</code> (read-only property) on its first access. The provided initializer lambda is executed only once, and the result is cached. It is thread-safe by default and ideal for properties whose initialization is computationally expensive or may not be needed at all.</p>
+                                <table>
+                                    <thead><tr><th>Feature</th><th><code>lateinit</code></th><th><code>lazy</code></th></tr></thead>
+                                    <tbody>
+                                        <tr><td><strong>Initialization Trigger</strong></td><td>Manual assignment</td><td>First access (read)</td></tr>
+                                        <tr><td><strong>Property Mutability</strong></td><td><code>var</code> (mutable)</td><td><code>val</code> (read-only)</td></tr>
+                                        <tr><td><strong>Thread Safety</strong></td><td>Not thread-safe by default</td><td>Thread-safe by default</td></tr>
+                                        <tr><td><strong>Core Use Case</strong></td><td>Dependency injection; lifecycle initialization</td><td>Expensive, on-demand initialization</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>`,
+          },
+          {
+            category: "Kotlin",
+            question: "Explain the `internal` and `open` keywords in Kotlin.",
+            answer: `<div class="prose max-w-none">
+                                <strong><code>internal</code> Visibility Modifier:</strong>
+                                <p>The <code>internal</code> modifier is key for creating well-encapsulated modules. A declaration marked <code>internal</code> is visible everywhere within the same Gradle module but is inaccessible from other modules. This allows a module to expose a clean public API while hiding its implementation details, enforcing better architectural boundaries.</p>
+                                <strong><code>open</code> Keyword:</strong>
+                                <p>Kotlin classes and their members are <code>final</code> by default, favoring composition over inheritance. To allow a class to be inherited or a member to be overridden, it must be explicitly marked with the <code>open</code> keyword. This makes inheritance an intentional design decision. A member in a subclass that overrides an open member must be marked with the <code>override</code> keyword.</p>
+                            </div>`,
+          },
+          {
+            category: "Java & OOP",
+            question: "Explain the SOLID principles with Android examples.",
+            answer: `<div class="prose max-w-none">
+                                <p>SOLID is an acronym for five design principles that help create understandable, flexible, and maintainable software.</p>
+                                <ul>
+                                    <li><strong>S - Single Responsibility Principle (SRP):</strong> A class should have only one reason to change. In Android, an <code>Activity</code> is responsible for UI and input, a <code>ViewModel</code> for state management, and a <code>Repository</code> for data fetching.</li>
+                                    <li><strong>O - Open/Closed Principle (OCP):</strong> Software entities should be open for extension but closed for modification. Using a <code>RecyclerView.Adapter</code> with multiple view types allows adding new item types without modifying the adapter's core logic.</li>
+                                    <li><strong>L - Liskov Substitution Principle (LSP):</strong> Subtypes must be substitutable for their base types. A custom view inheriting from <code>Button</code> must behave like a <code>Button</code> in all contexts.</li>
+                                    <li><strong>I - Interface Segregation Principle (ISP):</strong> Clients should not be forced to depend on interfaces they do not use. Instead of one large <code>ClickListener</code>, Android provides specific interfaces like <code>OnClickListener</code> and <code>OnLongClickListener</code>.</li>
+                                    <li><strong>D - Dependency Inversion Principle (DIP):</strong> High-level modules should not depend on low-level modules; both should depend on abstractions. A <code>ViewModel</code> should depend on a <code>Repository</code> interface, not a concrete <code>UserRepositoryImpl</code>. This is the foundation of Dependency Injection.</li>
+                                </ul>
+                            </div>`,
+          },
+          {
+            category: "Kotlin Coroutines",
+            question:
+              "Explain the difference between suspending and blocking in Kotlin Coroutines.",
+            answer: `<div class="prose max-w-none">
+                                <ul>
+                                    <li><strong>Blocking:</strong> A blocking call, like <code>Thread.sleep()</code>, occupies the thread it is running on, preventing it from doing any other work. Blocking the main thread causes the UI to freeze and can lead to an ANR (Application Not Responding) error.</li>
+                                    <li><strong>Suspending:</strong> A <code>suspend</code> function can pause its execution and resume it later <em>without blocking the underlying thread</em>. When a coroutine is suspended, the thread is released to be used by other tasks. Once the operation completes, the coroutine resumes on an available thread. This is what makes coroutines "lightweight" and allows for massive concurrency.</li>
+                                </ul>
+                            </div>`,
+          },
+          {
+            category: "Kotlin Coroutines",
+            question:
+              "Compare and contrast `launch` and `async` coroutine builders.",
+            answer: `<div class="prose max-w-none">
+                                <p><code>launch</code> and <code>async</code> are the two primary coroutine builders used to start new coroutines from a <code>CoroutineScope</code>.</p>
+                                <table>
+                                    <thead><tr><th>Feature</th><th><code>launch</code></th><th><code>async</code></th></tr></thead>
+                                    <tbody>
+                                        <tr><td><strong>Primary Use Case</strong></td><td>"Fire and Forget" operations.</td><td>Awaiting a result from an async task.</td></tr>
+                                        <tr><td><strong>Return Type</strong></td><td><code>Job</code></td><td><code>Deferred&lt;T&gt;</code></td></tr>
+                                        <tr><td><strong>Result Retrieval</strong></td><td>No direct result.</td><td>Via <code>await()</code> suspend function.</td></tr>
+                                        <tr><td><strong>Error Handling</strong></td><td>Propagates immediately up the job hierarchy.</td><td>Encapsulated in <code>Deferred</code>, thrown on <code>await()</code>.</td></tr>
+                                    </tbody>
+                                </table>
+                                <p>Use <code>launch</code> for tasks where you don't need a direct return value (e.g., updating a database). Use <code>async</code> for parallel decomposition, where multiple tasks run concurrently and their results need to be combined (e.g., fetching data from two different API endpoints simultaneously).</p>
+                            </div>`,
+          },
+          {
+            category: "Kotlin Flow",
+            question:
+              "Explain the difference between cold and hot flows, specifically `Flow`, `StateFlow`, and `SharedFlow`.",
+            answer: `<div class="prose max-w-none">
+                                <ul>
+                                    <li><strong>Cold Flow (<code>Flow</code>):</strong> A cold stream does not execute its producer code until a terminal operator (like <code>collect</code>) is called. A new, independent stream is initiated for each collector. It's suitable for one-shot operations like a network request or database query.</li>
+                                    <li><strong>Hot Flows (<code>StateFlow</code> and <code>SharedFlow</code>):</strong> A hot flow exists independently of its collectors. It broadcasts values to multiple collectors simultaneously.
+                                        <ul>
+                                            <li><strong><code>StateFlow</code>:</strong> A specialized hot flow for representing state. It always has a value, replays the latest value to new subscribers, and is conflated (slow collectors only get the latest value). It's an ideal replacement for <code>LiveData</code> to hold UI state in a ViewModel.</li>
+                                            <li><strong><code>SharedFlow</code>:</strong> A more general and highly configurable hot flow. It can be configured to replay a specific number of values and define a buffer policy. It's suitable for broadcasting events that should be consumed by multiple parts of an app (e.g., a login/logout event).</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>`,
+          },
+          {
+            category: "Android Framework",
+            question:
+              "Explain the Fragment lifecycle and why using a default constructor is required.",
+            answer: `<div class="prose max-w-none">
+                                <p>The Fragment lifecycle is more complex than the Activity's, with additional callbacks for attaching/detaching from the activity and creating/destroying its view.</p>
+                                <strong>Default Constructor Requirement:</strong>
+                                <p>This is a critical rule. The Android framework reserves the right to destroy and re-create fragments on its own (e.g., during a configuration change or process death). To do this, it uses reflection to call the fragment's public, no-argument (default) constructor. If you only provide a parameterized constructor, the system won't know how to re-instantiate it, and the app will crash.</p>
+                                <strong>Passing Arguments with a Factory Pattern:</strong>
+                                <p>The correct way to pass initial data is by bundling it into a <code>Bundle</code> and attaching it via <code>setArguments(Bundle)</code>. The idiomatic way to enforce this is with a static <code>newInstance()</code> factory method, which encapsulates argument bundling and provides a clean, safe API for creating the fragment.</p>
+                            </div>`,
+          },
+          {
+            category: "Android Framework",
+            question: "What is Multidex and how does it work?",
+            answer: `<div class="prose max-w-none">
+                                <p>The Dalvik Executable (DEX) file format has a hard limit of 65,536 method references. As apps grow, it's common to exceed this limit, causing a build failure.</p>
+                                <p><strong>Multidex</strong> is the solution that allows an app to be packaged with multiple DEX files, circumventing this limit.</p>
+                                <ul>
+                                    <li><strong>Pre-Lollipop (API < 21):</strong> On the Dalvik runtime, the Multidex Support Library is required. At runtime, it uses a custom class loader to find and load code from the additional DEX files.</li>
+                                    <li><strong>Lollipop and higher (API >= 21):</strong> The Android Runtime (ART) has native support for loading multiple DEX files. The library is not needed, and multidex is enabled by default when <code>minSdkVersion</code> is 21 or higher.</li>
+                                </ul>
+                            </div>`,
+          },
+          {
+            category: "Android Framework",
+            question:
+              "Explain how RecyclerView works internally and key optimization techniques.",
+            answer: `<div class="prose max-w-none">
+                                <p><code>RecyclerView</code> displays large data sets efficiently by maintaining a limited number of views and recycling them as the user scrolls.</p>
+                                <strong>Internal Workings:</strong>
+                                <ol>
+                                    <li>When an item scrolls off-screen, its view is detached and placed in a <code>RecycledViewPool</code>.</li>
+                                    <li>When a new item needs to be displayed, the system first checks the pool for a compatible, recycled view.</li>
+                                    <li>If one is found, the <code>Adapter</code>'s <code>onBindViewHolder()</code> method is called to bind new data to this existing view.</li>
+                                    <li>If no compatible view is in the pool, <code>onCreateViewHolder()</code> is called to inflate a new layout and create a new <code>ViewHolder</code>.</li>
+                                </ol>
+                                <strong>Key Optimization Techniques:</strong>
+                                <ul>
+                                    <li><strong><code>setHasFixedSize(true)</code>:</strong> A crucial optimization if item sizes don't change, preventing the entire layout from being re-measured on data changes.</li>
+                                    <li><strong><code>DiffUtil</code> and <code>ListAdapter</code>:</strong> Instead of calling the inefficient <code>notifyDataSetChanged()</code>, <code>DiffUtil</code> calculates minimal updates (inserts, deletes, moves). <code>ListAdapter</code> is a convenient base class that automates this on a background thread.</li>
+                                    <li><strong>Payloads for Partial Updates:</strong> When only a small part of an item changes (e.g., a like button), use payloads to update only that specific view instead of re-binding the entire item.</li>
+                                    <li><strong>Shared <code>RecycledViewPool</code>:</strong> For nested <code>RecyclerView</code>s, sharing a single pool instance significantly improves performance by allowing inner lists to reuse each other's views.</li>
+                                </ul>
+                            </div>`,
+          },
+          {
+            category: "Android Jetpack",
+            question:
+              "What is a ViewModel and how does it survive configuration changes?",
+            answer: `<div class="prose max-w-none">
+                                <p>A <code>ViewModel</code> is a class from Jetpack Architecture Components designed to store and manage UI-related data in a lifecycle-conscious way.</p>
+                                <strong>Primary Benefit: Surviving Configuration Changes</strong>
+                                <p>When an <code>Activity</code> or <code>Fragment</code> is destroyed and re-created (e.g., on screen rotation), a <code>ViewModel</code> instance is retained by the framework. This prevents data loss and avoids the need to re-fetch data, ensuring a seamless user experience.</p>
+                                <strong>Internal Workings:</strong>
+                                <p>An <code>Activity</code>/<code>Fragment</code> is a <code>ViewModelStoreOwner</code>. It holds a <code>ViewModelStore</code> object, which is where <code>ViewModel</code> instances are kept. This store is detached from the UI controller's instance and is retained by the framework across configuration changes. When the UI controller is re-created, it reconnects to the same store, retrieving the existing <code>ViewModel</code>.</p>
+                            </div>`,
+          },
+          {
+            category: "Jetpack Compose",
+            question:
+              "Explain the difference between Declarative and Imperative UI paradigms.",
+            answer: `<div class="prose max-w-none">
+                                <ul>
+                                    <li><strong>Imperative UI (Traditional Android Views):</strong> You describe <em>how</em> to change the UI. You get a reference to a widget (e.g., via <code>findViewById</code>) and call methods on it to change its state (e.g., <code>textView.setText(...)</code>). This can become complex and error-prone as you are responsible for manually managing the state of all views.</li>
+                                    <li><strong>Declarative UI (Jetpack Compose):</strong> You describe <em>what</em> the UI should look like for a given state. You create composable functions that transform state into UI. When the state changes, the framework automatically and efficiently re-runs the relevant composables to update the UI. This simplifies UI development and eliminates entire categories of bugs related to manual view manipulation.</li>
+                                </ul>
+                            </div>`,
+          },
+          {
+            category: "Android Architecture",
+            question:
+              "Compare and contrast MVC, MVP, MVVM, and MVI architectures.",
+            answer: `<div class="prose max-w-none">
+                                <p>These are architectural patterns that have evolved to address separation of concerns in Android.</p>
+                                <table>
+                                    <thead><tr><th>Pattern</th><th>Key Characteristic</th><th>Pros</th><th>Cons</th></tr></thead>
+                                    <tbody>
+                                        <tr><td><strong>MVC</strong></td><td>Controller is the central hub.</td><td>Simple to understand.</td><td>Tight coupling; hard to test.</td></tr>
+                                        <tr><td><strong>MVP</strong></td><td>Presenter is decoupled from Android framework.</td><td>Improved testability.</td><td>Boilerplate with View/Presenter interfaces.</td></tr>
+                                        <tr><td><strong>MVVM</strong></td><td>ViewModel is unaware of the View; View observes ViewModel.</td><td>Lifecycle-aware; highly testable.</td><td>State management can become complex.</td></tr>
+                                        <tr><td><strong>MVI</strong></td><td>Unidirectional data flow and immutable state.</td><td>Highly predictable and debuggable.</td><td>Steeper learning curve; can be verbose.</td></tr>
+                                    </tbody>
+                                </table>
+                                <p><strong>MVVM</strong> is the architecture pattern officially recommended by Google, while <strong>MVI</strong> is a more modern, reactive pattern that builds on its principles.</p>
+                            </div>`,
+          },
+          {
+            category: "Design Patterns",
+            question:
+              "Explain the Singleton, Builder, and Factory design patterns with Android examples.",
+            answer: `<div class="prose max-w-none">
+                                <ul>
+                                    <li><strong>Singleton:</strong> Ensures a class has only one instance and provides a global access point. In Kotlin, this is trivial with the <code>object</code> keyword. It's used for shared components like a Retrofit client or Room database.</li>
+                                    <li><strong>Builder:</strong> Separates the construction of a complex object from its representation. It's ideal for objects with many optional parameters. The Android framework uses it extensively (e.g., <code>AlertDialog.Builder</code>, <code>NotificationCompat.Builder</code>).</li>
+                                    <li><strong>Factory:</strong> Provides an interface for creating objects but lets subclasses alter the type of objects that will be created. A prime Android example is <code>ViewModelProvider.Factory</code>, used to create <code>ViewModel</code> instances with constructor dependencies.</li>
+                                </ul>
+                            </div>`,
+          },
+          {
+            category: "Android System Design",
+            question:
+              "How would you approach an Android system design question in an interview?",
+            answer: `<div class="prose max-w-none">
+                                <p>A structured approach is key.</p>
+                                <ol>
+                                    <li><strong>Clarify Requirements:</strong> Define both functional (e.g., "The app must support group chat") and non-functional requirements (e.g., "The app must work offline," "Message delivery must be low latency").</li>
+                                    <li><strong>High-Level Design:</strong> Draw a high-level diagram showing the main components: client, backend, databases, caches, and third-party services (like FCM).</li>
+                                    <li><strong>Deep Dive into Components:</strong> Focus on the Android client. Detail the architecture (e.g., MVVM), database schema (Room), networking strategy (REST vs. WebSockets), and caching policy.</li>
+                                    <li><strong>Identify Bottlenecks and Trade-offs:</strong> Discuss potential performance issues, scalability challenges, and the trade-offs made in your design (e.g., choosing eventual consistency over strong consistency for better availability).</li>
+                                </ol>
+                            </div>`,
+          },
+          {
+            category: "Build & Tools",
+            question:
+              "What are ProGuard and R8? Explain shrinking, obfuscation, and optimization.",
+            answer: `<div class="prose max-w-none">
+                                <p>ProGuard (and its successor, R8) is a tool integrated into the Android build process that optimizes and secures the application's code.</p>
+                                <ul>
+                                    <li><strong>Shrinking (Tree Shaking):</strong> Analyzes the code and removes any unused classes, fields, and methods. This is highly effective at removing unused code from libraries and reducing app size.</li>
+                                    <li><strong>Obfuscation:</strong> Renames the remaining classes, fields, and methods with short, meaningless names (e.g., <code>a</code>, <code>b</code>, <code>c</code>). This makes the decompiled code extremely difficult for a human to understand, protecting intellectual property.</li>
+                                    <li><strong>Optimization:</strong> Analyzes and rewrites the bytecode to make it more efficient, for example, by inlining methods.</li>
+                                </ul>
+                                <p>Configuration is done via <code>proguard-rules.pro</code> files, which are essential to prevent the tool from removing or renaming code that is accessed via reflection.</p>
+                            </div>`,
+          },
+          {
+            category: "Libraries",
+            question:
+              "Compare Dagger and Hilt for dependency injection in Android.",
+            answer: `<div class="prose max-w-none">
+                                <p><strong>Dagger 2</strong> is a powerful, fully static, compile-time dependency injection framework. It is highly performant but has a steep learning curve and requires significant boilerplate code for setup.</p>
+                                <p><strong>Hilt</strong> is Google's recommended DI library, built on top of Dagger. Its primary goal is to simplify Dagger usage in Android.</p>
+                                <strong>Advantages of Hilt over Dagger:</strong>
+                                <ul>
+                                    <li><strong>Reduced Boilerplate:</strong> Hilt automatically generates the Dagger components that would otherwise need to be written manually.</li>
+                                    <li><strong>Standardization:</strong> It provides a standard set of components tied to the Android component lifecycle (e.g., <code>@HiltAndroidApp</code>, <code>@AndroidEntryPoint</code>), making projects more consistent.</li>
+                                    <li><strong>Ease of Use:</strong> It drastically reduces the setup cost and mental overhead of using Dagger, making DI more accessible while retaining Dagger's performance.</li>
+                                </ul>
+                            </div>`,
+          },
+          {
+            category: "Performance & Optimization",
+            question:
+              "What is an ANR error, what causes it, and how can it be prevented?",
+            answer: `<div class="prose max-w-none">
+                                <p>An "Application Not Responding" (ANR) error is a critical performance issue that occurs when the application's main (UI) thread is blocked for an extended period (typically 5 seconds for an input event).</p>
+                                <strong>Common Causes:</strong>
+                                <ol>
+                                    <li><strong>Network or Disk I/O on the Main Thread:</strong> The most common cause. These are blocking operations with unpredictable duration.</li>
+                                    <li><strong>Long-Running Computations:</strong> Performing CPU-intensive calculations on the main thread.</li>
+                                    <li><strong>Lock Contention:</strong> The main thread is blocked waiting to acquire a lock held by a background thread.</li>
+                                </ol>
+                                <strong>Prevention:</strong>
+                                <p>The cardinal rule is to <strong>never perform blocking or long-running operations on the main thread</strong>. All such work must be offloaded to a background thread using tools like Kotlin Coroutines or WorkManager.</p>
+                            </div>`,
+          },
+          {
+            category: "Testing",
+            question:
+              "Explain the roles of JUnit, Mockito/MockK, and Espresso in Android testing.",
+            answer: `<div class="prose max-w-none">
+                                <ul>
+                                    <li><strong>JUnit:</strong> The foundational framework for writing tests. It provides annotations like <code>@Test</code> and a library of assertion methods (<code>assertEquals</code>, etc.) to verify outcomes.</li>
+                                    <li><strong>Mockito/MockK:</strong> Mocking frameworks used to create "test doubles" (mocks) of a class's dependencies. In unit testing, this allows you to test a class in isolation by defining the behavior of its dependencies (e.g., "when <code>repository.getUser()</code> is called, return this fake user").</li>
+                                    <li><strong>Espresso:</strong> Google's primary framework for writing UI tests. It provides a fluent and reliable API for simulating user interactions (<code>.perform(click())</code>) and asserting the state of UI elements (<code>.check(matches(isDisplayed()))</code>). Its key feature is automatic synchronization with the UI thread, which eliminates flakiness.</li>
+                                </ul>
+                            </div>`,
+          },
+        ];
+
+        const accordionContainer = document.getElementById(
+          "accordion-container",
+        );
+        const categoryNav = document
+          .getElementById("category-nav")
+          .querySelector("ul");
+        const searchInput = document.getElementById("search-input");
+        const noResults = document.getElementById("no-results");
+        const introSection = document.getElementById("intro-section");
+        const menuToggle = document.getElementById("menu-toggle");
+        const sidebar = document.getElementById("sidebar");
+
+        // 2. FUNCTIONS
+        function createAccordionItem(item, index) {
+          return `
+                    <div class="accordion-item bg-var(--bg-element) border border-var(--border-color) rounded-xl shadow-md overflow-hidden" data-category="${item.category}" data-text="${item.question.toLowerCase()}">
+                        <div class="accordion-header flex justify-between items-center p-4">
+                            <h3 class="font-semibold text-md text-var(--text-primary)">${item.question}</h3>
+                            <div class="text-var(--text-secondary)">
+                                <svg class="icon-plus w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                                <svg class="icon-minus w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 12H6"></path></svg>
+                            </div>
+                        </div>
+                        <div class="accordion-content">
+                            <div class="p-4 border-t border-var(--border-color)">
+                                ${item.answer}
+                            </div>
+                        </div>
+                    </div>
+                `;
+        }
+
+        function renderContent(filteredData) {
+          accordionContainer.innerHTML = filteredData
+            .map(createAccordionItem)
+            .join("");
+          const hasResults = filteredData.length > 0;
+          noResults.classList.toggle("hidden", hasResults);
+          introSection.classList.toggle(
+            "hidden",
+            hasResults ||
+              searchInput.value.length > 0 ||
+              document.querySelector(".sidebar-link.active")?.dataset
+                .category !== "all",
+          );
+
+          attachAccordionListeners();
+        }
+
+        function attachAccordionListeners() {
+          document.querySelectorAll(".accordion-header").forEach((header) => {
+            header.addEventListener("click", () => {
+              header.parentElement.classList.toggle("open");
+            });
+          });
+        }
+
+        function filterContent() {
+          const activeCategory =
+            document.querySelector(".sidebar-link.active")?.dataset.category ||
+            "all";
+          const searchTerm = searchInput.value.toLowerCase();
+
+          const filteredData = data.filter((item) => {
+            const inCategory =
+              activeCategory === "all" || item.category === activeCategory;
+            const matchesSearch = item.question
+              .toLowerCase()
+              .includes(searchTerm);
+            return inCategory && matchesSearch;
+          });
+
+          renderContent(filteredData);
+        }
+
+        // 3. INITIALIZATION & EVENT LISTENERS
+        const categories = [...new Set(data.map((item) => item.category))];
+
+        categories.sort().forEach((category) => {
+          const li = document.createElement("li");
+          li.innerHTML = `<a href="#" class="sidebar-link block py-2 px-3 rounded-lg font-semibold" data-category="${category}">${category}</a>`;
+          categoryNav.appendChild(li);
+        });
+
+        renderContent(data);
+
+        categoryNav.addEventListener("click", (e) => {
+          e.preventDefault();
+          if (e.target.tagName === "A") {
+            categoryNav
+              .querySelectorAll(".sidebar-link")
+              .forEach((link) => link.classList.remove("active"));
+            e.target.classList.add("active");
+            filterContent();
+            if (window.innerWidth < 768) {
+              sidebar.classList.add("-translate-x-full");
+            }
+          }
+        });
+
+        searchInput.addEventListener("input", filterContent);
+
+        menuToggle.addEventListener("click", () => {
+          sidebar.classList.toggle("-translate-x-full");
+        });
+
+        window.addEventListener("resize", () => {
+          if (window.innerWidth >= 768) {
+            sidebar.classList.remove("-translate-x-full");
+          } else {
+            if (!sidebar.classList.contains("-translate-x-full")) {
+              sidebar.classList.add("-translate-x-full");
+            }
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
